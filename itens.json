@@ -1,0 +1,97 @@
+[
+    {
+        "id": 2,
+        "tipo_registro": "Perdido",
+        "categoria": "Chave",
+        "local": "Vizinhança",
+        "descricao": "Casaco amarelo nike",
+        "resolvido": false,
+        "contato": "81909876543",
+        "autor": "Pessoa"
+    },
+    {
+        "id": 3,
+        "tipo_registro": "Perdido",
+        "categoria": "Vestuários",
+        "local": "RU",
+        "descricao": "Casaco amarelo",
+        "resolvido": true,
+        "contato": "81909876543",
+        "autor": "Pessoa"
+    },
+    {
+        "id": 4,
+        "tipo_registro": "Perdido",
+        "categoria": "Vestuários",
+        "local": "RU",
+        "descricao": "Casaco nike",
+        "resolvido": false,
+        "contato": "81909876543",
+        "autor": "Pessoa"
+    },
+    {
+        "id": 5,
+        "tipo_registro": "Perdido",
+        "categoria": "Vestuários",
+        "local": "RU",
+        "descricao": "Casaco amarelo",
+        "resolvido": false,
+        "contato": "81909876543",
+        "autor": "Pessoa"
+    },
+    {
+        "id": 6,
+        "tipo_registro": "Perdido",
+        "categoria": "Vestuários",
+        "local": "RU",
+        "descricao": "Casaco vermelho adidas",
+        "resolvido": false,
+        "contato": "81987654321",
+        "autor": "Humano"
+    },
+    {
+        "id": 7,
+        "tipo_registro": "Perdido",
+        "categoria": "Itens de alimentação",
+        "local": "Depto. Ed. Física",
+        "descricao": "Garrafa amarela nike",
+        "resolvido": false,
+        "contato": "81987654321",
+        "autor": "Humano"
+    },
+    {
+        "id": 8,
+        "data_cadastro": "20/04/2026",
+        "tipo_registro": "Achado",
+        "categoria": "Documentos",
+        "local": "Depto. Biologia/ Química",
+        "descricao": "Cpf branco encapado",
+        "resolvido": false,
+        "contato": "81991459543",
+        "autor": "Henrique",
+        "liberado": true,
+        "status_final": "Disponível para doação/reciclagem"
+    },
+    {
+        "id": 9,
+        "data_cadastro": "21/04/2026",
+        "tipo_registro": "Achado",
+        "categoria": "Itens de alimentação",
+        "local": "Biblioteca Central",
+        "descricao": "Garrafa tuperware branca de 500ml",
+        "resolvido": false,
+        "contato": "81991459543",
+        "autor": "Henrique"
+    },
+    {
+        "id": 10,
+        "data_cadastro": "21/04/2026",
+        "tipo_registro": "Perdido",
+        "categoria": "Carteira",
+        "local": "CEAGRI",
+        "descricao": "Carteira marrom com documentos pessoais",
+        "resolvido": false,
+        "contato": "81991459543",
+        "autor": "Henrique"
+    }
+]

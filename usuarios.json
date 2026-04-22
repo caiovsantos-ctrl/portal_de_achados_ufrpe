@@ -1,0 +1,46 @@
+[
+    {
+        "nome": "Caio vinicius",
+        "email": "caiovsantos@ufrpe.br",
+        "senha": "6509152"
+    },
+    {
+        "nome": "Carlos henrique",
+        "email": "henrique1608@ufrpe.br",
+        "senha": "1608000"
+    },
+    {
+        "nome": "Carlos",
+        "email": "carlos.hsantos@ufrpe.br",
+        "senha": "001608"
+    },
+    {
+        "nome": "Edseu",
+        "email": "edseuquegosto@ufrpe.br",
+        "senha": "1357913"
+    },
+    {
+        "nome": "Pessoa",
+        "email": "pessoa1@ufrpe.br",
+        "senha": "0864208",
+        "Whatsapp": "81909876543"
+    },
+    {
+        "nome": "Humano",
+        "email": "humano1@ufrpe.br",
+        "senha": "0987654",
+        "Whatsapp": "81987654321"
+    },
+    {
+        "nome": "Henrique",
+        "email": "carlos1608@ufrpe.br",
+        "senha": "123567",
+        "Whatsapp": "81991459543"
+    },
+    {
+        "nome": "Power",
+        "email": "power123@ufrpe.br",
+        "senha": "567890",
+        "Whatsapp": "81991919191"
+    }
+]
