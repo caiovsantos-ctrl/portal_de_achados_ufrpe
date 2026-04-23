@@ -1,4 +1,7 @@
 import interface, validacoes, usuarios, itens, servicos
+print('\n')
+print('PORTAL DE ACHADOS UFRPPE'.center(50))
+print('\n')
 while True:
     interface.exibir_menu_padrao('MENU INICIAL', [
                 '[1] → Cadastro',
@@ -24,13 +27,13 @@ while True:
                     interface.limpar_tela()
                     break
                 elif resposta_menu == '1':
-                    print('Gestão de itens selecionado')
+                    print('\033[0;32mGestão de itens selecionado\033[m')
                     itens.gestao_itens(user_logado)
                 elif resposta_menu == '2':
-                    print('Mural e relatório selecionado')
+                    print('\033[0;32mMural e relatório selecionado\033[m')
                     servicos.mural_historico(user_logado)
                 elif resposta_menu == '3':
-                    print('Configurações da conta selecionado')
+                    print('\033[0;32mConfigurações da conta selecionado\033[m')
                     interface.limpar_tela()
                     interface.exibir_menu_padrao('CONFIGURAÇÕES DA CONTA', [
                     '[1] → Atualizar Dados da Conta',

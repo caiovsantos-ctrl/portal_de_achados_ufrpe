@@ -3,40 +3,40 @@ from time import sleep
 
 
 def cadastrar_user():
-    print('Cadastro selecionado\n')
+    print('\033[0;32mCadastro selecionado\033[m\n')
     interface.limpar_tela()
-    print("=" * 50)
-    print("=====" + " NOVO CADASTRO - UFRPE ".center(40) + "=====")
-    print("=" * 50)
-    print("\n  Crie sua conta para acessar o portal.")
-    print("  (Digite 0 a qualquer momento para cancelar)\n")
-    print("=" * 50)
+    print('=' * 50)
+    print('=====' + ' NOVO CADASTRO - UFRPE '.center(40) + '=====')
+    print('=' * 50)
+    print('\n  Crie sua conta para acessar o portal')
+    print('  (Digite 0 a qualquer momento para cancelar)\n')
+    print('=' * 50)
     sleep(2)
     interface.limpar_tela()
     nome_cadastro = validacoes.validar_nome()
     if nome_cadastro is None:
         return
-    print('Nome cadastrado!')
+    print('\033[0;32mNome cadastrado!\033[m')
     while True:
         email_cadastro = validacoes.validar_email()
         if email_cadastro is None:
             return
         if validacoes.email_ja_existe(email_cadastro):
-            print('Esse email já está cadastrado no sistema')
+            print('\033[0;31mEsse email já está cadastrado no sistema\033[m')
             if interface.tentar_novamente(mensagem = 'Deseja tentar com outro email?[S/N]') == 'N':
                 interface.limpar_tela()
                 return
             interface.limpar_tela()
             continue
-        print('Email cadastrado!')
+        print('\033[0;32mEmail cadastrado!\033[m')
         senha_cadastro = validacoes.validar_senha()
         if senha_cadastro is None:
             return
-        print('Senha cadastrada!')
+        print('\033[0;32mSenha cadastrada!\033[m')
         zap_cadastro = validacoes.validar_zap()
         if zap_cadastro is None:
             return
-        print('N° do Whatsapp cadastrado!')
+        print('\033[0;32mN° do Whatsapp cadastrado!\033[m')
         novo_user = {
             "nome": nome_cadastro,
             "email": email_cadastro,
@@ -51,15 +51,15 @@ def cadastrar_user():
 
 
 def login_user():
-    print('Login selecionado')
+    print('\033[0;32mLogin selecionado\033[m')
     while True:
         interface.limpar_tela()
-        print("=" * 50)
-        print("=====" + " ACESSO AO PORTAL UFRPE ".center(40) + "=====")
-        print("=" * 50)
-        print("\n  Por favor, preencha suas credenciais:")
-        print("  (Digite 0 a qualquer momento para cancelar)\n")
-        print("=" * 50)
+        print('-' * 50)
+        print('=====' + ' ACESSO AO PORTAL UFRPE '.center(40) + '=====')
+        print('=' * 50)
+        print('\n  Por favor, preencha suas credenciais:')
+        print('  (Digite 0 a qualquer momento para cancelar)\n')
+        print('-' * 50)
         sleep(2)
         interface.limpar_tela()
         email_login = validacoes.validar_email()
@@ -72,18 +72,18 @@ def login_user():
             with open('usuarios.json', 'r') as arquivo:
                 usuarios_cadastrados = json.load(arquivo)
         except (FileNotFoundError, json.JSONDecodeError):
-            print('Banco de dados de usuários não encontrado ou vazio. Tente novamente mais tarde')
+            print('\033[0;31mBanco de dados de usuários não encontrado ou vazio. Tente novamente mais tarde\033[m')
             return
         except Exception as e:
-            print('Ocorreu um erro ao acessar o banco de dados de usuários:')
+            print('\033[0;31mOcorreu um erro ao acessar o banco de dados de usuários:\033[m')
         user_logado = False
         for user in usuarios_cadastrados:
             if user["email"] == email_login and user["senha"] == senha_login:
-                print(f'Login bem-sucedido! \nÉ um prazer te ver novamente, {user["nome"]}!')
+                print(f'\033[0;32mLogin bem-sucedido!\033[m \nÉ um prazer te ver novamente, {user["nome"]}!')
                 user_logado = True
                 return user
         if not user_logado:
-            print('Email ou senha incorretos')
+            print('\033[0;31mEmail ou senha incorretos\033[m')
             continuar_login = interface.tentar_novamente(mensagem = 'Deseja tentar fazer login novamente?[S/N] ')
             if continuar_login == 'S':
                 continue
@@ -94,7 +94,7 @@ def login_user():
             
 
 def menu_atualizar_dados(user_logado):
-    print('Atualizar dados pessoais selecionado')
+    print('\033[0;32mAtualizar dados pessoais selecionado\033[m')
     while True:
         interface.limpar_tela()
         interface.exibir_menu_padrao('ATUALIZAR DADOS PESSOAIS', [
@@ -135,15 +135,15 @@ def atualizar_dados_pessoais(user_logado, campo_para_mudar, novo_valor):
         if sucesso:
             with open('usuarios.json', 'w', encoding='utf-8') as arquivo:
                 json.dump(lista_usuarios, arquivo, indent=4, ensure_ascii=False)
-            print(f'{campo_para_mudar} atualizado com sucesso!')
+            print(f'\033[0;32m{campo_para_mudar} atualizado com sucesso!\033[m')
             return True
     except Exception as e:
-        print('Erro ao atualizar dados pessoais:')
+        print('\033[0;31mErro ao atualizar dados pessoais:\033[m')
         return False
             
 
 def processar_atualizacao(user_logado, campo, funcao_validacao):
-    print(f'Atualizar {campo} selecionado')
+    print(f'\033[0;32mAtualizar {campo} selecionado\033[m')
     identidade = validacoes.confirmar_identidade(user_logado)
     if identidade == True:
         while True:
@@ -161,7 +161,7 @@ def processar_atualizacao(user_logado, campo, funcao_validacao):
 
 
 def deletar_conta(user_logado):
-    print('Deletar conta selecionado')
+    print('\033[0;32mDeletar conta selecionado\033[m')
     interface.limpar_tela()
     print('ATENÇÃO: Essa ação é irreversível!')
     certeza = interface.tentar_novamente(mensagem = 'Deseja realmente deletar sua conta?[S/N] ')
@@ -178,9 +178,9 @@ def deletar_conta(user_logado):
                 if len(nova_lista) < len(lista_usuarios):
                     with open('usuarios.json', 'w', encoding='utf-8') as arquivo:
                         json.dump(nova_lista, arquivo, indent=4, ensure_ascii=False)
-                    print('\nConta deletada com sucesso. Sentiremos sua falta!')
+                    print('\n\033[0;32mConta deletada com sucesso. Sentiremos sua falta!\033[m')
                     return True
                 return False
             except Exception as erro:
-                print('Ocorreu um erro. Tente novamente mais tarde')
+                print('\033[0;31mOcorreu um erro. Tente novamente mais tarde\033[m')
                 return False

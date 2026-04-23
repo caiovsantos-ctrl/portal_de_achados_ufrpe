@@ -44,13 +44,13 @@ def mural_historico(user_logado):
             interface.verificar_escape(resposta_menu)
             return
         elif resposta_menu == '1':
-            print('Mural Geral selecionado')
+            print('\033[0;32mMural Geral selecionado\033[m')
             mural_de_itens()
         elif resposta_menu == '2':
-            print('Histórico selecionado')
+            print('\033[0;32mHistórico selecionado\033[m')
             historico(user_logado)
         elif resposta_menu == '3':
-            print('Mapa de Calor selecionado')
+            print('\033[0;32mMapa de Calor selecionado\033[m')
             mapa_de_calor()
 
 
@@ -58,7 +58,8 @@ def mural_de_itens():
     doacao_reciclagem()
     while True:
         interface.limpar_tela()
-        print('Mural de Itens \n\n')
+        print('Mural de Itens:\n\n'.center(70))
+        print('-' * 70)
         todos_itens = data_base.buscar_todos_itens()
         itens_ativos = [i for i in todos_itens if not i.get("resolvido", False)]
         if not itens_ativos:
@@ -87,7 +88,8 @@ def mural_de_itens():
                 )
                 print(descricao_formatada)
                 print(f'Contato: {item["contato"]}\n')
-        sair = input('\nDigite 0 para voltar: ')
+                print('-' * 70)
+        sair = input('\n\nDigite 0 para voltar: ')
         if interface.verificar_escape(sair):
             break
 
@@ -96,7 +98,7 @@ def historico(user_logado):
     while True:
         doacao_reciclagem
         interface.limpar_tela()
-        print('Seu Histórico:\n\n')
+        print('Seu Histórico:\n\n'.center(95))
         meus_itens = data_base.buscar_itens_por_usuario(user_logado["Whatsapp"])
         if not meus_itens:
             print('Você não possui nenhum item cadastrado')
@@ -125,14 +127,14 @@ def historico(user_logado):
             escolher_id = validacoes.validar_id(mensagem = 'Digite o ID do item que foi resolvido: ')
             if any(i["id"] == escolher_id for i in meus_itens):
                 if itens.atualizar_status_item(escolher_id):
-                    print('Status atualizado com sucesso!')
+                    print('\033[0;32mStatus atualizado com sucesso!\033[m')
                 else:
-                    print('Erro ao atualizar. Tente novamente mais tarde')
+                    print('\033[0;31mErro ao atualizar. Tente novamente mais tarde\033[m')
                 voltar = input('\nDigite 0 para voltar: ')
                 interface.verificar_escape(voltar)
                 return
             else:
-                print('Este ID não existe ou não pertence a você')
+                print('\033[0;31mEste ID não existe ou não pertence a você\033[m')
                 tentar = interface.tentar_novamente(mensagem = 'Deseja tentar novamente com outro ID?[S/N]')
                 if tentar == 'S':
                     continue
@@ -146,16 +148,16 @@ def historico(user_logado):
                 tentar = interface.tentar_novamente(mensagem = 'Tem certeza que deseja deletar esse item?[S/N] ')
                 if tentar == 'S':
                     if itens.deletar_item(id_deletar, user_logado["Whatsapp"]):
-                        print('Item removido com sucesso')
+                        print('\033[0;32mItem removido com sucesso\033[m')
                     else:
-                        print('Erro ao deletar item. Tente novamente mais tarde')
+                        print('\033[0;31mErro ao deletar item. Tente novamente mais tarde\033[m')
                     voltar = input('\nDigite 0 para voltar: ')
                     interface.verificar_escape(voltar)
                     return
                 else:
                     continue
             else:
-                print('Este ID não existe ou não pertence a você')
+                print('\033[0;31mEste ID não existe ou não pertence a você\033[m')
                 tentar = interface.tentar_novamente(mensagem = 'Deseja tentar novamente com outro ID?[S/N]')
                 if tentar == 'S':
                     continue
@@ -189,7 +191,7 @@ def doacao_reciclagem():
 
 def mapa_de_calor():
     interface.limpar_tela()
-    print('Mapa de Calor: \n\n')
+    print('Mapa de Calor: \n\n'.center(60))
     todos_itens = data_base.buscar_todos_itens()
     if not todos_itens:
         print('Não há dados suficientes para gerar o Mapa de Calor')

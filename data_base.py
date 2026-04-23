@@ -8,7 +8,7 @@ def salvar_user(novo_user):
         lista_user.append(novo_user)
     with open('usuarios.json', 'w') as arquivo:
         json.dump(lista_user, arquivo, indent=4, ensure_ascii=False)
-    print('Cadastro concluído com sucesso!')
+    print('\033[0;32mCadastro concluído com sucesso!\033[m')
 
 
 def salvar_item(item_cadastrado):

@@ -31,11 +31,11 @@ def tentar_novamente(mensagem = 'Deseja tentar novamente?[S/N] '):
         tentativa = input(mensagem)
         tentativa = tentativa.strip().upper()
         if tentativa == '':
-            print('Resposta não pode ser vazia. Tente novamente')
+            print('\033[0;31mResposta não pode ser vazia. Tente novamente\033[m')
             continue
         elif not tentativa.isalpha() or tentativa not in 'SN':
-            print('Resposta deve ser S ou N. Tente novamente')
+            print('\033[0;31mResposta deve ser S ou N. Tente novamente\033[m')
             continue
         elif len(tentativa) != 1:
-            print('Resposta deve ser apenas um caractere. Tente novamente')
+            print('\033[0;31mResposta deve ser apenas um caractere. Tente novamente\033[m')
         return tentativa

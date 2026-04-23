@@ -42,27 +42,29 @@ def menu_local():
 def descricao_item():
     while True:
         interface.limpar_tela()
-        print('Detalhes do item\n')
-        print('Digite uma descrição detalhada: ')
+        print('-' * 50)
+        print('Detalhes do item'.center(50))
+        print('-' * 50)
+        print('\nDigite uma descrição objetiva: ')
         print('Ex.: Iphone com capinha branca e tela trincada\n')
         descricao = input('=> ')
         descricao = descricao.strip().capitalize()
         if descricao == '0':
             return None
         elif descricao == "":
-            print('A descrição não pode ser vazia. Tente novamente.')
+            print('\033[0;31mA descrição não pode ser vazia. Tente novamente.\033[m')
             continue
-        elif len(descricao) < 10:
-            print('A descricao deve conter pelo menos 10 caracteres. Tente novamente.')
+        elif len(descricao) < 20:
+            print('\033[0;31mA descricao deve conter pelo menos 20 caracteres. Tente novamente\033[m')
             continue
         elif len(descricao) > 100:
-            print('A descrição deve conter no máximo 100 caracteres. Tente novamente.')
+            print('\033[0;31mA descrição deve conter no máximo 100 caracteres. Tente novamente\033[m')
             continue
         elif descricao.isnumeric():
-            print('A descrição não pode conter apenas números. Tente novamente.')
+            print('\033[0;31mA descrição não pode conter apenas números. Tente novamente\033[m')
             continue
         elif descricao == descricao[0] * len(descricao):
-            print('A descrição não pode conter apenas dígitos iguais. Tente novamente')
+            print('\033[0;31mA descrição não pode conter apenas dígitos iguais. Tente novamente\033[m')
             continue
         else:
             return descricao
@@ -112,7 +114,7 @@ def gestao_itens(user_logado):
                 return
             match, foi_duplicado = servicos.motor_de_buscas(item_cadastrado) 
             if foi_duplicado:
-                print('\nVocê já possui um item similar cadastrado por você')
+                print('\n\033[0;31mVocê já possui um item similar cadastrado por você\033[m')
                 print('O sistema não mostra seus próprios itens no Match para evitar confusão\n')
                 if interface.tentar_novamente():
                     continue
@@ -122,13 +124,13 @@ def gestao_itens(user_logado):
             else:
                 if item_cadastrado:
                     data_base.salvar_item(item_cadastrado)
-                    print('Item cadastrado com sucesso!')
+                    print('\033[0;32mItem cadastrado com sucesso!\033[m')
                     break
-        if match:
+        if item_cadastrado and match:
             if status == 'Perdido':
-                print('\nBoas notícias! Alguém pode ter encontrado seu item:\n')
+                print('\n\033[0;32mBoas notícias! Alguém pode ter encontrado seu item:\033[m\n')
             else:
-                print('Atenção! Alguém perdeu um item parecido com este:\n')
+                print('\033[0;32mAtenção! Alguém perdeu um item parecido com este:\033[m\n')
             for m in match:
                 print(f'ID: {m["id"]} | {m["categoria"]} no(a) {m["local"]}')
                 print(f'Descrição: {m["descricao"]}')
@@ -140,9 +142,9 @@ def gestao_itens(user_logado):
             confirmar = interface.tentar_novamente(mensagem = '\nSeu problema foi resolvido?[S/N]')
             if confirmar == 'S':
                 if atualizar_status_item(item_cadastrado["id"]):
-                    print('Ótima notícia! Item marcado como resolvido')
+                    print('\033[0;32mÓtima notícia! Item marcado como resolvido\033[m')
                 else:
-                    print('Erro ao atualizar status')
+                    print('\033[0;31mErro ao atualizar status\033[m')
             else:
                 print('Entendido! Seu item continuará ativo no mural para novos matches')
             sair = input('\nDigite 0 para voltar: ')

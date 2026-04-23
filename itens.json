@@ -93,5 +93,27 @@
         "resolvido": false,
         "contato": "81991459543",
         "autor": "Henrique"
+    },
+    {
+        "id": 11,
+        "data_cadastro": "22/04/2026",
+        "tipo_registro": "Achado",
+        "categoria": "Itens de alimentação",
+        "local": "Depto. Ed. Física",
+        "descricao": "Garrafa amarela nike",
+        "resolvido": false,
+        "contato": "81991459543",
+        "autor": "Henrique"
+    },
+    {
+        "id": 12,
+        "data_cadastro": "22/04/2026",
+        "tipo_registro": "Achado",
+        "categoria": "Eletrônicos",
+        "local": "Vizinhança",
+        "descricao": "Chave enferrujada com formato quadrado",
+        "resolvido": false,
+        "contato": "81922334455",
+        "autor": "Caio"
     }
 ]

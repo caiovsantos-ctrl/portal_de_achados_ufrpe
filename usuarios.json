@@ -42,5 +42,11 @@
         "email": "power123@ufrpe.br",
         "senha": "567890",
         "Whatsapp": "81991919191"
+    },
+    {
+        "nome": "Caio",
+        "email": "caio2805@ufrpe.br",
+        "senha": "098654",
+        "Whatsapp": "81922334455"
     }
 ]
