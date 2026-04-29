@@ -2,6 +2,10 @@ import interface, validacoes, data_base, servicos, json, os
 
 
 def menu_itens():
+    """
+    -> Mostra o menu da categoria do item
+    :return: (int/None) Retorna a opção digitada pelo usuário ou None se digitou '0'
+    """
     categorias = [
         "Eletrônicos", "Chave", "Documentos", "Carteira", 
         "Materiais acadêmicos", "Vestuários", "Itens de alimentação"
@@ -21,6 +25,10 @@ def menu_itens():
 
 
 def menu_local():
+    """
+    -> Mostra o menu dos locais do item
+    :return: (int/None) Retorna a opção digitada pelo usuário ou None se digitou '0'
+    """
     locais = [
         "CEGOE", "Prédio Central", "CEAGRI", "RU", 
         "Biblioteca Central", "Depto. Biologia/ Química", 
@@ -40,6 +48,10 @@ def menu_local():
 
 
 def descricao_item():
+    """
+    -> Valida a descrição digitada pelo usuário
+    :return: (str/None) Retorna a descrição digitada pelo usuário ou None se digitou '0'
+    """
     while True:
         interface.limpar_tela()
         print('-' * 50)
@@ -72,6 +84,13 @@ def descricao_item():
 
 
 def achar_perder_item(status, user_logado):
+    """
+    -> Armazena no JSON os dados dos itens cadastrados
+    :param status: (str) Define o tipo de registro do item(achado ou perdido)
+    :param user_logado: (dict) Dicionário que guarda os dados do usuário 
+    :return: (dict/None)  Retorna um dicionário com os dados do item ou 
+    None se o usuário desistiu em alguma parte
+    """
     interface.limpar_tela()
     resposta_item = menu_itens()
     if resposta_item is None:
@@ -95,6 +114,10 @@ def achar_perder_item(status, user_logado):
 
 
 def gestao_itens(user_logado):
+    """
+    -> Reúne todos os processos em relação ao item, desde o cadastro até o match
+    :param user_logado: (dict) Dicionário que guarda os dados do usuário 
+    """
     while True:
         match = None
         interface.limpar_tela()
@@ -123,7 +146,7 @@ def gestao_itens(user_logado):
                     break
             else:
                 if item_cadastrado:
-                    data_base.salvar_item(item_cadastrado)
+                    item_cadastrado = data_base.salvar_item(item_cadastrado)
                     print('\033[0;32mItem cadastrado com sucesso!\033[m')
                     break
         if item_cadastrado and match:
@@ -138,10 +161,13 @@ def gestao_itens(user_logado):
             if status == 'Perdido':
                 print('\nChame no Whatsapp agora para combinar a retirada')
             else:
-                print('\nFique atento ao seu Whatsapp, o dono pode te procurar')
+                print('\nChame no Whatsapp agora para combinar a retirada')
             confirmar = interface.tentar_novamente(mensagem = '\nSeu problema foi resolvido?[S/N]')
             if confirmar == 'S':
-                if atualizar_status_item(item_cadastrado["id"]):
+                id_match = int(m["id"])
+                id_meu = item_cadastrado["id"]
+                if atualizar_status_item(id_match):
+                    atualizar_status_item(id_meu)
                     print('\033[0;32mÓtima notícia! Item marcado como resolvido\033[m')
                 else:
                     print('\033[0;31mErro ao atualizar status\033[m')
@@ -157,6 +183,11 @@ def gestao_itens(user_logado):
 
 
 def atualizar_status_item(id_item):
+    """
+    -> Faz o processo para atualizar o status do item
+    :param id_item: (int) Id específico do item 
+    :return: (bool) Retorna True se atualizou o status ou False se não 
+    """
     nome_arquivo = 'itens.json'
     if not os.path.exists(nome_arquivo):
         return False
@@ -176,6 +207,12 @@ def atualizar_status_item(id_item):
 
 
 def deletar_item(id_item, contato_usuario):
+    """
+    -> Faz o processo para deletar o item
+    :param id_item: (int) Id específico do item 
+    :param contato_usuario: (str) N° do whatsapp do usuário
+    :return: (bool) Retorna True se deletou o item ou False se não 
+    """
     nome_arquivo = 'itens.json'
     if not os.path.exists(nome_arquivo):
         return False

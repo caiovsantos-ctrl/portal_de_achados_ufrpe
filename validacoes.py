@@ -1,8 +1,13 @@
-import json
-import interface
+import json, interface
 
 
 def verificar_resposta_menu(inicio_range, fim_range):
+    """
+    -> Valida a resposta de todos menus do projeto
+    :param inicio_range: (str) Primeira opção do menu
+    :param fim_range: (str) Última opção do menu
+    :return: (str) Retorna a opção do menu
+    """
     while True:
         resposta_menu = input('=> ')
         resposta_menu = resposta_menu.strip()
@@ -26,6 +31,10 @@ def verificar_resposta_menu(inicio_range, fim_range):
     
 
 def validar_nome():
+    """
+    -> Valida o nome digitado pelo usuário
+    :return: (str/None) Retorna o nome digitado pelo usuario ou None caso digite '0'
+    """
     while True:
         interface.limpar_tela()
         print('-' * 50)
@@ -58,6 +67,10 @@ def validar_nome():
 
 
 def validar_email():
+    """
+    -> Valida o email digitado pelo usuário
+    :return: (str/None) Retorna o email digitado pelo usuario ou None caso digite '0'
+    """
     while True:
         interface.limpar_tela()
         print('-' * 50)
@@ -94,6 +107,10 @@ def validar_email():
 
 
 def validar_senha():
+    """
+    -> Valida a senha digitada pelo usuário
+    :return: (str/None) Retorna a senha digitada pelo usuario ou None caso digite '0'
+    """
     while True:
         interface.limpar_tela()
         print('-' * 50)
@@ -126,6 +143,10 @@ def validar_senha():
         
 
 def validar_zap():
+    """
+    -> Valida o n° do whatsapp digitado pelo usuário
+    :return: (str/None) Retorna o n° do whatsapp digitado pelo usuario ou None caso digite '0'
+    """
     while True:
         interface.limpar_tela()
         print('-' * 50)
@@ -162,6 +183,11 @@ def validar_zap():
 
 
 def email_ja_existe(email_digitado):
+    """
+    -> Verifica se o email digitado pelo usuário já está cadastrado
+    :param email_digitado: (str) Email digitado pelo usuário 
+    :return: (bool/None) Retorna True se já está cadastrado, False se não estiver ou None se deu erro 
+    """
     try:
         with open('usuarios.json', 'r', encoding='utf-8') as arquivo:
             usuarios = json.load(arquivo)
@@ -170,10 +196,15 @@ def email_ja_existe(email_digitado):
                 return True
         return False
     except (FileNotFoundError, json.JSONDecodeError):
-        return False
+        return None
     
 
 def confirmar_identidade(user_logado):
+    """
+    -> Verifica a identidade do usuário pela sua senha
+    :param user_logado: (dict) Dicionário que guarda os dados do usuário 
+    :return: (bool) Retorna True se a senha está correta ou False se não quer tentar novamente 
+    """
     interface.limpar_tela()
     print('Para confirmar sua identidade, digite sua senha novamente: ')
     while True:
@@ -192,6 +223,11 @@ def confirmar_identidade(user_logado):
             
 
 def validar_id(mensagem = 'Digite o ID do item que foi resolvido: '):
+    """
+    -> Valida o id do item digitado pelo usuário
+    :param mensagem: (str) Mostra uma mensagem personalizada dependendo da situação
+    :return: (int) Retorna o id digitado pelo usuário
+    """
     while True:
         id_escolhido = input(mensagem).strip()
         if id_escolhido == '':

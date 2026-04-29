@@ -2,6 +2,12 @@ import subprocess, os
 from time import sleep
 
 def exibir_menu_padrao(titulo, lista_opcoes, largura=50):
+    """
+    -> Faz a formatação dos menus
+    :param titulo: (str) Título do menu 
+    :param lista_opcoes: (str) Opções do menu 
+    :param largura: (str) Espaço horizontal que o menu ocupa 
+    """
     print("=" * largura)
     print("=====" + titulo.center(largura - 10) + "=====")
     print("=" * largura)
@@ -20,14 +26,27 @@ def limpar_tela():
 
 
 def verificar_escape(modelo):
+    """
+    -> Volta ao menu anterior se o usuário digitou '0'
+    :param modelo: (str) Resposta do usuário 
+    :return: (bool) Retorna True se digitou '0' ou False se não
+    """
     if modelo == '0':
         print('Retornando...\n\n')
         return True
     return False
 
+      
+
+
 
 def tentar_novamente(mensagem = 'Deseja tentar novamente?[S/N] '):
-     while True:
+    """
+    -> Pergunta se o usuário realmente deseja realizar a ação e valida a resposta
+    :param mensagem: (str) Mensagem personalizada de acordo com a situação 
+    :return: (str) Retorna a resposta validada do usuário
+    """
+    while True:
         tentativa = input(mensagem)
         tentativa = tentativa.strip().upper()
         if tentativa == '':

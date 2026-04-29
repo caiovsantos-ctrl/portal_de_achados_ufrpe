@@ -3,12 +3,15 @@ from time import sleep
 
 
 def cadastrar_user():
+    """
+    -> Realiza todo o processo para cadastrar o usuário
+    """
     print('\033[0;32mCadastro selecionado\033[m\n')
     interface.limpar_tela()
     print('=' * 50)
     print('=====' + ' NOVO CADASTRO - UFRPE '.center(40) + '=====')
     print('=' * 50)
-    print('\n  Crie sua conta para acessar o portal')
+    print('\n     Crie sua conta para acessar o portal')
     print('  (Digite 0 a qualquer momento para cancelar)\n')
     print('=' * 50)
     sleep(2)
@@ -51,13 +54,17 @@ def cadastrar_user():
 
 
 def login_user():
+    """
+    -> Realiza todo o processo de login do usuário
+    :return: (dict) Retorna os dados do usuário em específico
+    """
     print('\033[0;32mLogin selecionado\033[m')
     while True:
         interface.limpar_tela()
         print('-' * 50)
         print('=====' + ' ACESSO AO PORTAL UFRPE '.center(40) + '=====')
         print('=' * 50)
-        print('\n  Por favor, preencha suas credenciais:')
+        print('\n     Por favor, preencha suas credenciais:')
         print('  (Digite 0 a qualquer momento para cancelar)\n')
         print('-' * 50)
         sleep(2)
@@ -94,6 +101,10 @@ def login_user():
             
 
 def menu_atualizar_dados(user_logado):
+    """
+    -> Mostra o menu de atualizar dados e direciona o usuário de acordo com a opção
+    :param user_logado: (dict) Dicionário que guarda os dados do usuário
+    """
     print('\033[0;32mAtualizar dados pessoais selecionado\033[m')
     while True:
         interface.limpar_tela()
@@ -120,6 +131,13 @@ def menu_atualizar_dados(user_logado):
             
 
 def atualizar_dados_pessoais(user_logado, campo_para_mudar, novo_valor):
+    """
+    -> Verifica se o dado atualizado é igual ao antigo, caso não efetua a mudança
+    :param user_logado: (dict) Dicionário que guarda os dados do usuário
+    :param campo_para_mudar: (str) O dado que o usuário deseja atualizar
+    :param novo_valor: (str) O dado atualizado pelo usuário
+    :return: (bool) Retorna True se ocorreu a atualização e False se deu errado 
+    """
     if novo_valor == user_logado[campo_para_mudar]:
         print(f'{campo_para_mudar} informado(a) é igual ao(à) atual')
         return False
@@ -143,6 +161,12 @@ def atualizar_dados_pessoais(user_logado, campo_para_mudar, novo_valor):
             
 
 def processar_atualizacao(user_logado, campo, funcao_validacao):
+    """
+    -> Muda o dado no JSON
+    :param user_logado: (dict) Dicionário que guarda os dados do usuário
+    :param campo: (str) Mensagem que mostra o campo que o usuário escolheu
+    :param funcao_validar: (function) Função que será substituída pelo campo desejado
+    """
     print(f'\033[0;32mAtualizar {campo} selecionado\033[m')
     identidade = validacoes.confirmar_identidade(user_logado)
     if identidade == True:
@@ -153,7 +177,7 @@ def processar_atualizacao(user_logado, campo, funcao_validacao):
                 user_logado[campo] = novo_valor
                 break
             else:
-                if interface.tentar_novamente(mensagem = 'Deseja tentar atualizar o {campo} novamente?[S/N] ') == 'N':
+                if interface.tentar_novamente(mensagem = f'Deseja tentar atualizar o {campo} novamente?[S/N] ') == 'N':
                     break
     else:
         print('Identidade não confirmada')
@@ -161,6 +185,11 @@ def processar_atualizacao(user_logado, campo, funcao_validacao):
 
 
 def deletar_conta(user_logado):
+    """
+    -> Realiza todo o processo de deletar conta
+    :param user_logado: (dict) Dicionário que guarda os dados do usuário
+    :return: (bool) Retorna True se ocorreu a conta foi deletada e False se deu errado 
+    """
     print('\033[0;32mDeletar conta selecionado\033[m')
     interface.limpar_tela()
     print('ATENÇÃO: Essa ação é irreversível!')

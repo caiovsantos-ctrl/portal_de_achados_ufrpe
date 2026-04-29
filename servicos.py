@@ -3,6 +3,12 @@ from datetime import datetime
 
 
 def motor_de_buscas(item_cadastrado):
+    """
+    -> Procura um item recomendado para dar match
+    :param item_cadastrado: (dict) Dicionário que guarda as informações do item
+    :return: (list/bool) Retorna matches (lista com os itens que deu match) e 
+    postagem_duplicada (True se o usuário cadastrou o mesmo item e False se não)
+    """
     nome_arquivo = 'itens.json'
     matches = []
     postagem_duplicada = False
@@ -24,13 +30,17 @@ def motor_de_buscas(item_cadastrado):
                 for palavra in palavras_chaves:
                     if palavra in descricao_salva:
                         palavras_encontradas += 1
-                if len(palavra) > 2 and palavra in descricao_salva:
+                if len(palavra) > 3 and palavra in descricao_salva:
                     if palavras_encontradas >= 3:
                         matches.append(item_banco)
     return matches, postagem_duplicada     
 
 
 def mural_historico(user_logado):
+    """
+    -> Mostra o menu e direciona o usuário de acordo com sua opção
+    :param user_logado: (dict) Dicionário que guarda os dados do usuário 
+    """
     while True:
         interface.limpar_tela()
         interface.exibir_menu_padrao('MURAL E RELATÓRIOS', [
@@ -55,6 +65,9 @@ def mural_historico(user_logado):
 
 
 def mural_de_itens():
+    """
+    -> Mostra o mural de itens
+    """
     doacao_reciclagem()
     while True:
         interface.limpar_tela()
@@ -95,6 +108,10 @@ def mural_de_itens():
 
 
 def historico(user_logado):
+    """
+    -> Mostra o histórico do usuário e as opções de deletar ou atualizar status do item
+    :param user_logado: (dict) Dicionário que guarda os dados do usuário 
+    """
     while True:
         doacao_reciclagem
         interface.limpar_tela()
@@ -102,6 +119,8 @@ def historico(user_logado):
         meus_itens = data_base.buscar_itens_por_usuario(user_logado["Whatsapp"])
         if not meus_itens:
             print('Você não possui nenhum item cadastrado')
+            interface.limpar_tela()
+            return
         print(f"{'ID':<4} | {'DATA':<10} | {'TIPO':<7} | {'STATUS':<10} | {'CATEGORIA':<25} | {'LOCAL'}")
         print('-' * 95)
         for item in meus_itens:
@@ -166,6 +185,10 @@ def historico(user_logado):
 
 
 def doacao_reciclagem():
+    """
+    -> Transforma o status do item para 'Disponível para doação/reciclagem'
+    se passou de 30 dias que foi cadastrado e não foi encontrado o dono
+    """
     arquivo = 'itens.json'
     if not os.path.exists(arquivo):
         return
@@ -190,6 +213,9 @@ def doacao_reciclagem():
 
 
 def mapa_de_calor():
+    """
+    -> Mostra o mapa de calor dos itens
+    """
     interface.limpar_tela()
     print('Mapa de Calor: \n\n'.center(60))
     todos_itens = data_base.buscar_todos_itens()
