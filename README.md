@@ -1,9 +1,9 @@
-PORTAL DE ACHADOS UFRPE
+# PORTAL DE ACHADOS UFRPE
 
 
    É um projeto colaborativo para tratamento e centralização de achados e perdidos na UFRPE, desenvolvido no terminal do Python.
    Para a primeira Release foi desenvolvido os seguintes pontos:
-Funcionalidades:
+## Funcionalidades:
 •	CRUD Usuário
 Essa funcionalidade é responsável pela parte de cadastro, atualizar dados pessoais e deletar conta.
 
@@ -28,26 +28,38 @@ Mostra todos os itens cadastrados pelo usuário e possibilita alterar o status d
 •	Privacidade de dados
 A descrição de um item com o status achado é ocultada no mural de itens, o que possibilita maior segurança no ciclo do item e evita falsos donos. 
 
-Bibliotecas:
+## Bibliotecas:
 •	Os
+
 •	Subprocess
+
 •	Json
+
 •	Textwrap
 Organizar o mural de itens, evitando que a descrição não quebre a formatação.
+
 •	Time
 
 
-Principais dificuldades:
+## Principais dificuldades:
 •	Fazer o código do motor de buscas
+
 •	Atualizar status do item
+
 •	Escopo de variáveis
+
 •	Retorno e parâmetro de funções
+
+## Links
 
 Link da Planilha:
 https://docs.google.com/spreadsheets/d/1myEqbO7eCX_OGsQmDMzTTACJum08KHDDSSPvzOUeiec/edit?usp=drivesdk
+
 Link do Fluxograma:
 https://drive.google.com/file/d/1xlWcvnnhI0ZfQU3xtPDnWYeeXmHsPmtY/view?usp=drivesdk
+
 Link do Vídeo de Caio Vinícius:
 https://youtu.be/4-7x5nZafME
+
 Link do Vídeo de Carlos Henrique:
 https://youtu.be/V0VnSVOsZy0
