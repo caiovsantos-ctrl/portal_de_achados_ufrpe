@@ -1,5 +1,26 @@
-import os, json, interface, itens, textwrap, validacoes, data_base
+import os, json, interface, itens, textwrap, validacoes, data_base, unicodedata
 from datetime import datetime
+from difflib import SequenceMatcher
+
+
+def calcular_similaridade(texto1, texto2):
+    """
+    -> Calcula a similaridade entre dois textos usando o algoritmo de Levenshtein
+    :param texto1: (str) Primeiro texto para comparação
+    :param texto2: (str) Segundo texto para comparação
+    :return: (float) Similaridade entre os textos, variando de 0 a 1
+    """
+    return SequenceMatcher(None, texto1, texto2).ratio()
+
+
+def remover_acentos(texto):
+    """
+    -> Remove acentos de um texto para facilitar a comparação
+    :param texto: (str) Texto do qual os acentos serão removidos
+    :return: (str) Texto sem acentos
+    """
+    processado = unicodedata.normalize('NFD', texto)
+    return ''.join([c for c in processado if unicodedata.category(c) != 'Mn'])
 
 
 def motor_de_buscas(item_cadastrado):
@@ -16,23 +37,29 @@ def motor_de_buscas(item_cadastrado):
         return matches, postagem_duplicada
     with open(nome_arquivo, 'r', encoding='utf-8') as file:
         todos_itens = json.load(file)
-    palavras_chaves = [p for p in item_cadastrado["descricao"].lower().split() if len(p) > 2]
+    desc_limpa = remover_acentos(item_cadastrado["descricao"].lower())
+    palavras_chaves = [p for p in desc_limpa.split() if len(p) > 2]
     for item_banco in todos_itens:
         if item_banco["contato"] == item_cadastrado["contato"]:
             if item_banco["categoria"] == item_cadastrado["categoria"] and \
                item_banco["local"] == item_cadastrado["local"]:
                 postagem_duplicada = True
             continue
-        if item_banco["tipo_registro"] != item_cadastrado["tipo_registro"] and not item_cadastrado["resolvido"]:
+        if item_banco["tipo_registro"] != item_cadastrado["tipo_registro"] and not item_banco["resolvido"]:
             if item_banco["local"] == item_cadastrado["local"] and item_banco["categoria"] == item_cadastrado["categoria"]:
-                descricao_salva = item_banco["descricao"].lower()
+                desc_banco_limpa = remover_acentos(item_banco["descricao"].lower())
+                descricao_salva = desc_banco_limpa.split()
                 palavras_encontradas = 0
                 for palavra in palavras_chaves:
-                    if palavra in descricao_salva:
+                    match_na_palavra = False
+                    for palavra_salva in descricao_salva:
+                        if palavra == palavra_salva or calcular_similaridade(palavra, palavra_salva) >= 0.8:
+                            match_na_palavra = True
+                            break
+                    if match_na_palavra:
                         palavras_encontradas += 1
-                if len(palavra) > 3 and palavra in descricao_salva:
-                    if palavras_encontradas >= 3:
-                        matches.append(item_banco)
+                if palavras_encontradas >= 3:
+                    matches.append(item_banco)
     return matches, postagem_duplicada     
 
 
