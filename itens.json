@@ -81,7 +81,9 @@
         "descricao": "Garrafa tuperware branca de 500ml",
         "resolvido": false,
         "contato": "81991459543",
-        "autor": "Henrique"
+        "autor": "Henrique",
+        "liberado": true,
+        "status_final": "Disponível para doação/reciclagem"
     },
     {
         "id": 10,
@@ -103,7 +105,9 @@
         "descricao": "Chave enferrujada com formato quadrado",
         "resolvido": false,
         "contato": "81922334455",
-        "autor": "Caio"
+        "autor": "Caio",
+        "liberado": true,
+        "status_final": "Disponível para doação/reciclagem"
     },
     {
         "id": 13,
@@ -157,6 +161,28 @@
         "local": "Depto. Ed. Física",
         "descricao": "Garáfa de cor  amaréla da maca naike",
         "resolvido": true,
+        "contato": "81991459543",
+        "autor": "Henrique"
+    },
+    {
+        "id": 18,
+        "data_cadastro": "23/05/2026",
+        "tipo_registro": "Achado",
+        "categoria": "Vestuários",
+        "local": "Depto. Biologia/ Química",
+        "descricao": "Bone preto e vermelho adidas",
+        "resolvido": false,
+        "contato": "81991459543",
+        "autor": "Henrique"
+    },
+    {
+        "id": 19,
+        "data_cadastro": "23/05/2026",
+        "tipo_registro": "Achado",
+        "categoria": "Materiais acadêmicos",
+        "local": "Vizinhança",
+        "descricao": "Caderno e lapis da faber castel",
+        "resolvido": false,
         "contato": "81991459543",
         "autor": "Henrique"
     }
