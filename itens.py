@@ -1,4 +1,4 @@
-import json, os, servicos
+import json, os, servicos, textwrap
 from interface import Acessorio
 from validacoes import Validador
 from data_base import DataBase
@@ -70,11 +70,13 @@ class Item:
     
 
 class ColetarDadosItens:
+    """ Gerencia a coleta de todos os dados necessários para o cadastro do item """
     @staticmethod
     def menu_categoria_itens():
         """
         -> Mostra o menu da categoria do item
-        :return: (int/None) Retorna a opção digitada pelo usuário ou None se digitou '0'
+        :return: (str/None) Retorna a opção que representa a categoria escolhida
+                 pelo usuário ou None se digitou '0'
         """
         categorias = [
             "Eletrônicos", "Chave", "Documentos", "Carteira", 
@@ -96,7 +98,8 @@ class ColetarDadosItens:
     def menu_local_itens():
         """
         -> Mostra o menu dos locais do item
-        :return: (int/None) Retorna a opção digitada pelo usuário ou None se digitou '0'
+        :return: (str/None) Retorna a opção que representa o local escolhido
+                 pelo usuário ou None se digitou '0'
         """
         locais = [
             "CEGOE", "Prédio Central", "CEAGRI", "RU", 
@@ -118,7 +121,7 @@ class ColetarDadosItens:
     @staticmethod
     def descricao_item():
         """
-        -> Valida a descrição digitada pelo usuário
+        -> Recebe valida a descrição digitada pelo usuário
         :return: (str/None) Retorna a descrição digitada pelo usuário ou None se digitou '0'
         """
         while True:
@@ -154,6 +157,10 @@ class ColetarDadosItens:
 class CadastrarItem:
     @staticmethod
     def menu_cadastro_itens(user_logado):
+         """
+         -> Mostra o menu para cadastrar o item 
+        :param user_logado: (obj) Objeto que representa o usuário logado 
+         """
          while True:
             match = None
             Acessorio.limpar_tela()
@@ -171,6 +178,12 @@ class CadastrarItem:
 
     @staticmethod
     def _processar_cadastro_item(status, user_logado):
+        """
+        -> Centraliza o processo de cadastrar o item, verifica se o item
+           é duplicado e processa os matches encontrados
+        :param user_logado: (obj) Objeto que representa o usuário logado 
+        :param status: (str) Define o tipo de registro do item(achado ou perdido)
+        """
         while True:
             item_cadastrado = CadastrarItem._coletar_item_completo(status, user_logado)
             if not item_cadastrado:
@@ -205,9 +218,9 @@ class CadastrarItem:
         """
         -> Armazena no JSON os dados dos itens cadastrados
         :param status: (str) Define o tipo de registro do item(achado ou perdido)
-        :param user_logado: (dict) Dicionário que guarda os dados do usuário 
-        :return: (dict/None)  Retorna um dicionário com os dados do item ou 
-        None se o usuário desistiu em alguma parte
+        :param user_logado: (obj) Objeto que representa o usuário logado
+        :return: (obj/None)  Retorna o objeto que representa o item ou
+                 None se o usuário desistiu em alguma parte
         """
         Acessorio.limpar_tela()
         resposta_item = ColetarDadosItens.menu_categoria_itens()
@@ -233,39 +246,63 @@ class CadastrarItem:
     
     @staticmethod
     def _processar_matches_encontrados(match, status, item_cadastrado):
+        """
+        -> Mostra os matches encontrados para o item cadastrado e pergunta se o problema foi
+           resolvido para atualizar o status do item
+        :param match: (list) Lista de dicionários com os dados dos matches encontrados
+        :param status: (str) Define o tipo de registro do item(achado ou perdido)
+        :param item_cadastrado: (obj) Objeto que representa o item cadastrado
+        """
         if status == 'Perdido':
-            print('\n\033[0;32mBoas notícias! Alguém pode ter encontrado seu item:\033[m\n')
+            print('\n\033[0;32mBoas notícias! Alguém pode ter encontrado seu item:\033[m\n\n')
         else:
-            print('\033[0;32mAtenção! Alguém perdeu um item parecido com este:\033[m\n')
+            print('\033[0;32mAtenção! Alguém perdeu um item parecido com este:\033[m\n\n')          
         for m in match:
-            print(f'ID: {m["id"]} | {m["categoria"]} no(a) {m["local"]}')
-            print(f'Descrição: {m["descricao"]}')
-            print(f'Contato: {m["contato"]}  {m["autor"]}')
-        if status == 'Perdido':
-            print('\nChame no Whatsapp agora para combinar a retirada')
-        else:
-            print('\nChame no Whatsapp agora para combinar a retirada')
-        confirmar = Acessorio.tentar_novamente(mensagem = '\nSeu problema foi resolvido?[S/N]')
-        if confirmar == 'S':
-            id_match = int(m["id"])
-            id_meu = item_cadastrado.id_item
-            if AtualizarStatusItem.processar_atualizacao_item(id_match):
-                AtualizarStatusItem.processar_atualizacao_item(id_meu)
-                print('\033[0;32mÓtima notícia! Item marcado como resolvido\033[m')
+            contato_formatado = m.get("contato") or "Não informado"
+            autor_formatado = m.get("autor") or "Anônimo"
+            desc_formatada = m.get("descricao") or "Sem descrição adicional."
+            texto_desc = desc_formatada
+            desc_formatar = textwrap.fill(
+                        texto_desc,
+                        width=43,
+                        subsequent_indent='                 '
+                    )
+            print('=' * 60)
+            print(f' 🔍 \033[1mMATCH ENCONTRADO - ID: {m["id"]:02d}[m')
+            print('─' * 60)
+            print(f'   📍 \033[1mItem:\033[m      {m["categoria"]} no(a) {m["local"]}')
+            print(f'   📝 \033[1mDescrição:\033[m {desc_formatar}')
+            print(f'   👤 \033[1mAutor:\033[m     {autor_formatado}')
+            print(f'   📞 \033[1mContato:\033[m   {contato_formatado}')
+            print('─' * 60)
+            print('   💬 \033[3mChame no Whatsapp agora para combinar a retirada!\033[m')
+            print('=' * 60)
+            confirmar = Acessorio.tentar_novamente(mensagem='\nEste item resolveu seu problema? [S/N] ')
+            if confirmar == 'S':
+                id_match = int(m["id"])
+                id_meu = item_cadastrado.id_item
+                if AtualizarStatusItem.processar_atualizacao_item(id_match):
+                    AtualizarStatusItem.processar_atualizacao_item(id_meu)
+                    print('\033[0;32mÓtima notícia! Os itens foram marcados como resolvidos.\033[m')
+                else:
+                    print('\033[0;31mErro ao atualizar status dos itens.\033[m')
+                sair = input('\nDigite 0 para voltar: ')
+                Acessorio.verificar_escape(sair)
+                return
             else:
-                print('\033[0;31mErro ao atualizar status\033[m')
-        else:
-            print('Entendido! Seu item continuará ativo no mural para novos matches')
+                print('\nEntendido! Vamos verificar o próximo item (se houver)...\n')
+        print('\nSeu item continuará ativo no mural para novos matches.')
         sair = input('\nDigite 0 para voltar: ')
         Acessorio.verificar_escape(sair)
         return
     
 
 class AtualizarStatusItem:
+    """ Gerencia o processo de atualizar o status do item para resolvido """
     @staticmethod      
     def processar_atualizacao_item(id_item):
         """
-        -> Faz o processo para atualizar o status do item
+        -> Realiza a atualização do status do item
         :param id_item: (int) Id específico do item 
         :return: (bool) Retorna True se atualizou o status ou False se não 
         """
@@ -288,10 +325,11 @@ class AtualizarStatusItem:
     
 
 class DeletarItem:
+    """ Gerencia o processo de deletar um item """
     @staticmethod
     def processar_delecao_item(id_item, contato_usuario):
         """
-        -> Faz o processo para deletar o item
+        -> Realiza a deleção do item
         :param id_item: (int) Id específico do item 
         :param contato_usuario: (str) N° do whatsapp do usuário
         :return: (bool) Retorna True se deletou o item ou False se não 

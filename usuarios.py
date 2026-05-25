@@ -50,9 +50,10 @@ class Usuario:
     
 
 class CadastroUsuario:
+    """ Gerencia todo o processo para cadastrar o usuário """
     @staticmethod
     def executar_cadastro():
-        """ Realiza todo o processo para cadastrar o usuário """
+        """Coleta os dados e salva o novo usuário no arquivo json"""
         print('\033[0;32mCadastro selecionado\033[m\n')
         Acessorio.limpar_tela()
         print('=' * 50)
@@ -101,11 +102,13 @@ class CadastroUsuario:
 
     
 class LoginUsuario:
+    """ Gerencia todo o processo de login do usuário """
     @staticmethod
     def executar_login():
         """
-        -> Realiza todo o processo de login do usuário
-        :return: (dict) Retorna os dados do usuário em específico
+        -> Realiza o login e verifica se o usuário já está cadastrado
+        :return: (obj/None) Retorna os dados do usuário em específico 
+                 ou None se o login falhou ou o usuário cancelou a operação
         """
         print('\033[0;32mLogin selecionado\033[m')
         while True:
@@ -144,6 +147,11 @@ class LoginUsuario:
                 
     @staticmethod
     def _carregar_usuarios():
+        """ 
+        Carrega os usuários do arquivo JSON
+        :return: (list) Retorna uma lista com os dados dos usuários ou 
+                 uma lista vazia se o arquivo não existir ou acontecer um erro
+        """
         try:
             with open('usuarios.json', 'r', encoding='utf-8') as arquivo:
                 usuarios_cadastrados = json.load(arquivo)
@@ -157,11 +165,12 @@ class LoginUsuario:
             
 
 class AtualizarDadosUsuario:
+    """ Gerencia todo o processo de atualização de dados do usuário """
     @staticmethod
     def menu_atualizar_dados(user_logado):
         """
         -> Mostra o menu de atualizar dados e direciona o usuário de acordo com a opção
-        :param user_logado: (dict) Dicionário que guarda os dados do usuário
+        :param user_logado: (obj) Objeto que representa o usuário logado
         """
         print('\033[0;32mAtualizar dados pessoais selecionado\033[m')
         while True:
@@ -190,15 +199,14 @@ class AtualizarDadosUsuario:
     @staticmethod
     def _processar_mudanca(user_logado, campo, funcao_validacao):
         """
-        -> Verifica se o dado atualizado é igual ao antigo, caso não efetua a mudança
-        :param user_logado: (dict) Dicionário que guarda os dados do usuário
-        :param campo_para_mudar: (str) O dado que o usuário deseja atualizar
-        :param novo_valor: (str) O dado atualizado pelo usuário
-        :return: (bool) Retorna True se ocorreu a atualização e False se deu errado 
+        Valida a identidade e altera o campo escolhido no objeto e no JSON
+        :param user_logado: (obj) Objeto que representa o usuário logado
+        :param campo: (str) O dado que o usuário deseja atualizar
+        :param funcao_validacao: (function) Função que será substituída pelo campo desejado
         """
         print(f'\033[0;32mAtualizar {campo} selecionado\033[m')
         while True:
-            if Validador.confirmar_identidade(user_logado.transformar_dicionario()):
+            if Validador.confirmar_identidade(user_logado):
                     novo_valor = funcao_validacao()
                     if novo_valor == getattr(user_logado, campo):
                         print(f'{campo} informado(a) é igual ao(à) atual')
@@ -228,10 +236,11 @@ class AtualizarDadosUsuario:
     @staticmethod
     def _salvar_no_json(email_atual, campo, novo_valor):
         """
-        -> Muda o dado no JSON
-        :param user_logado: (dict) Dicionário que guarda os dados do usuário
-        :param campo: (str) Mensagem que mostra o campo que o usuário escolheu
-        :param funcao_validar: (function) Função que será substituída pelo campo desejado
+        -> Localiza o usuário pelo e-mail e atualiza o campo no arquivo JSON
+        :param user_logado: (obj) Objeto que representa o usuário logado
+        :param campo: (str) O dado que o usuário deseja atualizar
+        :param novo_valor: (str) O dado atualizado pelo usuário
+        :return: (bool) Retorna True se o dado foi atualizado ou False se deu algum erro
         """
         try:
             with open('usuarios.json', 'r', encoding='utf-8') as arquivo:
@@ -254,12 +263,13 @@ class AtualizarDadosUsuario:
 
     
 class DeletarContaUsuario:
+    """ Gerencia todo o processo de deletar conta do usuário """
     @staticmethod
     def executar_delecao(user_logado):
         """
-        -> Realiza todo o processo de deletar conta
-        :param user_logado: (dict) Dicionário que guarda os dados do usuário
-        :return: (bool) Retorna True se ocorreu a conta foi deletada e False se deu errado 
+        -> Realiza a deleção da conta
+        :param user_logado: (obj) Objeto que representa o usuário logado
+        :return: (bool) Retorna True se ocorreu a conta foi deletada ou False se deu errado 
         """
         print('\033[0;32mDeletar conta selecionado\033[m')
         Acessorio.limpar_tela()

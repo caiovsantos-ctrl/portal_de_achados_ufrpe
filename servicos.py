@@ -7,10 +7,12 @@ from interface import Acessorio
 
 
 class MotorDeBusca:
+    """ Gerencia a lógica de busca e comparação de itens para
+        encontrar possíveis matches entre achados e perdidos """
     @staticmethod
     def calcular_similaridade(texto1, texto2):
         """
-        -> Calcula a similaridade entre dois textos usando o algoritmo de Levenshtein
+        -> Calcula a similaridade entre dois textos
         :param texto1: (str) Primeiro texto para comparação
         :param texto2: (str) Segundo texto para comparação
         :return: (float) Similaridade entre os textos, variando de 0 a 1
@@ -74,11 +76,10 @@ class MotorDeBusca:
     
     
 class MuralDeItens:
+    """ Gerencia a exibição do mural de itens  """
     @staticmethod
     def exibir_mural():
-        """
-        -> Mostra o mural de itens
-        """
+        """ Mostra o mural de itens """
         DoacaoReciclagem.processar_temporalidade()
         while True:
             Acessorio.limpar_tela()
@@ -119,11 +120,12 @@ class MuralDeItens:
 
     
 class Historico:
+    """ Gerencia a exibição do histórico do usuário e as ações de atualizar ou deletar um item """
     @staticmethod
     def menu_historico(user_logado):
         """
         -> Mostra o histórico do usuário e as opções de deletar ou atualizar status do item
-        :param user_logado: (dict) Dicionário que guarda os dados do usuário 
+        :param user_logado: (obj) Objeto que representa os dados do usuário 
         """
         while True:
             DoacaoReciclagem.processar_temporalidade()
@@ -143,7 +145,11 @@ class Historico:
                 Historico.deletar_item(meus_itens, user_logado.Whatsapp)
     
     @staticmethod
-    def exibir_historico(user_logado):     
+    def exibir_historico(user_logado):    
+        """
+        -> Mostra o histórico do usuário
+        :param user_logado: (obj) Objeto que representa os dados do usuário 
+        """ 
         print('Seu Histórico:\n\n'.center(95))
         contato_user = user_logado.Whatsapp
         meus_itens = DataBase.buscar_itens_por_usuario(contato_user)
@@ -165,6 +171,10 @@ class Historico:
     
     @staticmethod
     def exibir_menu_acoes_historico(meus_itens): 
+        """ 
+        Exibe o menu de ações para o histórico do usuário
+        :param meus_itens: (list) Lista de itens cadastrados pelo usuário
+        """
         print("\nO que deseja fazer?")
         print("1. Marcar item como resolvido")
         print("2. Deletar um item")
@@ -173,6 +183,10 @@ class Historico:
 
     @staticmethod
     def atualizar_status_item(meus_itens):
+        """ 
+        Realiza a atualização do status de um item para resolvido
+        :param meus_itens: (list) Lista de itens cadastrados pelo usuário
+        """
         import itens
         while True:
             escolher_id = Validador.validar_id(mensagem = 'Digite o ID do item que foi resolvido: ')
@@ -194,6 +208,11 @@ class Historico:
                     
     @staticmethod
     def deletar_item(meus_itens, contato_user):
+        """ 
+        Realiza a deleção de um item
+        :param meus_itens: (list) Lista de itens cadastrados pelo usuário
+        :param contato_usuario: (str) N° do whatsapp do usuário
+        """
         import itens
         while True:
             id_deletar = Validador.validar_id(mensagem = 'Digite o ID do item que você deseja deletar: ')            
@@ -221,10 +240,11 @@ class Historico:
                     
     
 class DoacaoReciclagem:
+    """ Gerencia o processo de liberar um item para doação ou reciclagem após 30 dias do cadastro """
     @staticmethod
     def processar_temporalidade():
         """
-        -> Transforma o status do item para 'Disponível para doação/reciclagem'
+        Transforma o status do item para 'Disponível para doação/reciclagem'
         se passou de 30 dias que foi cadastrado e não foi encontrado o dono
         """
         arquivo = 'itens.json'
@@ -251,11 +271,10 @@ class DoacaoReciclagem:
 
     
 class MapaDeCalor:
+    """ Gerencia a exibição do mapa de calor dos locais onde mais ocorrem registros """
     @staticmethod
     def exibir_mapa_de_calor():
-        """
-        -> Mostra o mapa de calor dos itens
-        """
+        """ Mostra o mapa de calor dos itens """
         Acessorio.limpar_tela()
         print('Mapa de Calor: \n\n'.center(60))
         todos_itens = DataBase.buscar_todos_itens()
@@ -278,11 +297,12 @@ class MapaDeCalor:
             return
         
 class MenuServicos:
+    """ Gerencia a exibição do menu de serviços (mural, histórico e mapa de calor) """
     @staticmethod
     def exibir_menu_servicos(user_logado):
         """
         -> Mostra o menu e direciona o usuário de acordo com sua opção
-        :param user_logado: (dict) Dicionário que guarda os dados do usuário 
+        :param user_logado: (obj) Objeto que representa os dados do usuário 
         """
         while True:
             Acessorio.limpar_tela()

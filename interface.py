@@ -3,10 +3,11 @@ from time import sleep
 
 
 class Acessorio:
+    """ Gerencia as funções auxiliares do sistema """
     @staticmethod
     def exibir_menu_padrao(titulo, lista_opcoes, largura=50):
         """
-        -> Faz a formatação dos menus
+        -> Realiza a formatação dos menus
         :param titulo: (str) Título do menu 
         :param lista_opcoes: (str) Opções do menu 
         :param largura: (str) Espaço horizontal que o menu ocupa 

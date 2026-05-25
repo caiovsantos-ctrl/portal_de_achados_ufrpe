@@ -3,6 +3,7 @@ from interface import Acessorio
 
 
 class Validador:
+    """ Gerencia as validações de dados digitados pelo usuário """
     @staticmethod
     def verificar_resposta_menu(inicio_range, fim_range):
         """

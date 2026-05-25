@@ -185,5 +185,27 @@
         "resolvido": false,
         "contato": "81991459543",
         "autor": "Henrique"
+    },
+    {
+        "id": 21,
+        "data_cadastro": "25/05/2026",
+        "tipo_registro": "Perdido",
+        "categoria": "Carteira",
+        "local": "Prédio Central",
+        "descricao": "Carteira marrom com documentos e 20 reais",
+        "resolvido": false,
+        "contato": null,
+        "autor": "Nome"
+    },
+    {
+        "id": 22,
+        "data_cadastro": "25/05/2026",
+        "tipo_registro": "Perdido",
+        "categoria": "Carteira",
+        "local": "Prédio Central",
+        "descricao": "Carteira preta sem nenhum documento e tinha 0 reais",
+        "resolvido": false,
+        "contato": "81991459543",
+        "autor": "Henrique"
     }
 ]

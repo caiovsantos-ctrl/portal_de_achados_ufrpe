@@ -3,11 +3,12 @@ from datetime import datetime
 
 
 class DataBase:
+    """ Gerencia a persistência de dados, realizando a leitura e escrita nos arquivos JSON """
     @staticmethod
     def salvar_user(novo_user): 
         """
         -> Salva no JSON as informações cadastradas pelo usuário
-        :param novo_user: (dict) Dicionário que guarda as informações realizadas pelo usuário no cadastro 
+        :param novo_user: (obj) Objeto que representa as informações realizadas pelo usuário no cadastro 
         """
         user_dict = novo_user.transformar_dicionario() if hasattr(novo_user, 'transformar_dicionario') else novo_user
         with open('usuarios.json', 'r', encoding='utf-8') as arquivo:
@@ -21,8 +22,8 @@ class DataBase:
     def salvar_item(item_cadastrado):
         """
         -> Salva no JSON as informações dos itens e adiciona seu id e data
-        :param item_cadastrado: (dict) Dicionário que guarda as informações dos itens
-        :return: (dict) Retorna o id e a data de cadastro do item
+        :param item_cadastrado: (obj) Objeto que representa as informações dos itens
+        :return: (obj) Retorna o id e a data de cadastro do item
         """
         arquivo = 'itens.json'
         if os.path.exists(arquivo):
@@ -49,7 +50,7 @@ class DataBase:
         -> Busca todos os itens que estão no JSON de um usuário em específico
         :param contato_usuario: (str) N° do whatsapp do usuário
         :return: (list) Retorna uma lista com as informações de todos os itens do
-        usuário ou uma lista vazia se der erro ou se não tiver nenhum 
+                 usuário ou uma lista vazia se der erro ou se não tiver nenhum 
         """
         nome_arquivo = 'itens.json'
         if not os.path.exists(nome_arquivo):
