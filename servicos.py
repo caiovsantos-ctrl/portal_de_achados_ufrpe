@@ -6,7 +6,7 @@ from data_base import DataBase
 from interface import Acessorio
 
 
-class GerenciadorServicos:
+class MotorDeBusca:
     @staticmethod
     def calcular_similaridade(texto1, texto2):
         """
@@ -28,7 +28,7 @@ class GerenciadorServicos:
         return ''.join([c for c in processado if unicodedata.category(c) != 'Mn'])
     
     @staticmethod
-    def motor_de_buscas(item_cadastrado):
+    def buscar_matches(item_cadastrado):
         """
         -> Procura um item recomendado para dar match
         :param item_cadastrado: (dict) Dicionário que guarda as informações do item
@@ -47,7 +47,7 @@ class GerenciadorServicos:
         categoria = item_cadastrado.categoria
         local = item_cadastrado.local
         tipo_registro = item_cadastrado.tipo_registro
-        desc_limpa = GerenciadorServicos.remover_acentos(descricao.lower())
+        desc_limpa = MotorDeBusca.remover_acentos(descricao.lower())
         palavras_chaves = [p for p in desc_limpa.split() if len(p) > 2]
         for item_banco in todos_itens:
             if item_banco["contato"] == contato:
@@ -57,13 +57,13 @@ class GerenciadorServicos:
                 continue
             if item_banco["tipo_registro"] != tipo_registro and not item_banco["resolvido"]:
                 if item_banco["local"] == local and item_banco["categoria"] == categoria:
-                    desc_banco_limpa = GerenciadorServicos.remover_acentos(item_banco["descricao"].lower())
+                    desc_banco_limpa = MotorDeBusca.remover_acentos(item_banco["descricao"].lower())
                     descricao_salva = desc_banco_limpa.split()
                     palavras_encontradas = 0
                     for palavra in palavras_chaves:
                         match_na_palavra = False
                         for palavra_salva in descricao_salva:
-                            if palavra == palavra_salva or GerenciadorServicos.calcular_similaridade(palavra, palavra_salva) >= 0.8:
+                            if palavra == palavra_salva or MotorDeBusca.calcular_similaridade(palavra, palavra_salva) >= 0.8:
                                 match_na_palavra = True
                                 break
                         if match_na_palavra:
@@ -72,40 +72,14 @@ class GerenciadorServicos:
                         matches.append(item_banco)
         return matches, postagem_duplicada  
     
+    
+class MuralDeItens:
     @staticmethod
-    def mural_historico(user_logado):
-        """
-        -> Mostra o menu e direciona o usuário de acordo com sua opção
-        :param user_logado: (dict) Dicionário que guarda os dados do usuário 
-        """
-        while True:
-            Acessorio.limpar_tela()
-            Acessorio.exibir_menu_padrao('MURAL E RELATÓRIOS', [
-                    '[1] → Mural Geral (Itens Ativos)',
-                    '[2] → Histórico (Meus Itens)',
-                    '[3] → Mapa de Calor (Estatística)',
-                    '[0] → Voltar'
-                    ])
-            resposta_menu = Validador.verificar_resposta_menu(0, 3)
-            if resposta_menu == '0':
-                Acessorio.verificar_escape(resposta_menu)
-                return
-            elif resposta_menu == '1':
-                print('\033[0;32mMural Geral selecionado\033[m')
-                GerenciadorServicos.mural_de_itens()
-            elif resposta_menu == '2':
-                print('\033[0;32mHistórico selecionado\033[m')
-                GerenciadorServicos.historico(user_logado)
-            elif resposta_menu == '3':
-                print('\033[0;32mMapa de Calor selecionado\033[m')
-                GerenciadorServicos.mapa_de_calor()
-
-    @staticmethod
-    def mural_de_itens():
+    def exibir_mural():
         """
         -> Mostra o mural de itens
         """
-        GerenciadorServicos.doacao_reciclagem()
+        DoacaoReciclagem.processar_temporalidade()
         while True:
             Acessorio.limpar_tela()
             print('Mural de Itens:\n\n'.center(70))
@@ -143,88 +117,112 @@ class GerenciadorServicos:
             if Acessorio.verificar_escape(sair):
                 break
 
+    
+class Historico:
     @staticmethod
-    def historico(user_logado):
+    def menu_historico(user_logado):
         """
         -> Mostra o histórico do usuário e as opções de deletar ou atualizar status do item
         :param user_logado: (dict) Dicionário que guarda os dados do usuário 
         """
-        import itens
         while True:
-            GerenciadorServicos.doacao_reciclagem()
+            DoacaoReciclagem.processar_temporalidade()
             Acessorio.limpar_tela()
-            print('Seu Histórico:\n\n'.center(95))
-            contato_user = user_logado.Whatsapp
-            meus_itens = DataBase.buscar_itens_por_usuario(contato_user)
+            meus_itens = Historico.exibir_historico(user_logado)
             if not meus_itens:
                 print('Você não possui nenhum item cadastrado')
                 Acessorio.limpar_tela()
                 return
-            print(f"{'ID':<4} | {'DATA':<10} | {'TIPO':<7} | {'STATUS':<10} | {'CATEGORIA':<25} | {'LOCAL'}")
-            print('-' * 95)
-            for item in meus_itens:
-                data = item.get("data_cadastro", "00/00/00")
-                tipo = "Achei" if item["tipo_registro"] == "Achado" else "Perdi"
-                if item["resolvido"]:
-                    status_texto = 'RESOLVIDO'
-                elif  item.get("liberado"):
-                    status_texto = 'P/ DOAÇÃO'  
-                else:
-                    status_texto = 'ATIVO'
-                print(f'{item["id"]:<4} | {data:<10} | {tipo:<7} | {status_texto:<10} | {item["categoria"]:<25} | {item["local"]}')
-            print('-' * 95)
-            print("\nO que deseja fazer?")
-            print("1. Marcar item como resolvido")
-            print("2. Deletar um item")
-            print("0. Voltar")
-            resposta_menu = Validador.verificar_resposta_menu(0, 2)
+            resposta_menu = Historico.exibir_menu_acoes_historico(meus_itens)
             if resposta_menu == '0':
-                Acessorio.verificar_escape(resposta_menu)
+                Acessorio.limpar_tela()
                 return
-            gerenciador_itens = itens.GerenciadorItens()
             if resposta_menu == '1':
-                escolher_id = Validador.validar_id(mensagem = 'Digite o ID do item que foi resolvido: ')
-                if any(i["id"] == escolher_id for i in meus_itens):
-                    if gerenciador_itens.atualizar_status_item(escolher_id):
-                        print('\033[0;32mStatus atualizado com sucesso!\033[m')
-                    else:
-                        print('\033[0;31mErro ao atualizar. Tente novamente mais tarde\033[m')
-                    voltar = input('\nDigite 0 para voltar: ')
-                    Acessorio.verificar_escape(voltar)
-                    return
+                Historico.atualizar_status_item(meus_itens)
+            elif resposta_menu == '2':
+                Historico.deletar_item(meus_itens, user_logado.Whatsapp)
+    
+    @staticmethod
+    def exibir_historico(user_logado):     
+        print('Seu Histórico:\n\n'.center(95))
+        contato_user = user_logado.Whatsapp
+        meus_itens = DataBase.buscar_itens_por_usuario(contato_user)
+        print(f"{'ID':<4} | {'DATA':<10} | {'TIPO':<7} | {'STATUS':<10} | {'CATEGORIA':<25} | {'LOCAL'}")
+        print('-' * 95)
+        for item in meus_itens:
+            data = item.get("data_cadastro", "00/00/00")
+            tipo = "Achei" if item["tipo_registro"] == "Achado" else "Perdi"
+            if item["resolvido"]:
+                status_texto = 'RESOLVIDO'
+            elif  item.get("liberado"):
+                status_texto = 'P/ DOAÇÃO'  
+            else:
+                status_texto = 'ATIVO'
+            print(f'{item["id"]:<4} | {data:<10} | {tipo:<7} | {status_texto:<10} | {item["categoria"]:<25} | {item["local"]}')
+            print('-' * 95)
+        return meus_itens   
+    
+    
+    @staticmethod
+    def exibir_menu_acoes_historico(meus_itens): 
+        print("\nO que deseja fazer?")
+        print("1. Marcar item como resolvido")
+        print("2. Deletar um item")
+        print("0. Voltar")
+        return Validador.verificar_resposta_menu(0, 2)
+
+    @staticmethod
+    def atualizar_status_item(meus_itens):
+        import itens
+        while True:
+            escolher_id = Validador.validar_id(mensagem = 'Digite o ID do item que foi resolvido: ')
+            if any(i["id"] == escolher_id for i in meus_itens):
+                if itens.AtualizarStatusItem.processar_atualizacao_item(escolher_id):
+                    print('\033[0;32mStatus atualizado com sucesso!\033[m')
                 else:
-                    print('\033[0;31mEste ID não existe ou não pertence a você\033[m')
-                    tentar = Acessorio.tentar_novamente(mensagem = 'Deseja tentar novamente com outro ID?[S/N]')
-                    if tentar == 'S':
-                        continue
-                    else:
-                        return
-            if resposta_menu == '2':
-                id_deletar = Validador.validar_id(mensagem = 'Digite o ID do item que você deseja deletar: ')            
-                item_existe = any(i["id"] == id_deletar for i in meus_itens)
-                if item_existe:
-                    print('\nAtenção! Você está prestes a deletar um item')
-                    tentar = Acessorio.tentar_novamente(mensagem = 'Tem certeza que deseja deletar esse item?[S/N] ')
-                    if tentar == 'S':
-                        if gerenciador_itens.deletar_item(id_deletar, contato_user):
-                            print('\033[0;32mItem removido com sucesso\033[m')
-                        else:
-                            print('\033[0;31mErro ao deletar item. Tente novamente mais tarde\033[m')
-                        voltar = input('\nDigite 0 para voltar: ')
-                        Acessorio.verificar_escape(voltar)
-                        return
-                    else:
-                        continue
+                    print('\033[0;31mErro ao atualizar. Tente novamente mais tarde\033[m')
+                voltar = input('\nDigite 0 para voltar: ')
+                Acessorio.verificar_escape(voltar)
+                break
+            else:
+                print('\033[0;31mEste ID não existe ou não pertence a você\033[m')
+                tentar = Acessorio.tentar_novamente(mensagem = 'Deseja tentar novamente com outro ID?[S/N]')
+                if tentar == 'S':
+                    continue
                 else:
-                    print('\033[0;31mEste ID não existe ou não pertence a você\033[m')
-                    tentar = Acessorio.tentar_novamente(mensagem = 'Deseja tentar novamente com outro ID?[S/N]')
-                    if tentar == 'S':
-                        continue
-                    else:
-                        return
+                    break
                     
     @staticmethod
-    def doacao_reciclagem():
+    def deletar_item(meus_itens, contato_user):
+        import itens
+        while True:
+            id_deletar = Validador.validar_id(mensagem = 'Digite o ID do item que você deseja deletar: ')            
+            item_existe = any(i["id"] == id_deletar for i in meus_itens)
+            if item_existe:
+                print('\nAtenção! Você está prestes a deletar um item')
+                tentar = Acessorio.tentar_novamente(mensagem = 'Tem certeza que deseja deletar esse item?[S/N] ')
+                if tentar == 'S':
+                    if itens.DeletarItem.processar_delecao_item(id_deletar, contato_user):
+                        print('\033[0;32mItem removido com sucesso\033[m')
+                    else:
+                        print('\033[0;31mErro ao deletar item. Tente novamente mais tarde\033[m')
+                    voltar = input('\nDigite 0 para voltar: ')
+                    Acessorio.verificar_escape(voltar)
+                    break
+                else:
+                    continue
+            else:
+                print('\033[0;31mEste ID não existe ou não pertence a você\033[m')
+                tentar = Acessorio.tentar_novamente(mensagem = 'Deseja tentar novamente com outro ID?[S/N]')
+                if tentar == 'S':
+                    continue
+                else:
+                    break
+                    
+    
+class DoacaoReciclagem:
+    @staticmethod
+    def processar_temporalidade():
         """
         -> Transforma o status do item para 'Disponível para doação/reciclagem'
         se passou de 30 dias que foi cadastrado e não foi encontrado o dono
@@ -251,8 +249,10 @@ class GerenciadorServicos:
             with open(arquivo, 'w', encoding='utf-8') as file:
                 json.dump(lista_itens, file, indent=4, ensure_ascii=False)
 
+    
+class MapaDeCalor:
     @staticmethod
-    def mapa_de_calor():
+    def exibir_mapa_de_calor():
         """
         -> Mostra o mapa de calor dos itens
         """
@@ -276,3 +276,32 @@ class GerenciadorServicos:
         sair = input('\nDigite 0 para voltar: ')
         if Acessorio.verificar_escape(sair):
             return
+        
+class MenuServicos:
+    @staticmethod
+    def exibir_menu_servicos(user_logado):
+        """
+        -> Mostra o menu e direciona o usuário de acordo com sua opção
+        :param user_logado: (dict) Dicionário que guarda os dados do usuário 
+        """
+        while True:
+            Acessorio.limpar_tela()
+            Acessorio.exibir_menu_padrao('MURAL E RELATÓRIOS', [
+                    '[1] → Mural Geral (Itens Ativos)',
+                    '[2] → Histórico (Meus Itens)',
+                    '[3] → Mapa de Calor (Estatística)',
+                    '[0] → Voltar'
+                    ])
+            resposta_menu = Validador.verificar_resposta_menu(0, 3)
+            if resposta_menu == '0':
+                Acessorio.verificar_escape(resposta_menu)
+                return
+            elif resposta_menu == '1':
+                print('\033[0;32mMural Geral selecionado\033[m')
+                MuralDeItens.exibir_mural()
+            elif resposta_menu == '2':
+                print('\033[0;32mHistórico selecionado\033[m')
+                Historico.menu_historico(user_logado)
+            elif resposta_menu == '3':
+                print('\033[0;32mMapa de Calor selecionado\033[m')
+                MapaDeCalor.exibir_mapa_de_calor()

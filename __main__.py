@@ -1,13 +1,11 @@
+import usuarios, itens, servicos
 from interface import Acessorio
 from validacoes import Validador
-from usuarios import GerenciadorUsuario
-from itens import GerenciadorItens
-from servicos import GerenciadorServicos
 
 
 class SistemaPortal:
     def __init__(self):
-        self.gerenciador_usuario = GerenciadorUsuario()
+        pass
     def executar(self):
         print('\n')
         print('PORTAL DE ACHADOS UFRPPE'.center(50))
@@ -19,14 +17,13 @@ class SistemaPortal:
                     ])
             resposta_menu = Validador.verificar_resposta_menu(1, 2)
             if resposta_menu == '1':
-                self.gerenciador_usuario.cadastrar_user()
+                usuarios.CadastroUsuario.executar_cadastro()
             if resposta_menu == '2':
-                user_logado = self.gerenciador_usuario.login_user()
+                user_logado = usuarios.LoginUsuario.executar_login()
                 if user_logado:
                     self.menu_principal(user_logado)
 
     def menu_principal(self, user_logado):
-        gerenciador_itens = GerenciadorItens()
         while True:
             Acessorio.limpar_tela()
             Acessorio.exibir_menu_padrao('MENU 2', [
@@ -42,10 +39,10 @@ class SistemaPortal:
                 break
             elif resposta_menu == '1':
                 print('\033[0;32mGestão de itens selecionado\033[m')
-                gerenciador_itens.gestao_itens(user_logado)
+                itens.CadastrarItem.menu_cadastro_itens(user_logado)
             elif resposta_menu == '2':
                 print('\033[0;32mMural e relatório selecionado\033[m')
-                GerenciadorServicos.mural_historico(user_logado)
+                servicos.MenuServicos.exibir_menu_servicos(user_logado)
             elif resposta_menu == '3':
                 print('\033[0;32mConfigurações da conta selecionado\033[m')
                 Acessorio.limpar_tela()
@@ -59,9 +56,9 @@ class SistemaPortal:
                     Acessorio.verificar_escape(resposta_menu)
                     Acessorio.limpar_tela()
                 elif resposta_menu == '1':
-                    self.gerenciador_usuario.menu_atualizar_dados(user_logado)
+                    usuarios.AtualizarDadosUsuario.menu_atualizar_dados(user_logado)
                 elif resposta_menu == '2':
-                    if self.gerenciador_usuario.deletar_conta(user_logado):
+                    if usuarios.DeletarContaUsuario.executar_delecao(user_logado):
                         user_logado = None
                         break
             if user_logado is None:

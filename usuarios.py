@@ -49,11 +49,9 @@ class Usuario:
         }
     
 
-class GerenciadorUsuario:
-    def __init__(self):
-        pass
-
-    def cadastrar_user(self):
+class CadastroUsuario:
+    @staticmethod
+    def executar_cadastro():
         """ Realiza todo o processo para cadastrar o usuário """
         print('\033[0;32mCadastro selecionado\033[m\n')
         Acessorio.limpar_tela()
@@ -101,7 +99,10 @@ class GerenciadorUsuario:
             Acessorio.limpar_tela()
             break
 
-    def login_user(self):
+    
+class LoginUsuario:
+    @staticmethod
+    def executar_login():
         """
         -> Realiza todo o processo de login do usuário
         :return: (dict) Retorna os dados do usuário em específico
@@ -123,36 +124,41 @@ class GerenciadorUsuario:
             senha_login = Validador.validar_senha()
             if senha_login is None:
                 return
-            try:
-                with open('usuarios.json', 'r') as arquivo:
-                    usuarios_cadastrados = json.load(arquivo)
-            except (FileNotFoundError, json.JSONDecodeError):
-                print('\033[0;31mBanco de dados de usuários não encontrado ou vazio. Tente novamente mais tarde\033[m')
-                return
-            except Exception as e:
-                print('\033[0;31mOcorreu um erro ao acessar o banco de dados de usuários:\033[m')
-            user_logado = False
+            usuarios_cadastrados = LoginUsuario._carregar_usuarios()
             for user in usuarios_cadastrados:
                 if user["email"] == email_login and user["senha"] == senha_login:
                     print(f'\033[0;32mLogin bem-sucedido!\033[m \nÉ um prazer te ver novamente, {user["nome"]}!')
-                    user_logado = True
                     return Usuario(
                         nome=user["nome"],
                         email=user["email"],
                         senha=user["senha"],
                         Whatsapp=user["Whatsapp"]
                     )
-            if not user_logado:
-                print('\033[0;31mEmail ou senha incorretos\033[m')
-                continuar_login = Acessorio.tentar_novamente(mensagem = 'Deseja tentar fazer login novamente?[S/N] ')
-                if continuar_login == 'S':
-                    continue
-                elif continuar_login == 'N':
-                    print('Retornando...')
-                    Acessorio.limpar_tela()
-                    return None
+            print('\033[0;31mEmail ou senha incorretos\033[m')
+            continuar_login = Acessorio.tentar_novamente(mensagem = 'Deseja tentar fazer login novamente?[S/N] ')
+            if continuar_login == 'S':
+                continue
+            elif continuar_login == 'N':
+                Acessorio.limpar_tela()
+                return None
+                
+    @staticmethod
+    def _carregar_usuarios():
+        try:
+            with open('usuarios.json', 'r', encoding='utf-8') as arquivo:
+                usuarios_cadastrados = json.load(arquivo)
+                return usuarios_cadastrados
+        except (FileNotFoundError, json.JSONDecodeError):
+            print('\033[0;31mBanco de dados de usuários não encontrado ou vazio. Tente novamente mais tarde\033[m')
+            return []
+        except Exception as e:
+            print('\033[0;31mOcorreu um erro ao acessar o banco de dados de usuários:\033[m')
+            return []
             
-    def menu_atualizar_dados(self, user_logado):
+
+class AtualizarDadosUsuario:
+    @staticmethod
+    def menu_atualizar_dados(user_logado):
         """
         -> Mostra o menu de atualizar dados e direciona o usuário de acordo com a opção
         :param user_logado: (dict) Dicionário que guarda os dados do usuário
@@ -173,15 +179,16 @@ class GerenciadorUsuario:
                 Acessorio.limpar_tela()
                 return
             elif resposta_menu == '1':
-                self.processar_atualizacao(user_logado, "nome", Validador.validar_nome)
+                AtualizarDadosUsuario._processar_mudanca(user_logado, "nome", Validador.validar_nome)
             elif resposta_menu == '2':
-                self.processar_atualizacao(user_logado, "email", Validador.validar_email)
+                AtualizarDadosUsuario._processar_mudanca(user_logado, "email", Validador.validar_email)
             elif resposta_menu == '3':
-                self.processar_atualizacao(user_logado, "senha", Validador.validar_senha)
+                AtualizarDadosUsuario._processar_mudanca(user_logado, "senha", Validador.validar_senha)
             elif resposta_menu == '4':
-                self.processar_atualizacao(user_logado, "Whatsapp", Validador.validar_zap)
+                AtualizarDadosUsuario._processar_mudanca(user_logado, "Whatsapp", Validador.validar_zap)
 
-    def atualizar_dados_pessoais(self, user_logado, campo_para_mudar, novo_valor):
+    @staticmethod
+    def _processar_mudanca(user_logado, campo, funcao_validacao):
         """
         -> Verifica se o dado atualizado é igual ao antigo, caso não efetua a mudança
         :param user_logado: (dict) Dicionário que guarda os dados do usuário
@@ -189,52 +196,66 @@ class GerenciadorUsuario:
         :param novo_valor: (str) O dado atualizado pelo usuário
         :return: (bool) Retorna True se ocorreu a atualização e False se deu errado 
         """
-        if novo_valor == getattr(user_logado, campo_para_mudar):
-            print(f'{campo_para_mudar} informado(a) é igual ao(à) atual')
-            return False
-        try:
-            with open('usuarios.json', 'r', encoding='utf-8') as arquivo:
-                lista_usuarios = json.load(arquivo)
-            sucesso = False
-            for usuario in lista_usuarios:
-                if usuario["email"] == user_logado.email:
-                    usuario[campo_para_mudar] = novo_valor
-                    sucesso = True
-                    break
-            if sucesso:
-                with open('usuarios.json', 'w', encoding='utf-8') as arquivo:
-                    json.dump(lista_usuarios, arquivo, indent=4, ensure_ascii=False)
-                print(f'\033[0;32m{campo_para_mudar} atualizado com sucesso!\033[m')
-                return True
-        except Exception as e:
-            print('\033[0;31mErro ao atualizar dados pessoais:\033[m')
-            return False
+        print(f'\033[0;32mAtualizar {campo} selecionado\033[m')
+        while True:
+            if Validador.confirmar_identidade(user_logado.transformar_dicionario()):
+                    novo_valor = funcao_validacao()
+                    if novo_valor == getattr(user_logado, campo):
+                        print(f'{campo} informado(a) é igual ao(à) atual')
+                        tentar_atualizar = Acessorio.tentar_novamente(mensagem=f'Deseja tentar atualizar o {campo} novamente?[S/N] ')
+                        if tentar_atualizar == 'N':
+                            break
+                        else:
+                            continue
+                    if AtualizarDadosUsuario._salvar_no_json(user_logado.email, campo, novo_valor):
+                        setattr(user_logado, campo, novo_valor)
+                        break
+                    else:
+                        tentar = Acessorio.tentar_novamente(mensagem=f'Deseja tentar atualizar o {campo} novamente?[S/N] ')
+                        if tentar == 'N':
+                            break
+                        else:
+                            continue
+            else:
+                print('Identidade não confirmada')
+                continuar = Acessorio.tentar_novamente(mensagem='Deseja tentar confirmar sua identidade novamente?[S/N] ')
+                if continuar == 'S':
+                    continue
+                elif continuar == 'N':
+                    Acessorio.limpar_tela()
+                    return None
         
-    
-    def processar_atualizacao(self, user_logado, campo, funcao_validacao):
+    @staticmethod
+    def _salvar_no_json(email_atual, campo, novo_valor):
         """
         -> Muda o dado no JSON
         :param user_logado: (dict) Dicionário que guarda os dados do usuário
         :param campo: (str) Mensagem que mostra o campo que o usuário escolheu
         :param funcao_validar: (function) Função que será substituída pelo campo desejado
         """
-        print(f'\033[0;32mAtualizar {campo} selecionado\033[m')
-        identidade = Validador.confirmar_identidade(user_logado.transformar_dicionario())
-        if identidade == True:
-            while True:
-                novo_valor = funcao_validacao()
-                conseguiu = self.atualizar_dados_pessoais(user_logado, campo, novo_valor)
-                if conseguiu: 
-                    setattr(user_logado, campo, novo_valor)
+        try:
+            with open('usuarios.json', 'r', encoding='utf-8') as arquivo:
+                lista_usuarios = json.load(arquivo)
+            sucesso = False
+            for usuario in lista_usuarios:
+                if usuario["email"] == email_atual:
+                    usuario[campo] = novo_valor
+                    sucesso = True
                     break
-                else:
-                    if Acessorio.tentar_novamente(mensagem = f'Deseja tentar atualizar o {campo} novamente?[S/N] ') == 'N':
-                        break
-        else:
-            print('Identidade não confirmada')
-            Acessorio.tentar_novamente(mensagem = 'Deseja tentar confirmar sua identidade novamente?[S/N] ')
+            if sucesso:
+                with open('usuarios.json', 'w', encoding='utf-8') as arquivo:
+                    json.dump(lista_usuarios, arquivo, indent=4, ensure_ascii=False)
+                print(f'\033[0;32m{campo} atualizado com sucesso!\033[m')
+                return True
+            return False
+        except Exception:
+            print('\033[0;31mErro ao atualizar dados pessoais no arquivo.\033[m')
+            return False
 
-    def deletar_conta(self, user_logado):
+    
+class DeletarContaUsuario:
+    @staticmethod
+    def executar_delecao(user_logado):
         """
         -> Realiza todo o processo de deletar conta
         :param user_logado: (dict) Dicionário que guarda os dados do usuário

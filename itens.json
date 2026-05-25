@@ -165,23 +165,23 @@
         "autor": "Henrique"
     },
     {
-        "id": 18,
-        "data_cadastro": "23/05/2026",
-        "tipo_registro": "Achado",
-        "categoria": "Vestuários",
-        "local": "Depto. Biologia/ Química",
-        "descricao": "Bone preto e vermelho adidas",
-        "resolvido": false,
-        "contato": "81991459543",
-        "autor": "Henrique"
-    },
-    {
         "id": 19,
         "data_cadastro": "23/05/2026",
         "tipo_registro": "Achado",
         "categoria": "Materiais acadêmicos",
         "local": "Vizinhança",
         "descricao": "Caderno e lapis da faber castel",
+        "resolvido": true,
+        "contato": "81991459543",
+        "autor": "Henrique"
+    },
+    {
+        "id": 20,
+        "data_cadastro": "24/05/2026",
+        "tipo_registro": "Perdido",
+        "categoria": "Chave",
+        "local": "RU",
+        "descricao": "Chave prata com chaveiro do sport",
         "resolvido": false,
         "contato": "81991459543",
         "autor": "Henrique"

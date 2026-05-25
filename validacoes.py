@@ -212,7 +212,11 @@ class Validador:
         while True:
             Acessorio.limpar_tela()
             confirmar_senha = Validador.validar_senha()
-            if confirmar_senha == user_logado.senha:
+            if isinstance(user_logado, dict):
+                senha_correta = user_logado("senha")
+            else:
+                senha_correta = user_logado.senha
+            if confirmar_senha == senha_correta:
                 print('\033[0;32mIdentidade confirmada\033[m')
                 return True
             else:

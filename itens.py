@@ -1,8 +1,8 @@
-import json, os
+import json, os, servicos
 from interface import Acessorio
 from validacoes import Validador
 from data_base import DataBase
-from servicos import GerenciadorServicos
+
 
 
 class Item:
@@ -69,11 +69,9 @@ class Item:
         return dados 
     
 
-class GerenciadorItens:
-    def __init__(self):
-        pass
-
-    def menu_itens(self):
+class ColetarDadosItens:
+    @staticmethod
+    def menu_categoria_itens():
         """
         -> Mostra o menu da categoria do item
         :return: (int/None) Retorna a opção digitada pelo usuário ou None se digitou '0'
@@ -94,7 +92,8 @@ class GerenciadorItens:
                 return None
             return categorias[int(resposta_menu) - 1]
         
-    def menu_local(self):
+    @staticmethod
+    def menu_local_itens():
         """
         -> Mostra o menu dos locais do item
         :return: (int/None) Retorna a opção digitada pelo usuário ou None se digitou '0'
@@ -116,7 +115,8 @@ class GerenciadorItens:
                 return None
             return locais[int(resposta_local) - 1]
         
-    def descricao_item(self):
+    @staticmethod
+    def descricao_item():
         """
         -> Valida a descrição digitada pelo usuário
         :return: (str/None) Retorna a descrição digitada pelo usuário ou None se digitou '0'
@@ -150,7 +150,58 @@ class GerenciadorItens:
             else:
                 return descricao
 
-    def achar_perder_item(self, status, user_logado):
+
+class CadastrarItem:
+    @staticmethod
+    def menu_cadastro_itens(user_logado):
+         while True:
+            match = None
+            Acessorio.limpar_tela()
+            Acessorio.exibir_menu_padrao('SITUAÇÃO DO ITEM', [
+                    '[1] → Achei Item',
+                    '[2] → Perdi Item',
+                    '[0] → Voltar'
+                    ])
+            resposta_menu = Validador.verificar_resposta_menu(0, 2)
+            if resposta_menu == '0':
+                Acessorio.limpar_tela()
+                return
+            status = 'Achado' if resposta_menu == '1' else 'Perdido'
+            CadastrarItem._processar_cadastro_item(status, user_logado)
+
+    @staticmethod
+    def _processar_cadastro_item(status, user_logado):
+        while True:
+            item_cadastrado = CadastrarItem._coletar_item_completo(status, user_logado)
+            if not item_cadastrado:
+                return
+            match, foi_duplicado = servicos.MotorDeBusca.buscar_matches(item_cadastrado)
+            if foi_duplicado:
+                print('\n\033[0;31mVocê já possui um item similar cadastrado por você\033[m')
+                print('O sistema não mostra seus próprios itens no Match para evitar confusão\n')
+                if Acessorio.tentar_novamente():
+                    continue
+                else:
+                    item_cadastrado = None
+                    break
+            else:
+                if item_cadastrado:
+                    dict_retorno = DataBase.salvar_item(item_cadastrado)
+                    item_cadastrado.id_item = dict_retorno["id"]
+                    print('\033[0;32mItem cadastrado com sucesso!\033[m')
+                    break
+        if item_cadastrado and match:
+            CadastrarItem._processar_matches_encontrados(match, status, item_cadastrado)
+        else:
+            if item_cadastrado:
+                print('Nenhum match imediato, veja o mural de itens')
+                sair = input('\nDigite 0 para voltar: ')
+                Acessorio.verificar_escape(sair)
+            return
+
+
+    @staticmethod
+    def _coletar_item_completo(status, user_logado):
         """
         -> Armazena no JSON os dados dos itens cadastrados
         :param status: (str) Define o tipo de registro do item(achado ou perdido)
@@ -159,13 +210,13 @@ class GerenciadorItens:
         None se o usuário desistiu em alguma parte
         """
         Acessorio.limpar_tela()
-        resposta_item = self.menu_itens()
+        resposta_item = ColetarDadosItens.menu_categoria_itens()
         if resposta_item is None:
             return None
-        resposta_local = self.menu_local()
+        resposta_local = ColetarDadosItens.menu_local_itens()
         if resposta_local is None:
             return None
-        resposta_descricao = self.descricao_item()
+        resposta_descricao = ColetarDadosItens.descricao_item()
         if resposta_descricao is None:
             return None
         contato_user = user_logado.Whatsapp
@@ -180,77 +231,39 @@ class GerenciadorItens:
             autor=autor_user
         )
     
-    def gestao_itens(self, user_logado):
-        """
-        -> Reúne todos os processos em relação ao item, desde o cadastro até o match
-        :param user_logado: (dict) Dicionário que guarda os dados do usuário 
-        """
-        while True:
-            match = None
-            Acessorio.limpar_tela()
-            Acessorio.exibir_menu_padrao('SITUAÇÃO DO ITEM', [
-                    '[1] → Achei Item',
-                    '[2] → Perdi Item',
-                    '[0] → Voltar'
-                    ])
-            resposta_menu = Validador.verificar_resposta_menu(0, 2)
-            if resposta_menu == '0':
-                Acessorio.limpar_tela()
-                return
-            status = 'Achado' if resposta_menu == '1' else 'Perdido'
-            while True:
-                item_cadastrado = self.achar_perder_item(status, user_logado)
-                if not item_cadastrado:
-                    return
-                match, foi_duplicado = GerenciadorServicos.motor_de_buscas(item_cadastrado)
-                if foi_duplicado:
-                    print('\n\033[0;31mVocê já possui um item similar cadastrado por você\033[m')
-                    print('O sistema não mostra seus próprios itens no Match para evitar confusão\n')
-                    if Acessorio.tentar_novamente():
-                        continue
-                    else:
-                        item_cadastrado = None
-                        break
-                else:
-                    if item_cadastrado:
-                        dict_retorno = DataBase.salvar_item(item_cadastrado)
-                        item_cadastrado.id_item = dict_retorno["id"]
-                        print('\033[0;32mItem cadastrado com sucesso!\033[m')
-                        break
-            if item_cadastrado and match:
-                if status == 'Perdido':
-                    print('\n\033[0;32mBoas notícias! Alguém pode ter encontrado seu item:\033[m\n')
-                else:
-                    print('\033[0;32mAtenção! Alguém perdeu um item parecido com este:\033[m\n')
-                for m in match:
-                    print(f'ID: {m["id"]} | {m["categoria"]} no(a) {m["local"]}')
-                    print(f'Descrição: {m["descricao"]}')
-                    print(f'Contato: {m["contato"]}  {m["autor"]}')
-                if status == 'Perdido':
-                    print('\nChame no Whatsapp agora para combinar a retirada')
-                else:
-                    print('\nChame no Whatsapp agora para combinar a retirada')
-                confirmar = Acessorio.tentar_novamente(mensagem = '\nSeu problema foi resolvido?[S/N]')
-                if confirmar == 'S':
-                    id_match = int(m["id_item"])
-                    id_meu = item_cadastrado.id_item
-                    if self.atualizar_status_item(id_match):
-                        self.atualizar_status_item(id_meu)
-                        print('\033[0;32mÓtima notícia! Item marcado como resolvido\033[m')
-                    else:
-                        print('\033[0;31mErro ao atualizar status\033[m')
-                else:
-                    print('Entendido! Seu item continuará ativo no mural para novos matches')
-                sair = input('\nDigite 0 para voltar: ')
-                Acessorio.verificar_escape(sair)
+    @staticmethod
+    def _processar_matches_encontrados(match, status, item_cadastrado):
+        if status == 'Perdido':
+            print('\n\033[0;32mBoas notícias! Alguém pode ter encontrado seu item:\033[m\n')
+        else:
+            print('\033[0;32mAtenção! Alguém perdeu um item parecido com este:\033[m\n')
+        for m in match:
+            print(f'ID: {m["id"]} | {m["categoria"]} no(a) {m["local"]}')
+            print(f'Descrição: {m["descricao"]}')
+            print(f'Contato: {m["contato"]}  {m["autor"]}')
+        if status == 'Perdido':
+            print('\nChame no Whatsapp agora para combinar a retirada')
+        else:
+            print('\nChame no Whatsapp agora para combinar a retirada')
+        confirmar = Acessorio.tentar_novamente(mensagem = '\nSeu problema foi resolvido?[S/N]')
+        if confirmar == 'S':
+            id_match = int(m["id"])
+            id_meu = item_cadastrado.id_item
+            if AtualizarStatusItem.processar_atualizacao_item(id_match):
+                AtualizarStatusItem.processar_atualizacao_item(id_meu)
+                print('\033[0;32mÓtima notícia! Item marcado como resolvido\033[m')
             else:
-                if item_cadastrado:
-                    print('Nenhum match imediato, veja o mural de itens')
-                    sair = input('\nDigite 0 para voltar: ')
-                    Acessorio.verificar_escape(sair)
-                return
-            
-    def atualizar_status_item(id_item):
+                print('\033[0;31mErro ao atualizar status\033[m')
+        else:
+            print('Entendido! Seu item continuará ativo no mural para novos matches')
+        sair = input('\nDigite 0 para voltar: ')
+        Acessorio.verificar_escape(sair)
+        return
+    
+
+class AtualizarStatusItem:
+    @staticmethod      
+    def processar_atualizacao_item(id_item):
         """
         -> Faz o processo para atualizar o status do item
         :param id_item: (int) Id específico do item 
@@ -273,7 +286,10 @@ class GerenciadorItens:
             return True
         return False
     
-    def deletar_item(id_item, contato_usuario):
+
+class DeletarItem:
+    @staticmethod
+    def processar_delecao_item(id_item, contato_usuario):
         """
         -> Faz o processo para deletar o item
         :param id_item: (int) Id específico do item 
