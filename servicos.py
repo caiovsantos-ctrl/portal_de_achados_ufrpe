@@ -81,42 +81,41 @@ class MuralDeItens:
     def exibir_mural():
         """ Mostra o mural de itens """
         DoacaoReciclagem.processar_temporalidade()
-        while True:
-            Acessorio.limpar_tela()
-            print('Mural de Itens:\n\n'.center(70))
-            print('-' * 70)
-            todos_itens = DataBase.buscar_todos_itens()
-            itens_ativos = [i for i in todos_itens if not i.get("resolvido", False)]
-            if not itens_ativos:
-                print('\nO Mural está vazio no momento')
-            else:
-                for item in itens_ativos:
-                    tipo_bruto = item["tipo_registro"]
-                    liberado = item.get("liberado", False)
-                    tipo = 'Achei' if item["tipo_registro"] == 'Achado' else 'Perdi'
-                    data = item.get("data_cadastro", '00/00/0000')
-                    print(f'ID: {item["id"]:02d} | {tipo} | {data} | {item["local"]}')
-                    print(f'Postado por: {item.get("autor", "Usuário")}')
-                    print(f'Categoria: {item["categoria"]}')
-                    if tipo_bruto == 'Achado':
-                        if liberado:
-                            texto_desc = f'Item liberado para doação/reciclagem: {item["descricao"]}'
-                        else:
-                            texto_desc = 'Para manter a transparência, a descrição está oculta'
+        Acessorio.limpar_tela()
+        print('Mural de Itens:\n\n'.center(70))
+        print('-' * 70)
+        todos_itens = DataBase.buscar_todos_itens()
+        itens_ativos = [i for i in todos_itens if not i.get("resolvido", False)]
+        if not itens_ativos:
+            print('\nO Mural está vazio no momento')
+        else:
+            for item in itens_ativos:
+                tipo_bruto = item["tipo_registro"]
+                liberado = item.get("liberado", False)
+                tipo = 'Achei' if item["tipo_registro"] == 'Achado' else 'Perdi'
+                data = item.get("data_cadastro", '00/00/0000')
+                print(f'ID: {item["id"]:02d} | {tipo} | {data} | {item["local"]}')
+                print(f'Postado por: {item.get("autor", "Usuário")}')
+                print(f'Categoria: {item["categoria"]}')
+                if tipo_bruto == 'Achado':
+                    if liberado:
+                        texto_desc = f'Item liberado para doação/reciclagem: {item["descricao"]}'
                     else:
-                        texto_desc = item["descricao"]
-                    descricao_formatada = textwrap.fill(
-                        texto_desc,
-                        width=65,
-                        initial_indent= 'Descrição: ',
-                        subsequent_indent='           '
-                    )
-                    print(descricao_formatada)
-                    print(f'Contato: {item["contato"]}\n')
-                    print('-' * 70)
-            sair = input('\n\nDigite 0 para voltar: ')
-            if Acessorio.verificar_escape(sair):
-                break
+                        texto_desc = 'Para manter a transparência, a descrição está oculta'
+                else:
+                    texto_desc = item["descricao"]
+                descricao_formatada = textwrap.fill(
+                    texto_desc,
+                    width=65,
+                    initial_indent= 'Descrição: ',
+                    subsequent_indent='           '
+                )
+                print(descricao_formatada)
+                print(f'Contato: {item["contato"]}\n')
+                print('-' * 70)
+            sair = Validador.aguardar_retorno()
+            if sair:
+                return
 
     
 class Historico:
@@ -132,8 +131,6 @@ class Historico:
             Acessorio.limpar_tela()
             meus_itens = Historico.exibir_historico(user_logado)
             if not meus_itens:
-                print('Você não possui nenhum item cadastrado')
-                Acessorio.limpar_tela()
                 return
             resposta_menu = Historico.exibir_menu_acoes_historico(meus_itens)
             if resposta_menu == '0':
@@ -153,6 +150,14 @@ class Historico:
         print('Seu Histórico:\n\n'.center(95))
         contato_user = user_logado.Whatsapp
         meus_itens = DataBase.buscar_itens_por_usuario(contato_user)
+        if not meus_itens:
+            print('-' * 95)
+            print('\nVocê não possui nenhum item cadastrado')
+            print('Cadastre um item e volte aqui novamente!\n')
+            print('-' * 95)
+            sair = Validador.aguardar_retorno()
+            if sair:
+                return
         print(f"{'ID':<4} | {'DATA':<10} | {'TIPO':<7} | {'STATUS':<10} | {'CATEGORIA':<25} | {'LOCAL'}")
         print('-' * 95)
         for item in meus_itens:
@@ -292,8 +297,8 @@ class MapaDeCalor:
                 barra = '■' * total
                 print(f"{local:<25} | {barra:<20} | {total} itens")
             print("\n" + "="*60)
-        sair = input('\nDigite 0 para voltar: ')
-        if Acessorio.verificar_escape(sair):
+        sair = Validador.aguardar_retorno()
+        if sair:
             return
         
 class MenuServicos:

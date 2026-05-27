@@ -264,18 +264,18 @@ class CadastrarItem:
             texto_desc = desc_formatada
             desc_formatar = textwrap.fill(
                         texto_desc,
-                        width=43,
-                        subsequent_indent='                 '
+                        width=4,
+                        subsequent_indent='                '
                     )
             print('=' * 60)
-            print(f' 🔍 \033[1mMATCH ENCONTRADO - ID: {m["id"]:02d}[m')
+            print(f'  \033[1mMATCH ENCONTRADO - ID: {m["id"]:02d}[m')
             print('─' * 60)
-            print(f'   📍 \033[1mItem:\033[m      {m["categoria"]} no(a) {m["local"]}')
-            print(f'   📝 \033[1mDescrição:\033[m {desc_formatar}')
-            print(f'   👤 \033[1mAutor:\033[m     {autor_formatado}')
-            print(f'   📞 \033[1mContato:\033[m   {contato_formatado}')
+            print(f'    \033[1mItem:\033[m      {m["categoria"]} no(a) {m["local"]}')
+            print(f'    \033[1mDescrição:\033[m {desc_formatar}')
+            print(f'    \033[1mAutor:\033[m     {autor_formatado}')
+            print(f'    \033[1mContato:\033[m   {contato_formatado}')
             print('─' * 60)
-            print('   💬 \033[3mChame no Whatsapp agora para combinar a retirada!\033[m')
+            print('    \033[3mChame no Whatsapp agora para combinar a retirada!\033[m')
             print('=' * 60)
             confirmar = Acessorio.tentar_novamente(mensagem='\nEste item resolveu seu problema? [S/N] ')
             if confirmar == 'S':
@@ -286,15 +286,15 @@ class CadastrarItem:
                     print('\033[0;32mÓtima notícia! Os itens foram marcados como resolvidos.\033[m')
                 else:
                     print('\033[0;31mErro ao atualizar status dos itens.\033[m')
-                sair = input('\nDigite 0 para voltar: ')
-                Acessorio.verificar_escape(sair)
-                return
+                sai = Validador.aguardar_retorno()
+                if sai:
+                    return
             else:
                 print('\nEntendido! Vamos verificar o próximo item (se houver)...\n')
         print('\nSeu item continuará ativo no mural para novos matches.')
-        sair = input('\nDigite 0 para voltar: ')
-        Acessorio.verificar_escape(sair)
-        return
+        sair = Validador.aguardar_retorno()
+        if sair:
+            return
     
 
 class AtualizarStatusItem:

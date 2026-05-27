@@ -66,7 +66,8 @@ class Validador:
                 print('\033[0;31mO primeiro nome deve ter pelo menos 3 letras\033[m')
                 continue
             else:
-                print('\n', '-' * 50)
+                print('\n')
+                print('-' * 50)
                 return nome
             
     @staticmethod
@@ -106,7 +107,8 @@ class Validador:
                 print('\033[0;31mO email deve conter no máximo 30 caracteres. Tente novamente\033[m')
                 continue
             else:
-                print('\n', '-' * 50)
+                print('\n')
+                print('-' * 50)
                 return email
     
     @staticmethod
@@ -142,7 +144,8 @@ class Validador:
                 print('\033[0;31mA senha não deve conter todos os dígitos iguais. Tente novamente\033[m')
                 continue
             else:
-                print('\n', '-' * 50)
+                print('\n')
+                print('-' * 50)
                 return senha
             
     @staticmethod
@@ -181,7 +184,8 @@ class Validador:
                 print('\033[0;31mDDD inválido. Tente novamente\033[m')
                 continue
             else:
-                print('\n', '-' * 50)
+                print('\n')
+                print('-' * 50)
                 return zap
             
     @staticmethod
@@ -254,3 +258,21 @@ class Validador:
                 continue
             else:
                 return int(id_escolhido)
+            
+    @staticmethod
+    def aguardar_retorno():
+        """
+        -> Retorna o usuário para o menu anterior se digiou '0'
+        :return: (bool) True se digitou '0'
+        """
+        while True:
+            modelo = input('\n\nDigite 0 para voltar: ').strip()
+            if modelo == "":
+                print('\033[0;31mA resposta não pode ser vazia. Tente novamente\033[m')
+                continue
+            elif modelo != '0':
+                print(f'\033[0;31mA resposta deve ser 0. Tente novamente\033[m')
+                continue
+            else:
+                return True
+          

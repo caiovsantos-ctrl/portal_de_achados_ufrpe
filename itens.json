@@ -207,5 +207,16 @@
         "resolvido": false,
         "contato": "81991459543",
         "autor": "Henrique"
+    },
+    {
+        "id": 23,
+        "data_cadastro": "26/05/2026",
+        "tipo_registro": "Achado",
+        "categoria": "Itens de alimentação",
+        "local": "CEGOE",
+        "descricao": "Garrafa rosa com canudo stanley",
+        "resolvido": false,
+        "contato": "81965439807",
+        "autor": "Testador"
     }
 ]

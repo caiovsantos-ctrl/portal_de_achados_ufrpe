@@ -60,5 +60,11 @@
         "email": "nome111@ufrpe.br",
         "senha": "112233",
         "Whatsapp": null
+    },
+    {
+        "nome": "Testador",
+        "email": "testador@ufrpe.br",
+        "senha": "009988",
+        "Whatsapp": "81965439807"
     }
 ]

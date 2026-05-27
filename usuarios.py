@@ -63,7 +63,6 @@ class CadastroUsuario:
         print('  (Digite 0 a qualquer momento para cancelar)\n')
         print('=' * 50)
         sleep(2)
-        Acessorio.limpar_tela()
         nome_cadastro = Validador.validar_nome()
         if nome_cadastro is None:
             return
@@ -120,7 +119,6 @@ class LoginUsuario:
             print('  (Digite 0 a qualquer momento para cancelar)\n')
             print('-' * 50)
             sleep(2)
-            Acessorio.limpar_tela()
             email_login = Validador.validar_email()
             if email_login is None:
                 return
@@ -130,7 +128,7 @@ class LoginUsuario:
             usuarios_cadastrados = LoginUsuario._carregar_usuarios()
             for user in usuarios_cadastrados:
                 if user["email"] == email_login and user["senha"] == senha_login:
-                    print(f'\033[0;32mLogin bem-sucedido!\033[m \nÉ um prazer te ver novamente, {user["nome"]}!')
+                    print(f'\n\033[0;32mLogin bem-sucedido!\033[m \nÉ um prazer te ver novamente, {user["nome"]}!')
                     return Usuario(
                         nome=user["nome"],
                         email=user["email"],
