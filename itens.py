@@ -1,7 +1,8 @@
-import json, os, servicos, textwrap
+import json, os, textwrap
 from interface import Acessorio
 from validacoes import Validador
 from data_base import DataBase
+from servicos import MotorDeBusca
 
 
 
@@ -188,7 +189,7 @@ class CadastrarItem:
             item_cadastrado = CadastrarItem._coletar_item_completo(status, user_logado)
             if not item_cadastrado:
                 return
-            match, foi_duplicado = servicos.MotorDeBusca.buscar_matches(item_cadastrado)
+            match, foi_duplicado = MotorDeBusca.buscar_matches(item_cadastrado)
             if foi_duplicado:
                 print('\n\033[0;31mVocê já possui um item similar cadastrado por você\033[m')
                 print('O sistema não mostra seus próprios itens no Match para evitar confusão\n')

@@ -1,6 +1,7 @@
-import usuarios, itens, servicos
+import usuarios, itens
 from interface import Acessorio
 from validacoes import Validador
+from servicos import MenuServicos
 
 
 class SistemaPortal:
@@ -42,7 +43,7 @@ class SistemaPortal:
                 itens.CadastrarItem.menu_cadastro_itens(user_logado)
             elif resposta_menu == '2':
                 print('\033[0;32mMural e relatório selecionado\033[m')
-                servicos.MenuServicos.exibir_menu_servicos(user_logado)
+                MenuServicos.exibir_menu_servicos(user_logado)
             elif resposta_menu == '3':
                 print('\033[0;32mConfigurações da conta selecionado\033[m')
                 Acessorio.limpar_tela()

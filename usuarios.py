@@ -1,4 +1,3 @@
-import json
 from time import sleep
 from interface import Acessorio
 from validacoes import Validador
@@ -125,7 +124,7 @@ class LoginUsuario:
             senha_login = Validador.validar_senha()
             if senha_login is None:
                 return
-            usuarios_cadastrados = LoginUsuario._carregar_usuarios()
+            usuarios_cadastrados = DataBase.carregar_usuarios()
             for user in usuarios_cadastrados:
                 if user["email"] == email_login and user["senha"] == senha_login:
                     print(f'\n\033[0;32mLogin bem-sucedido!\033[m \nÉ um prazer te ver novamente, {user["nome"]}!')
@@ -141,25 +140,7 @@ class LoginUsuario:
                 continue
             elif continuar_login == 'N':
                 Acessorio.limpar_tela()
-                return None
-                
-    @staticmethod
-    def _carregar_usuarios():
-        """ 
-        Carrega os usuários do arquivo JSON
-        :return: (list) Retorna uma lista com os dados dos usuários ou 
-                 uma lista vazia se o arquivo não existir ou acontecer um erro
-        """
-        try:
-            with open('usuarios.json', 'r', encoding='utf-8') as arquivo:
-                usuarios_cadastrados = json.load(arquivo)
-                return usuarios_cadastrados
-        except (FileNotFoundError, json.JSONDecodeError):
-            print('\033[0;31mBanco de dados de usuários não encontrado ou vazio. Tente novamente mais tarde\033[m')
-            return []
-        except Exception as e:
-            print('\033[0;31mOcorreu um erro ao acessar o banco de dados de usuários:\033[m')
-            return []
+                return None                
             
 
 class AtualizarDadosUsuario:
@@ -213,7 +194,7 @@ class AtualizarDadosUsuario:
                             break
                         else:
                             continue
-                    if AtualizarDadosUsuario._salvar_no_json(user_logado.email, campo, novo_valor):
+                    if DataBase.salvar_no_json(user_logado.email, campo, novo_valor):
                         setattr(user_logado, campo, novo_valor)
                         break
                     else:
@@ -230,34 +211,6 @@ class AtualizarDadosUsuario:
                 elif continuar == 'N':
                     Acessorio.limpar_tela()
                     return None
-        
-    @staticmethod
-    def _salvar_no_json(email_atual, campo, novo_valor):
-        """
-        -> Localiza o usuário pelo e-mail e atualiza o campo no arquivo JSON
-        :param user_logado: (obj) Objeto que representa o usuário logado
-        :param campo: (str) O dado que o usuário deseja atualizar
-        :param novo_valor: (str) O dado atualizado pelo usuário
-        :return: (bool) Retorna True se o dado foi atualizado ou False se deu algum erro
-        """
-        try:
-            with open('usuarios.json', 'r', encoding='utf-8') as arquivo:
-                lista_usuarios = json.load(arquivo)
-            sucesso = False
-            for usuario in lista_usuarios:
-                if usuario["email"] == email_atual:
-                    usuario[campo] = novo_valor
-                    sucesso = True
-                    break
-            if sucesso:
-                with open('usuarios.json', 'w', encoding='utf-8') as arquivo:
-                    json.dump(lista_usuarios, arquivo, indent=4, ensure_ascii=False)
-                print(f'\033[0;32m{campo} atualizado com sucesso!\033[m')
-                return True
-            return False
-        except Exception:
-            print('\033[0;31mErro ao atualizar dados pessoais no arquivo.\033[m')
-            return False
 
     
 class DeletarContaUsuario:
@@ -276,24 +229,18 @@ class DeletarContaUsuario:
         if certeza == 'S':
             identidade = Validador.confirmar_identidade(user_logado)
             if identidade == True:
-                try:
-                    with open('usuarios.json', 'r', encoding='utf-8') as arquivo:
-                        lista_usuarios = json.load(arquivo)
-                    nova_lista = []
-                    for user in lista_usuarios:
-                        if user["email"] != user_logado.email:
-                            nova_lista.append(user)
-                    if len(nova_lista) < len(lista_usuarios):
-                        with open('usuarios.json', 'w', encoding='utf-8') as arquivo:
-                            json.dump(nova_lista, arquivo, indent=4, ensure_ascii=False)
-                        print('\n\033[0;32mConta deletada com sucesso. Sentiremos sua falta!\033[m')
-                        sleep(1)
-                        Acessorio.limpar_tela()
-                        return True
-                    return False
-                except Exception as erro:
+                sucesso = DataBase.deletar_no_json(user_logado)
+                if sucesso:
+                    print('\n\033[0;32mConta deletada com sucesso. Sentiremos sua falta!\033[m')
+                    sleep(1)
+                    Acessorio.limpar_tela()
+                    return True
+                else:
                     print('\033[0;31mOcorreu um erro. Tente novamente mais tarde\033[m')
                     return False
+            else:
+                print('\033[0;31mIdentidade não confirmada.\033[m')
+                return False    
 
 
     

@@ -73,3 +73,69 @@ class DataBase:
             return []
         with open('itens.json', 'r', encoding='utf-8') as arquivo:
             return json.load(arquivo)
+
+    @staticmethod
+    def carregar_usuarios():
+        """ 
+        Carrega os usuários do arquivo JSON
+        :return: (list) Retorna uma lista com os dados dos usuários ou 
+                 uma lista vazia se o arquivo não existir ou acontecer um erro
+        """
+        try:
+            with open('usuarios.json', 'r', encoding='utf-8') as arquivo:
+                usuarios_cadastrados = json.load(arquivo)
+                return usuarios_cadastrados
+        except (FileNotFoundError, json.JSONDecodeError):
+            print('\033[0;31mBanco de dados de usuários não encontrado ou vazio. Tente novamente mais tarde\033[m')
+            return []
+        except Exception as e:
+            print('\033[0;31mOcorreu um erro ao acessar o banco de dados de usuários:\033[m')
+            return []
+        
+    @staticmethod
+    def salvar_no_json(email_atual, campo, novo_valor):
+        """
+        -> Localiza o usuário pelo e-mail e atualiza o campo no arquivo JSON
+        :param user_logado: (obj) Objeto que representa o usuário logado
+        :param campo: (str) O dado que o usuário deseja atualizar
+        :param novo_valor: (str) O dado atualizado pelo usuário
+        :return: (bool) Retorna True se o dado foi atualizado ou False se deu algum erro
+        """
+        try:
+            with open('usuarios.json', 'r', encoding='utf-8') as arquivo:
+                lista_usuarios = json.load(arquivo)
+            sucesso = False
+            for usuario in lista_usuarios:
+                if usuario["email"] == email_atual:
+                    usuario[campo] = novo_valor
+                    sucesso = True
+                    break
+            if sucesso:
+                with open('usuarios.json', 'w', encoding='utf-8') as arquivo:
+                    json.dump(lista_usuarios, arquivo, indent=4, ensure_ascii=False)
+                print(f'\033[0;32m{campo} atualizado com sucesso!\033[m')
+                return True
+            return False
+        except Exception:
+            print('\033[0;31mErro ao atualizar dados pessoais no arquivo.\033[m')
+            return False
+        
+    def deletar_no_json(user_logado):
+        """
+        -> Deleta a conta do usuário no JSON
+        :return: (bool) True se deletou ou False se ocorreu um erro
+        """
+        try:
+            with open('usuarios.json', 'r', encoding='utf-8') as arquivo:
+                lista_usuarios = json.load(arquivo)
+            nova_lista = []
+            for user in lista_usuarios:
+                if user["email"] != user_logado.email:
+                    nova_lista.append(user)
+            if len(nova_lista) < len(lista_usuarios):
+                with open('usuarios.json', 'w', encoding='utf-8') as arquivo:
+                    json.dump(nova_lista, arquivo, indent=4, ensure_ascii=False)
+                    return True
+            return False
+        except Exception:
+            return False
