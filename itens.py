@@ -2,7 +2,7 @@ import json, os, textwrap
 from interface import Acessorio
 from validacoes import Validador
 from data_base import DataBase
-from servicos import MotorDeBusca
+from servicos import MotorDeBusca, Recibo
 
 
 
@@ -265,11 +265,11 @@ class CadastrarItem:
             texto_desc = desc_formatada
             desc_formatar = textwrap.fill(
                         texto_desc,
-                        width=4,
+                        width=46,
                         subsequent_indent='                '
                     )
             print('=' * 60)
-            print(f'  \033[1mMATCH ENCONTRADO - ID: {m["id"]:02d}[m')
+            print(f'\033[1mMATCH ENCONTRADO - ID: {m["id"]:02d}\033[m'.center(60))
             print('─' * 60)
             print(f'    \033[1mItem:\033[m      {m["categoria"]} no(a) {m["local"]}')
             print(f'    \033[1mDescrição:\033[m {desc_formatar}')
@@ -285,6 +285,15 @@ class CadastrarItem:
                 if AtualizarStatusItem.processar_atualizacao_item(id_match):
                     AtualizarStatusItem.processar_atualizacao_item(id_meu)
                     print('\033[0;32mÓtima notícia! Os itens foram marcados como resolvidos.\033[m')
+                    dados_do_recibo = {
+                        "categoria": m.get("categoria", "Não informada"),
+                        "local": m.get("local", "Não informado"),
+                        "descricao": desc_formatada,
+                        "data_cadastro": m.get("data_cadastro", "00/00/0000"),
+                        "autor": autor_formatado,
+                        "contato": contato_formatado
+                    }
+                    Recibo.gerar_pdf(id_match, dados_do_recibo)
                 else:
                     print('\033[0;31mErro ao atualizar status dos itens.\033[m')
                 sai = Validador.aguardar_retorno()

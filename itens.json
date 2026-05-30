@@ -149,7 +149,7 @@
         "categoria": "Eletrônicos",
         "local": "Prédio Central",
         "descricao": "Phone com fio branco da aple olvido",
-        "resolvido": false,
+        "resolvido": true,
         "contato": "81991459543",
         "autor": "Henrique"
     },
@@ -171,7 +171,7 @@
         "categoria": "Materiais acadêmicos",
         "local": "Vizinhança",
         "descricao": "Caderno e lapis da faber castel",
-        "resolvido": true,
+        "resolvido": false,
         "contato": "81991459543",
         "autor": "Henrique"
     },
@@ -216,6 +216,17 @@
         "local": "CEGOE",
         "descricao": "Garrafa rosa com canudo stanley",
         "resolvido": false,
+        "contato": "81965439807",
+        "autor": "Testador"
+    },
+    {
+        "id": 24,
+        "data_cadastro": "29/05/2026",
+        "tipo_registro": "Achado",
+        "categoria": "Eletrônicos",
+        "local": "Prédio Central",
+        "descricao": "Fone branca de ouvido da apple",
+        "resolvido": true,
         "contato": "81965439807",
         "autor": "Testador"
     }

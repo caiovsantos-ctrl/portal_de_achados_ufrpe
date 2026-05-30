@@ -178,7 +178,7 @@ class AtualizarDadosUsuario:
     @staticmethod
     def _processar_mudanca(user_logado, campo, funcao_validacao):
         """
-        Valida a identidade e altera o campo escolhido no objeto e no JSON
+        Valida a identidade e altera o campo escolhido no objeto
         :param user_logado: (obj) Objeto que representa o usuário logado
         :param campo: (str) O dado que o usuário deseja atualizar
         :param funcao_validacao: (function) Função que será substituída pelo campo desejado
