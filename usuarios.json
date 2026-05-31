@@ -66,5 +66,11 @@
         "email": "testador@ufrpe.br",
         "senha": "009988",
         "Whatsapp": "81965439807"
+    },
+    {
+        "nome": "Mirela",
+        "email": "mirela@ufrpe.br",
+        "senha": "346790",
+        "Whatsapp": "81902568946"
     }
 ]

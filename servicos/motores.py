@@ -96,6 +96,12 @@ class DoacaoReciclagem:
                         item["liberado"] = True
                         item["status_final"] = 'Disponível para doação/reciclagem'
                         alterado = True
+                        from central_notificacoes.notificacoes import Notificacoes
+                        Notificacoes.criar_notificacao(
+                        dono_id=item["autor"],
+                        tipo="PRAZO",
+                        mensagem=f"O prazo de 30 dias para recuperar o seu item '{item['descricao']}' expirou. Ele foi encaminhado para doação/reciclagem da UFRPE."
+                        )
                 except:
                     continue
         if alterado:

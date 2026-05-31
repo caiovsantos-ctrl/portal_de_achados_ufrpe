@@ -99,6 +99,14 @@ class Recibo:
                     subprocess.run(["open", "-R", caminho_completo])
                 else:
                     subprocess.run("xdg-open", diretorio)
+                from central_notificacoes import Notificacoes
+                categoria_item = dados_match.get('categoria', 'Item')
+                parceiro_match = dados_match.get('autor', 'outro usuário')
+                Notificacoes.criar_notificacao(
+                    dono_id=parceiro_match, 
+                    tipo="HISTORICO",
+                    mensagem=f"Você visualizou e abriu com sucesso o recibo em PDF do Match da categoria '{categoria_item}'."
+                )
             except Exception:
                 print(f"O PDF está salvo na pasta: {caminho_completo}")
         else:

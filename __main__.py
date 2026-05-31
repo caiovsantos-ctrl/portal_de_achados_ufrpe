@@ -2,6 +2,7 @@ import usuarios, itens
 from interface import Acessorio
 from validacoes import Validador
 from servicos import MenuServicos
+from central_notificacoes import QuadroDeAvisos
 
 
 class SistemaPortal:
@@ -31,9 +32,10 @@ class SistemaPortal:
             '[1] → Gestão de itens',
             '[2] → Mural e Relatórios',
             '[3] → Configurações da conta',
+            '[4] → Quadro de Avisos',
             '[0] → Voltar'
             ])
-            resposta_menu = Validador.verificar_resposta_menu(0,3)
+            resposta_menu = Validador.verificar_resposta_menu(0,4)
             if resposta_menu == '0':
                 Acessorio.verificar_escape(resposta_menu)
                 Acessorio.limpar_tela()
@@ -62,6 +64,8 @@ class SistemaPortal:
                     if usuarios.DeletarContaUsuario.executar_delecao(user_logado):
                         user_logado = None
                         break
+            else:
+                QuadroDeAvisos.exibir_menu(user_logado.nome)
             if user_logado is None:
                 break
 

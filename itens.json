@@ -229,5 +229,38 @@
         "resolvido": true,
         "contato": "81965439807",
         "autor": "Testador"
+    },
+    {
+        "id": 25,
+        "data_cadastro": "30/05/2026",
+        "tipo_registro": "Achado",
+        "categoria": "Vestuários",
+        "local": "Depto. Ed. Física",
+        "descricao": "Camisa de time do sport vermelho e preta",
+        "resolvido": false,
+        "contato": "81965439807",
+        "autor": "Testador"
+    },
+    {
+        "id": 26,
+        "data_cadastro": "31/05/2026",
+        "tipo_registro": "Achado",
+        "categoria": "Documentos",
+        "local": "CEAGRI",
+        "descricao": "Cartao vem estudantil com capa preta",
+        "resolvido": false,
+        "contato": "81902568946",
+        "autor": "Mirela"
+    },
+    {
+        "id": 27,
+        "data_cadastro": "31/05/2026",
+        "tipo_registro": "Perdido",
+        "categoria": "Materiais acadêmicos",
+        "local": "Vizinhança",
+        "descricao": "Caderno do estado de vinte  materias",
+        "resolvido": false,
+        "contato": "81902568946",
+        "autor": "Mirela"
     }
 ]

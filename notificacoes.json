@@ -1,0 +1,36 @@
+{
+    "notificacoes": [
+        {
+            "id_notificacao": 1,
+            "dono_id": "Humano",
+            "tipo": "MATCH",
+            "mensagem": "Encontraram uma carteira marrom no CEAGRI parecida com a que você perdeu!",
+            "data_criacao": "30/05/2026",
+            "lida": true
+        },
+        {
+            "id_notificacao": 2,
+            "dono_id": "Mirela",
+            "tipo": "SISTEMA",
+            "mensagem": "Olá, Mirela! Seja muito bem-vindo(a) ao Portal de Achados e Perdidos da UFRPE. Explore o sistema para cadastrar itens ou verificar correspondências!",
+            "lida": false,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 3,
+            "dono_id": "Mirela",
+            "tipo": "CONFIRMAÇÃO",
+            "mensagem": "Você cadastrou um item (Documentos) no(a) CEAGRI",
+            "lida": false,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 4,
+            "dono_id": "Mirela",
+            "tipo": "CONFIRMAÇÃO",
+            "mensagem": "Você cadastrou um item (Materiais acadêmicos) no(a) Vizinhança",
+            "lida": false,
+            "data_criacao": "31/05/2026"
+        }
+    ]
+}

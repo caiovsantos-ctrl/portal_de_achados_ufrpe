@@ -22,9 +22,9 @@ class Historico:
                 Acessorio.limpar_tela()
                 return
             if resposta_menu == '1':
-                Historico.atualizar_status_item(meus_itens)
+                Historico.atualizar_status_item(meus_itens, user_logado)
             elif resposta_menu == '2':
-                Historico.deletar_item(meus_itens, user_logado.Whatsapp)
+                Historico.deletar_item(meus_itens, user_logado.Whatsapp, user_logado)
     
     @staticmethod
     def exibir_historico(user_logado):    
@@ -72,7 +72,7 @@ class Historico:
         return Validador.verificar_resposta_menu(0, 2)
 
     @staticmethod
-    def atualizar_status_item(meus_itens):
+    def atualizar_status_item(meus_itens, user_logado):
         """ 
         Realiza a atualização do status de um item para resolvido
         :param meus_itens: (list) Lista de itens cadastrados pelo usuário
@@ -83,6 +83,14 @@ class Historico:
             if any(i["id"] == escolher_id for i in meus_itens):
                 if itens.AtualizarStatusItem.processar_atualizacao_item(escolher_id):
                     print('\033[0;32mStatus atualizado com sucesso!\033[m')
+                    item_selecionado = next((i for i in meus_itens if i["id"] == escolher_id), None)
+                    categoria_nome = item_selecionado.get("categoria", "Item")
+                    from central_notificacoes.notificacoes import Notificacoes
+                    Notificacoes.criar_notificacao(
+                        dono_id=user_logado.autor, 
+                        tipo="RETIRADA",         
+                        mensagem=f"Você marcou com sucesso o item da categoria '{categoria_nome}' (ID: #{escolher_id}) como RESOLVIDO."
+                    )
                 else:
                     print('\033[0;31mErro ao atualizar. Tente novamente mais tarde\033[m')
                 voltar = input('\nDigite 0 para voltar: ')
@@ -95,3 +103,52 @@ class Historico:
                     continue
                 else:
                     break
+
+    @staticmethod
+    def deletar_item(meus_itens, contato_usuario, user_logado):
+        """ 
+        Gerencia a entrada de dados para deletar um item do histórico do usuário
+        :param meus_itens: (list) Lista de itens cadastrados pelo usuário
+        :param contato_usuario: (str) Contato (WhatsApp) do usuário logado
+        """
+        import itens
+        while True:
+            certeza = Acessorio.tentar_novamente(mensagem = 'Deseja realmente deletar seu item?[S/N] ')
+            if certeza == 'S':
+                identidade = Validador.confirmar_identidade(user_logado)
+                if identidade == True:
+                    escolher_id = Validador.validar_id(mensagem='Digite o ID do item que deseja deletar: ')
+                    if any(i["id"] == escolher_id for i in meus_itens):
+                        item_selecionado = next(i for i in meus_itens if i["id"] == escolher_id)
+                        categoria_nome = item_selecionado.get("categoria", "Item")
+                        if itens.DeletarItem.processar_delecao_item(escolher_id, contato_usuario):
+                            print('\033[0;32mItem deletado com sucesso!\033[m')
+                            from central_notificacoes import Notificacoes
+                            Notificacoes.criar_notificacao(
+                                dono_id=user_logado.autor,  
+                                tipo="HISTORICO",
+                                mensagem=f"Você removeu com sucesso o item da categoria {categoria_nome} (ID: #{escolher_id}) do sistema."
+                                )
+                            sair = Validador.aguardar_retorno()
+                            if sair:
+                                return
+                        else:
+                            print('\033[0;31mErro ao deletar. Tente novamente mais tarde.\033[m')
+                        voltar = input('\nDigite 0 para voltar: ')
+                        Acessorio.verificar_escape(voltar)
+                        break
+                    else:
+                        print('\033[0;31mEste ID não existe ou não pertence a você.\033[m')
+                        tentar = Acessorio.tentar_novamente(mensagem='Deseja tentar novamente com outro ID?[S/N] ')
+                        if tentar == 'S':
+                            continue
+                        else:
+                            break
+                else:
+                    print('\033[0;31mIdentidade não confirmada.\033[m')
+                    continuar = Acessorio.tentar_novamente(mensagem='Deseja tentar confirmar sua identidade novamente?[S/N] ')
+                    if continuar == 'S':
+                        continue
+                    elif continuar == 'N':
+                        Acessorio.limpar_tela()
+                        return None

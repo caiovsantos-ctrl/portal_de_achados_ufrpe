@@ -260,13 +260,14 @@ class Validador:
                 return int(id_escolhido)
             
     @staticmethod
-    def aguardar_retorno():
+    def aguardar_retorno(mensagem='Digite 0 para voltar: '):
         """
         -> Retorna o usuário para o menu anterior se digiou '0'
         :return: (bool) True se digitou '0'
         """
         while True:
-            modelo = input('\n\nDigite 0 para voltar: ').strip()
+            print('\n\n')
+            modelo = input(mensagem).strip()
             if modelo == "":
                 print('\033[0;31mA resposta não pode ser vazia. Tente novamente\033[m')
                 continue

@@ -3,156 +3,8 @@ from interface import Acessorio
 from validacoes import Validador
 from data_base import DataBase
 from servicos import MotorDeBusca, Recibo
-
-
-
-class Item:
-    def __init__(self, tipo_registro, categoria, local, descricao, contato, resolvido, autor, id_item=None):
-        self._id_item = id_item
-        self._tipo_registro = tipo_registro
-        self._categoria = categoria
-        self._local = local
-        self._descricao = descricao
-        self._contato = contato
-        self._resolvido = resolvido
-        self._autor = autor
-
-    @property
-    def tipo_registro(self):
-        return self._tipo_registro
-
-    @property
-    def categoria(self):
-        return self._categoria
-
-    @property
-    def local(self):
-        return self._local
-
-    @property
-    def descricao(self):
-        return self._descricao
-
-    @property
-    def contato(self):
-        return self._contato
-
-    @property
-    def resolvido(self):
-        return self._resolvido
-    @resolvido.setter
-    def resolvido(self, valor):
-        self._resolvido = valor
-
-    @property
-    def autor(self): 
-        return self._autor
-
-    @property
-    def id_item(self):
-        return self._id_item
-    @id_item.setter
-    def id_item(self, valor):
-        self._id_item = valor
-
-    def transformar_dicionario(self):
-        dados = {
-            "tipo_registro": self._tipo_registro,
-            "categoria": self._categoria,
-            "local": self._local,
-            "descricao": self._descricao,
-            "resolvido": self._resolvido,
-            "contato": self._contato,
-            "autor": self._autor
-        }
-        if self._id_item is not None:
-            dados["id_item"] = self.id_item
-        return dados 
-    
-
-class ColetarDadosItens:
-    """ Gerencia a coleta de todos os dados necessários para o cadastro do item """
-    @staticmethod
-    def menu_categoria_itens():
-        """
-        -> Mostra o menu da categoria do item
-        :return: (str/None) Retorna a opção que representa a categoria escolhida
-                 pelo usuário ou None se digitou '0'
-        """
-        categorias = [
-            "Eletrônicos", "Chave", "Documentos", "Carteira", 
-            "Materiais acadêmicos", "Vestuários", "Itens de alimentação"
-        ]
-        while True:
-            Acessorio.limpar_tela()
-            opcoes_formatadas = [f"[{i}] → {nome}" for i, nome in enumerate(categorias, 1)]
-            opcoes_formatadas.append("[0] → Voltar")
-            Acessorio.exibir_menu_padrao('CATEGORIA DO ITEM', opcoes_formatadas)
-            resposta_menu = Validador.verificar_resposta_menu(0, len(categorias))
-            if resposta_menu == '0':
-                Acessorio.verificar_escape(resposta_menu)
-                Acessorio.limpar_tela()
-                return None
-            return categorias[int(resposta_menu) - 1]
-        
-    @staticmethod
-    def menu_local_itens():
-        """
-        -> Mostra o menu dos locais do item
-        :return: (str/None) Retorna a opção que representa o local escolhido
-                 pelo usuário ou None se digitou '0'
-        """
-        locais = [
-            "CEGOE", "Prédio Central", "CEAGRI", "RU", 
-            "Biblioteca Central", "Depto. Biologia/ Química", 
-            "Depto. Ed. Física", "Vizinhança"
-        ]
-        while True:
-            Acessorio.limpar_tela()
-            opcoes_locais = [f"[{i}] → {local}" for i, local in enumerate(locais, 1)]
-            opcoes_locais.append("[0] → Voltar")
-            Acessorio.exibir_menu_padrao("LOCAIS DA UFRPE", opcoes_locais, largura=60)
-            resposta_local = Validador.verificar_resposta_menu(0, len(locais))
-            if resposta_local == '0':
-                Acessorio.verificar_escape(resposta_local)
-                Acessorio.limpar_tela()
-                return None
-            return locais[int(resposta_local) - 1]
-        
-    @staticmethod
-    def descricao_item():
-        """
-        -> Recebe valida a descrição digitada pelo usuário
-        :return: (str/None) Retorna a descrição digitada pelo usuário ou None se digitou '0'
-        """
-        while True:
-            Acessorio.limpar_tela()
-            print('-' * 50)
-            print('Detalhes do item'.center(50))
-            print('-' * 50)
-            print('\nDigite uma descrição objetiva: ')
-            print('Ex.: Iphone com capinha branca e tela trincada\n')
-            descricao = input('=> ')
-            descricao = descricao.strip().capitalize()
-            if descricao == '0':
-                return None
-            elif descricao == "":
-                print('\033[0;31mA descrição não pode ser vazia. Tente novamente.\033[m')
-                continue
-            elif len(descricao) < 20:
-                print('\033[0;31mA descricao deve conter pelo menos 20 caracteres. Tente novamente\033[m')
-                continue
-            elif len(descricao) > 100:
-                print('\033[0;31mA descrição deve conter no máximo 100 caracteres. Tente novamente\033[m')
-                continue
-            elif descricao.isnumeric():
-                print('\033[0;31mA descrição não pode conter apenas números. Tente novamente\033[m')
-                continue
-            elif descricao == descricao[0] * len(descricao):
-                print('\033[0;31mA descrição não pode conter apenas dígitos iguais. Tente novamente\033[m')
-                continue
-            else:
-                return descricao
+from .coleta import ColetarDadosItens
+from .modelo import Item
 
 
 class CadastrarItem:
@@ -200,11 +52,24 @@ class CadastrarItem:
                     break
             else:
                 if item_cadastrado:
+                    from central_notificacoes import Notificacoes
                     dict_retorno = DataBase.salvar_item(item_cadastrado)
                     item_cadastrado.id_item = dict_retorno["id"]
                     print('\033[0;32mItem cadastrado com sucesso!\033[m')
+                    Notificacoes.criar_notificacao(
+                        dono_id=item_cadastrado.autor,  
+                        tipo="CONFIRMAÇÃO",
+                        mensagem=f'Você cadastrou um item ({item_cadastrado.categoria}) no(a) {item_cadastrado.local}'
+                    )
                     break
         if item_cadastrado and match:
+            from central_notificacoes import Notificacoes 
+            for m in match:
+                Notificacoes.criar_notificacao(
+                    dono_id=m["autor"],
+                    tipo="MATCH",
+                    mensagem=f"O usuário {item_cadastrado.autor} cadastrou um item ({item_cadastrado.categoria}) no(a) {item_cadastrado.local} que coincide com o seu!"
+                )
             CadastrarItem._processar_matches_encontrados(match, status, item_cadastrado)
         else:
             if item_cadastrado:
@@ -285,6 +150,12 @@ class CadastrarItem:
                 if AtualizarStatusItem.processar_atualizacao_item(id_match):
                     AtualizarStatusItem.processar_atualizacao_item(id_meu)
                     print('\033[0;32mÓtima notícia! Os itens foram marcados como resolvidos.\033[m')
+                    from central_notificacoes import Notificacoes
+                    Notificacoes.criar_notificacao(
+                        dono_id=m["autor"],
+                        tipo="SUCESSO",
+                        mensagem=f"Seu item ({m['categoria']}) foi marcado como devolvido/resolvido com sucesso em conjunto com {item_cadastrado.autor}!"
+                    )
                     dados_do_recibo = {
                         "categoria": m.get("categoria", "Não informada"),
                         "local": m.get("local", "Não informado"),
