@@ -62,6 +62,10 @@ class Recibo:
         pdf.set_font('Helvetica', '', 10)
         pdf.cell(130, 7, dados_match.get('autor', 'Anônimo'), ln=True)
         pdf.set_font('Helvetica', 'B', 10)
+        pdf.cell(40, 7, 'Resolvido com:')
+        pdf.set_font('Helvetica', '', 10)
+        pdf.cell(130, 7, dados_match.get('gerador_recibo', 'Não Informado'), ln=True)
+        pdf.set_font('Helvetica', 'B', 10)
         pdf.cell(40, 7, 'Contato para Retirada:')
         pdf.set_font('Helvetica', '', 10)
         pdf.cell(130, 7, dados_match.get('contato', 'Não Informado'), ln=True)
@@ -101,9 +105,9 @@ class Recibo:
                     subprocess.run("xdg-open", diretorio)
                 from central_notificacoes import Notificacoes
                 categoria_item = dados_match.get('categoria', 'Item')
-                parceiro_match = dados_match.get('autor', 'outro usuário')
+                quem_abriu_o_pdf = dados_match.get('gerador_recibo')
                 Notificacoes.criar_notificacao(
-                    dono_id=parceiro_match, 
+                    dono_id=quem_abriu_o_pdf, 
                     tipo="HISTORICO",
                     mensagem=f"Você visualizou e abriu com sucesso o recibo em PDF do Match da categoria '{categoria_item}'."
                 )

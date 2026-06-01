@@ -31,6 +31,174 @@
             "mensagem": "Você cadastrou um item (Materiais acadêmicos) no(a) Vizinhança",
             "lida": false,
             "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 5,
+            "dono_id": "Maria",
+            "tipo": "SISTEMA",
+            "mensagem": "Olá, Maria! Seja muito bem-vindo(a) ao Portal de Achados e Perdidos da UFRPE. Explore o sistema para cadastrar itens ou verificar correspondências!",
+            "lida": true,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 6,
+            "dono_id": "Maria",
+            "tipo": "CONFIRMAÇÃO",
+            "mensagem": "Você cadastrou um item (Itens de alimentação) no(a) Depto. Biologia/ Química",
+            "lida": true,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 7,
+            "dono_id": "Maria",
+            "tipo": "HISTORICO",
+            "mensagem": "Você alterou com sucesso o seu dado de perfil: 'email' no sistema.",
+            "lida": true,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 8,
+            "dono_id": "Jalim",
+            "tipo": "SISTEMA",
+            "mensagem": "Olá, Jalim! Seja muito bem-vindo(a) ao Portal de Achados e Perdidos da UFRPE. Explore o sistema para cadastrar itens ou verificar correspondências!",
+            "lida": false,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 9,
+            "dono_id": "Márcio",
+            "tipo": "SISTEMA",
+            "mensagem": "Olá, Márcio! Seja muito bem-vindo(a) ao Portal de Achados e Perdidos da UFRPE. Explore o sistema para cadastrar itens ou verificar correspondências!",
+            "lida": false,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 10,
+            "dono_id": "Marcio",
+            "tipo": "CONFIRMAÇÃO",
+            "mensagem": "Você cadastrou um item (Eletrônicos) no(a) Biblioteca Central",
+            "lida": false,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 11,
+            "dono_id": "Testador",
+            "tipo": "CONFIRMAÇÃO",
+            "mensagem": "Você cadastrou um item (Eletrônicos) no(a) Biblioteca Central",
+            "lida": true,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 12,
+            "dono_id": "Marcio",
+            "tipo": "MATCH",
+            "mensagem": "O usuário Testador cadastrou um item (Eletrônicos) no(a) Biblioteca Central que coincide com o seu!",
+            "lida": true,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 13,
+            "dono_id": "Marcio",
+            "tipo": "SUCESSO",
+            "mensagem": "Seu item (Eletrônicos) foi marcado como devolvido/resolvido com sucesso em conjunto com Testador!",
+            "lida": true,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 14,
+            "dono_id": "Marcio",
+            "tipo": "HISTORICO",
+            "mensagem": "Você visualizou e abriu com sucesso o recibo em PDF do Match da categoria 'Eletrônicos'.",
+            "lida": true,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 15,
+            "dono_id": "Henrique",
+            "tipo": "CONFIRMAÇÃO",
+            "mensagem": "Você cadastrou um item (Materiais acadêmicos) no(a) RU",
+            "lida": false,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 16,
+            "dono_id": "Maria",
+            "tipo": "CONFIRMAÇÃO",
+            "mensagem": "Você cadastrou um item (Materiais acadêmicos) no(a) RU",
+            "lida": false,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 17,
+            "dono_id": "Henrique",
+            "tipo": "MATCH",
+            "mensagem": "O usuário Maria cadastrou um item (Materiais acadêmicos) no(a) RU que coincide com o seu!",
+            "lida": true,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 18,
+            "dono_id": "Maria",
+            "tipo": "MATCH",
+            "mensagem": "O sistema encontrou um match para o seu item (Materiais acadêmicos) com o usuário Henrique!",
+            "lida": false,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 19,
+            "dono_id": "Henrique",
+            "tipo": "SUCESSO",
+            "mensagem": "Seu item (Materiais acadêmicos) foi marcado como devolvido/resolvido com sucesso em conjunto com Maria!",
+            "lida": true,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 20,
+            "dono_id": "Maria",
+            "tipo": "SUCESSO",
+            "mensagem": "Você marcou o item (Materiais acadêmicos) como resolvido em conjunto com Henrique!",
+            "lida": false,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 21,
+            "dono_id": "Maria",
+            "tipo": "HISTORICO",
+            "mensagem": "Você visualizou e abriu com sucesso o recibo em PDF do Match da categoria 'Materiais acadêmicos'.",
+            "lida": false,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 23,
+            "dono_id": "Valéria",
+            "tipo": "CONFIRMAÇÃO",
+            "mensagem": "Você cadastrou um item (Eletrônicos) no(a) CEGOE",
+            "lida": true,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 23,
+            "dono_id": "Valéria",
+            "tipo": "RETIRADA",
+            "mensagem": "Você marcou com sucesso o item da categoria 'Eletrônicos' (ID: #33) como RESOLVIDO.",
+            "lida": false,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 24,
+            "dono_id": "Valéria",
+            "tipo": "HISTORICO",
+            "mensagem": "Você removeu com sucesso o item da categoria Eletrônicos (ID: #33) do sistema.",
+            "lida": false,
+            "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 25,
+            "dono_id": "Côroa",
+            "tipo": "SISTEMA",
+            "mensagem": "Olá, Côroa! Seja muito bem-vindo(a) ao Portal de Achados e Perdidos da UFRPE. Explore o sistema para cadastrar itens ou verificar correspondências!",
+            "lida": false,
+            "data_criacao": "31/05/2026"
         }
     ]
 }

@@ -1,4 +1,4 @@
-import json
+import json, phonenumbers
 from interface import Acessorio
 
 
@@ -171,22 +171,22 @@ class Validador:
             elif not zap.isnumeric():
                 print('\033[0;31mO n° do Whatsapp deve conter apenas números. Tente novamente\033[m')
                 continue
-            elif len(zap) != 11:
-                print('\033[0;31mO n° do Whatsapp deve conter 11 caracteres. Tente novamente\033[m')
-                continue
-            elif zap[2] != '9':
-                print('\033[0;31mApós o DDD deve conter o 9. Tente novamente\033[m')
-                continue
-            elif zap == zap[0] * len(zap):
-                print('\033[0;31mO n° do Whatsapp não deve conter todos os dígitos iguais. Tente novamente\033[m')
-                continue
-            elif int(zap[:2]) > 98 or int(zap[:2]) < 11:
-                print('\033[0;31mDDD inválido. Tente novamente\033[m')
+            try:
+                numero_objeto = phonenumbers.parse(zap, "BR")
+                if not phonenumbers.is_valid_number(numero_objeto):
+                    print('\033[0;31mNúmero inválido. Verifique a quantidade de dígitos, o DDD ou o 9º dígito.\033[m')
+                    continue      
+            except phonenumbers.NumberParseException:
+                print('\033[0;31mFormato inválido. Tente novamente\033[m')
                 continue
             else:
+                zap_formatado = phonenumbers.format_number(
+                    numero_objeto, 
+                    phonenumbers.PhoneNumberFormat.NATIONAL
+                )
                 print('\n')
                 print('-' * 50)
-                return zap
+                return zap_formatado
             
     @staticmethod
     def email_ja_existe(email_digitado):

@@ -24,7 +24,6 @@ class CadastrarItem:
                     ])
             resposta_menu = Validador.verificar_resposta_menu(0, 2)
             if resposta_menu == '0':
-                Acessorio.limpar_tela()
                 return
             status = 'Achado' if resposta_menu == '1' else 'Perdido'
             CadastrarItem._processar_cadastro_item(status, user_logado)
@@ -70,13 +69,18 @@ class CadastrarItem:
                     tipo="MATCH",
                     mensagem=f"O usuário {item_cadastrado.autor} cadastrou um item ({item_cadastrado.categoria}) no(a) {item_cadastrado.local} que coincide com o seu!"
                 )
+                Notificacoes.criar_notificacao(
+                    dono_id=item_cadastrado.autor,
+                    tipo="MATCH",
+                    mensagem=f"O sistema encontrou um match para o seu item ({item_cadastrado.categoria}) com o usuário {m['autor']}!"
+                )
             CadastrarItem._processar_matches_encontrados(match, status, item_cadastrado)
         else:
             if item_cadastrado:
                 print('Nenhum match imediato, veja o mural de itens')
-                sair = input('\nDigite 0 para voltar: ')
-                Acessorio.verificar_escape(sair)
-            return
+                sair = Validador.aguardar_retorno()
+                if sair:
+                    return
 
 
     @staticmethod
@@ -88,7 +92,6 @@ class CadastrarItem:
         :return: (obj/None)  Retorna o objeto que representa o item ou
                  None se o usuário desistiu em alguma parte
         """
-        Acessorio.limpar_tela()
         resposta_item = ColetarDadosItens.menu_categoria_itens()
         if resposta_item is None:
             return None
@@ -156,13 +159,19 @@ class CadastrarItem:
                         tipo="SUCESSO",
                         mensagem=f"Seu item ({m['categoria']}) foi marcado como devolvido/resolvido com sucesso em conjunto com {item_cadastrado.autor}!"
                     )
+                    Notificacoes.criar_notificacao(
+                        dono_id=item_cadastrado.autor,
+                        tipo="SUCESSO",
+                        mensagem=f"Você marcou o item ({item_cadastrado.categoria}) como resolvido em conjunto com {m['autor']}!"
+                    )
                     dados_do_recibo = {
                         "categoria": m.get("categoria", "Não informada"),
                         "local": m.get("local", "Não informado"),
                         "descricao": desc_formatada,
                         "data_cadastro": m.get("data_cadastro", "00/00/0000"),
                         "autor": autor_formatado,
-                        "contato": contato_formatado
+                        "contato": contato_formatado,
+                        "gerador_recibo": item_cadastrado.autor
                     }
                     Recibo.gerar_pdf(id_match, dados_do_recibo)
                 else:

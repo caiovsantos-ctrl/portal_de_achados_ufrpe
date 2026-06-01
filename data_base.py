@@ -14,7 +14,7 @@ class DataBase:
         with open('usuarios.json', 'r', encoding='utf-8') as arquivo:
             lista_user = json.load(arquivo)
             lista_user.append(user_dict)
-        with open('usuarios.json', 'w') as arquivo:
+        with open('usuarios.json', 'w', encoding='utf-8') as arquivo:
             json.dump(lista_user, arquivo, indent=4, ensure_ascii=False)
         print('\033[0;32mCadastro concluído com sucesso!\033[m')
 
@@ -120,6 +120,7 @@ class DataBase:
             print('\033[0;31mErro ao atualizar dados pessoais no arquivo.\033[m')
             return False
         
+    @staticmethod   
     def deletar_no_json(user_logado):
         """
         -> Deleta a conta do usuário no JSON

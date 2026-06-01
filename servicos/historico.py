@@ -87,8 +87,8 @@ class Historico:
                     categoria_nome = item_selecionado.get("categoria", "Item")
                     from central_notificacoes.notificacoes import Notificacoes
                     Notificacoes.criar_notificacao(
-                        dono_id=user_logado.autor, 
-                        tipo="RETIRADA",         
+                        dono_id=user_logado.nome, 
+                        tipo="HISTORICO",         
                         mensagem=f"Você marcou com sucesso o item da categoria '{categoria_nome}' (ID: #{escolher_id}) como RESOLVIDO."
                     )
                 else:
@@ -107,9 +107,9 @@ class Historico:
     @staticmethod
     def deletar_item(meus_itens, contato_usuario, user_logado):
         """ 
-        Gerencia a entrada de dados para deletar um item do histórico do usuário
+        -> Gerencia a deleção de um item 
         :param meus_itens: (list) Lista de itens cadastrados pelo usuário
-        :param contato_usuario: (str) Contato (WhatsApp) do usuário logado
+        :param contato_usuario: (str) Contato (WhatsApp) do usuário
         """
         import itens
         while True:
@@ -125,7 +125,7 @@ class Historico:
                             print('\033[0;32mItem deletado com sucesso!\033[m')
                             from central_notificacoes import Notificacoes
                             Notificacoes.criar_notificacao(
-                                dono_id=user_logado.autor,  
+                                dono_id=user_logado.nome,  
                                 tipo="HISTORICO",
                                 mensagem=f"Você removeu com sucesso o item da categoria {categoria_nome} (ID: #{escolher_id}) do sistema."
                                 )

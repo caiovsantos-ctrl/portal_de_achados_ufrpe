@@ -6,7 +6,7 @@
         "local": "Vizinhança",
         "descricao": "Casaco amarelo nike",
         "resolvido": false,
-        "contato": "81909876543",
+        "contato": "(81) 90987-6543",
         "autor": "Pessoa"
     },
     {
@@ -16,7 +16,7 @@
         "local": "RU",
         "descricao": "Casaco amarelo",
         "resolvido": true,
-        "contato": "81909876543",
+        "contato": "(81) 90987-6543",
         "autor": "Pessoa"
     },
     {
@@ -26,7 +26,7 @@
         "local": "RU",
         "descricao": "Casaco nike",
         "resolvido": false,
-        "contato": "81909876543",
+        "contato": "(81) 90987-6543",
         "autor": "Pessoa"
     },
     {
@@ -36,7 +36,7 @@
         "local": "RU",
         "descricao": "Casaco amarelo",
         "resolvido": false,
-        "contato": "81909876543",
+        "contato": "(81) 90987-6543",
         "autor": "Pessoa"
     },
     {
@@ -46,7 +46,7 @@
         "local": "RU",
         "descricao": "Casaco vermelho adidas",
         "resolvido": false,
-        "contato": "81987654321",
+        "contato": "(81) 98765-4321",
         "autor": "Humano"
     },
     {
@@ -56,7 +56,7 @@
         "local": "Depto. Ed. Física",
         "descricao": "Garrafa amarela nike",
         "resolvido": true,
-        "contato": "81987654321",
+        "contato": "(81) 98765-4321",
         "autor": "Humano"
     },
     {
@@ -67,7 +67,7 @@
         "local": "Depto. Biologia/ Química",
         "descricao": "Cpf branco encapado",
         "resolvido": false,
-        "contato": "81991459543",
+        "contato": "(81) 99145-9543",
         "autor": "Henrique",
         "liberado": true,
         "status_final": "Disponível para doação/reciclagem"
@@ -80,7 +80,7 @@
         "local": "Biblioteca Central",
         "descricao": "Garrafa tuperware branca de 500ml",
         "resolvido": false,
-        "contato": "81991459543",
+        "contato": "(81) 99145-9543",
         "autor": "Henrique",
         "liberado": true,
         "status_final": "Disponível para doação/reciclagem"
@@ -93,7 +93,7 @@
         "local": "CEAGRI",
         "descricao": "Carteira marrom com documentos pessoais",
         "resolvido": true,
-        "contato": "81991459543",
+        "contato": "(81) 99145-9543",
         "autor": "Henrique"
     },
     {
@@ -104,7 +104,7 @@
         "local": "Vizinhança",
         "descricao": "Chave enferrujada com formato quadrado",
         "resolvido": false,
-        "contato": "81922334455",
+        "contato": "(81) 92233-4455",
         "autor": "Caio",
         "liberado": true,
         "status_final": "Disponível para doação/reciclagem"
@@ -117,7 +117,7 @@
         "local": "Depto. Ed. Física",
         "descricao": "Garrafa de cor  amarela da marca nike",
         "resolvido": true,
-        "contato": "81912121212",
+        "contato": "(81) 91212-1212",
         "autor": "Cara"
     },
     {
@@ -128,7 +128,7 @@
         "local": "Prédio Central",
         "descricao": "Fone de ouvido branco apple",
         "resolvido": true,
-        "contato": "81922334455",
+        "contato": "(81) 92233-4455",
         "autor": "Caio"
     },
     {
@@ -139,7 +139,7 @@
         "local": "Prédio Central",
         "descricao": "Fone com fio brando da apple ouvido",
         "resolvido": true,
-        "contato": "81912121212",
+        "contato": "(81) 91212-1212",
         "autor": "Cara"
     },
     {
@@ -150,7 +150,7 @@
         "local": "Prédio Central",
         "descricao": "Phone com fio branco da aple olvido",
         "resolvido": true,
-        "contato": "81991459543",
+        "contato": "(81) 99145-9543",
         "autor": "Henrique"
     },
     {
@@ -161,7 +161,7 @@
         "local": "Depto. Ed. Física",
         "descricao": "Garáfa de cor  amaréla da maca naike",
         "resolvido": true,
-        "contato": "81991459543",
+        "contato": "(81) 99145-9543",
         "autor": "Henrique"
     },
     {
@@ -172,7 +172,7 @@
         "local": "Vizinhança",
         "descricao": "Caderno e lapis da faber castel",
         "resolvido": false,
-        "contato": "81991459543",
+        "contato": "(81) 99145-9543",
         "autor": "Henrique"
     },
     {
@@ -183,7 +183,7 @@
         "local": "RU",
         "descricao": "Chave prata com chaveiro do sport",
         "resolvido": false,
-        "contato": "81991459543",
+        "contato": "(81) 99145-9543",
         "autor": "Henrique"
     },
     {
@@ -205,7 +205,7 @@
         "local": "Prédio Central",
         "descricao": "Carteira preta sem nenhum documento e tinha 0 reais",
         "resolvido": false,
-        "contato": "81991459543",
+        "contato": "(81) 99145-9543",
         "autor": "Henrique"
     },
     {
@@ -216,7 +216,7 @@
         "local": "CEGOE",
         "descricao": "Garrafa rosa com canudo stanley",
         "resolvido": false,
-        "contato": "81965439807",
+        "contato": "(81) 96543-9807",
         "autor": "Testador"
     },
     {
@@ -227,7 +227,7 @@
         "local": "Prédio Central",
         "descricao": "Fone branca de ouvido da apple",
         "resolvido": true,
-        "contato": "81965439807",
+        "contato": "(81) 96543-9807",
         "autor": "Testador"
     },
     {
@@ -238,7 +238,7 @@
         "local": "Depto. Ed. Física",
         "descricao": "Camisa de time do sport vermelho e preta",
         "resolvido": false,
-        "contato": "81965439807",
+        "contato": "(81) 96543-9807",
         "autor": "Testador"
     },
     {
@@ -249,7 +249,7 @@
         "local": "CEAGRI",
         "descricao": "Cartao vem estudantil com capa preta",
         "resolvido": false,
-        "contato": "81902568946",
+        "contato": "(81) 90256-8946",
         "autor": "Mirela"
     },
     {
@@ -260,7 +260,62 @@
         "local": "Vizinhança",
         "descricao": "Caderno do estado de vinte  materias",
         "resolvido": false,
-        "contato": "81902568946",
+        "contato": "(81) 90256-8946",
         "autor": "Mirela"
+    },
+    {
+        "id": 28,
+        "data_cadastro": "31/05/2026",
+        "tipo_registro": "Achado",
+        "categoria": "Itens de alimentação",
+        "local": "Depto. Biologia/ Química",
+        "descricao": "Garrafa de agua laranja quinhentos ml tupperware",
+        "resolvido": false,
+        "contato": "(81) 97271-4040",
+        "autor": "Maria"
+    },
+    {
+        "id": 29,
+        "data_cadastro": "31/05/2026",
+        "tipo_registro": "Perdido",
+        "categoria": "Eletrônicos",
+        "local": "Biblioteca Central",
+        "descricao": "Celular samsung com capa azul e tela trincada",
+        "resolvido": true,
+        "contato": "(81) 90867-9805",
+        "autor": "Marcio"
+    },
+    {
+        "id": 30,
+        "data_cadastro": "31/05/2026",
+        "tipo_registro": "Achado",
+        "categoria": "Eletrônicos",
+        "local": "Biblioteca Central",
+        "descricao": "Celular sammsumg com capinha azl e tela trincada",
+        "resolvido": true,
+        "contato": "(81) 96543 9807",
+        "autor": "Testador"
+    },
+    {
+        "id": 31,
+        "data_cadastro": "31/05/2026",
+        "tipo_registro": "Perdido",
+        "categoria": "Materiais acadêmicos",
+        "local": "RU",
+        "descricao": "Guarda chuva preto com apoio quebrado",
+        "resolvido": true,
+        "contato": "(81) 99145-9543",
+        "autor": "Henrique"
+    },
+    {
+        "id": 32,
+        "data_cadastro": "31/05/2026",
+        "tipo_registro": "Achado",
+        "categoria": "Materiais acadêmicos",
+        "local": "RU",
+        "descricao": "Guada xuva preto quebrado o apoio",
+        "resolvido": true,
+        "contato": "(81) 97271-4040",
+        "autor": "Maria"
     }
 ]

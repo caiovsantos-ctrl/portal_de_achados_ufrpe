@@ -23,7 +23,6 @@ class ColetarDadosItens:
             resposta_menu = Validador.verificar_resposta_menu(0, len(categorias))
             if resposta_menu == '0':
                 Acessorio.verificar_escape(resposta_menu)
-                Acessorio.limpar_tela()
                 return None
             return categorias[int(resposta_menu) - 1]
         
@@ -47,7 +46,6 @@ class ColetarDadosItens:
             resposta_local = Validador.verificar_resposta_menu(0, len(locais))
             if resposta_local == '0':
                 Acessorio.verificar_escape(resposta_local)
-                Acessorio.limpar_tela()
                 return None
             return locais[int(resposta_local) - 1]
         
@@ -59,11 +57,14 @@ class ColetarDadosItens:
         """
         while True:
             Acessorio.limpar_tela()
-            print('-' * 50)
-            print('Detalhes do item'.center(50))
-            print('-' * 50)
-            print('\nDigite uma descrição objetiva: ')
-            print('Ex.: Iphone com capinha branca e tela trincada\n')
+            print('═' * 80)
+            print('DETALHES DO ITEM'.center(80))
+            print('═' * 80)
+            print('\n')
+            print('  Digite uma descrição detalhada e clara do item:')
+            print('  OBS.: Foque em características visuais (cores, marcas, adesivos ou avarias)')
+            print('  Ex.: iPhone 12 com tela trincada, capinha branca e adesivo do Batman\n')
+            print('─' * 80)
             descricao = input('=> ')
             descricao = descricao.strip().capitalize()
             if descricao == '0':
