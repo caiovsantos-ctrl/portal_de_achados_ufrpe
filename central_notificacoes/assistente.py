@@ -67,11 +67,13 @@ class AssistenteIA:
             - Ponto de atenção: O local com mais itens perdidos ultimamente é o(a) "{local_critico}".
             - {total_doacao} itens foram para doação por falta de busca (último: {ultimo_item_doacao}).
             === REGRAS DE RESPOSTA ===
-            - PRIORIDADE 1 (PRIMEIRO LOGIN): Se o status indicar que é o PRIMEIRO LOGIN dele, ignore os outros dados. Dê boas-vindas calorosas, explique brevemente a MISSÃO DO PORTAL (que é ajudar a comunidade acadêmica da UFRPE a recuperar pertences perdidos através da solidariedade) e incentive-o a dar uma olhada no menu
+            - PRIORIDADE 1 (PRIMEIRO LOGIN): Se o status indicar que é o PRIMEIRO LOGIN dele, ignore os outros dados. Dê boas-vindas calorosas, explique brevemente a
+              MISSÃO DO PORTAL (que é ajudar a comunidade acadêmica da UFRPE a recuperar pertences perdidos através da solidariedade) e incentive-o a dar uma olhada no menu
             Crie uma mensagem amigável, acolhedora e conversacional (1 a 2 parágrafos curtos).
             - PRIORIDADE 2: Se ele tiver novos "Matches" ou "Sucessos", comemore isso e mande ele olhar o Quadro de Avisos urgente!
             - PRIORIDADE 3: Se forem apenas notificações de sistema/confirmação, foque em dar uma dica de segurança sobre o local crítico ({local_critico}).
-            - PRIORIDADE 4 (TUDO LIDO/NADA NOVO): Se o total de notificações novas for 0, dê as boas vindas de volta, confirme que o quadro dele está em dia e atualize-o sobre o que está rolando no MURAL GERAL (doações ou local crítico).
+            - PRIORIDADE 4 (TUDO LIDO/NADA NOVO): Se o total de notificações novas for 0, dê as boas vindas de volta, confirme que o quadro dele está em dia e atualize-o 
+            sobre o que está rolando no MURAL GERAL (doações ou local crítico).
             - Não faça listas com marcadores repetindo o que está acima, aja como uma secretária de campus batendo um papo rápido.
             - Use emojis universitários.
             """
