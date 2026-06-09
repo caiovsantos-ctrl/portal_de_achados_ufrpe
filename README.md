@@ -28,17 +28,52 @@ Mostra todos os itens cadastrados pelo usuário e possibilita alterar o status d
 •	Privacidade de dados
 A descrição de um item com o status achado é ocultada no mural de itens, o que possibilita maior segurança no ciclo do item e evita falsos donos. 
 
-## Bibliotecas:
-•	Os
+•	Quadro de avisos
+Irá aparecer um quadro que mostrará todas as notifiações das principais atividades do usuário, além dele poder ler ou deletar as notificações.
 
-•	Subprocess
+•	Recibo
+Quando o usuário cadastra o item e acontece o match, após ele dizer que a situação foi resolvida o sistema gera um recibo para a retirada.
+
+•	Painel de Impacto
+Irá aparecer um relatório para o usuário mostrando informações importantes do andamento e da situção do sistema.
+
+•	Sistema de Boas-vindas com uso de API do Gemini
+Após o login irá aparecer uma mensagem personalizada com uso da API do Gemini informando as principais novidades que aconteceram enquanto ele estava fora.
+
+
+
+## Bibliotecas:
+•	Os, Subprocess
 
 •	Json
+Persistência dos dados
 
 •	Textwrap
-Organizar o mural de itens, evitando que a descrição não quebre a formatação.
+Organizar os menus, evitando que o conteúdo não quebre a formatação.
 
-•	Time
+•	Time, Datetime
+Responsável pelas pausas e identificar a data atual
+
+•  Platform
+Compatibilidade no momento de abrir o recibo
+
+• Sys
+Exibição temporalizada da mensagem de boas-vindas 
+
+•  Unicodedata, Difllib, Phonenumbers
+Normalização dos dados
+
+•  Google-genai
+Implementar a API do Gemini
+
+• Collections
+Permite a API analisar o local crítico no arquivo json  
+
+•  Dotenv
+Proteção da chave da API
+
+•  Fpdf2
+Fazer o recibo no formato pdf
 
 
 ## Principais dificuldades:
@@ -50,13 +85,28 @@ Organizar o mural de itens, evitando que a descrição não quebre a formataçã
 
 •	Retorno e parâmetro de funções
 
+•  Conversão para POO
+
+•  Importações circulares
+
+•  Gerar o recibo em pdf
+
+•  Implementar a API do Gemini
+
+
+## Importações necessárias
+
+pip install fpdf2
+pip install google-genai
+pip install python-dotenv
+
 ## Links
 
 Link da Planilha:
 https://docs.google.com/spreadsheets/d/1myEqbO7eCX_OGsQmDMzTTACJum08KHDDSSPvzOUeiec/edit?usp=drivesdk
 
-Link do Fluxograma:
-https://drive.google.com/file/d/1xlWcvnnhI0ZfQU3xtPDnWYeeXmHsPmtY/view?usp=drivesdk
+Link do Artigo:
+file:///C:/Users/joseh/Downloads/Portal_de_Achados_UFRPE.pdf
 
 Link do Vídeo de Caio Vinícius:
 https://youtu.be/4-7x5nZafME
