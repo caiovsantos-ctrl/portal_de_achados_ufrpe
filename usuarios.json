@@ -114,5 +114,11 @@
         "email": "vinicius@ufrpe.br",
         "senha": "445566",
         "Whatsapp": "(81) 96453-0862"
+    },
+    {
+        "nome": "Edseu",
+        "email": "edseu1@ufrpe.br",
+        "senha": "112233",
+        "Whatsapp": "(81) 90876-3573"
     }
 ]

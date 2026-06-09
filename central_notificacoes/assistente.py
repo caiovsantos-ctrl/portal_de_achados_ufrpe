@@ -78,10 +78,16 @@ class AssistenteIA:
             - Use emojis universitários.
             """
             client = genai.Client(api_key=API_KEY)
-            resposta = client.models.generate_content(
-                model='gemini-2.5-flash',
-                contents=prompt,
-            )
+            try:
+                resposta = client.models.generate_content(
+                    model='gemini-2.5-flash',
+                    contents=prompt,
+                )
+            except Exception:
+                resposta = client.models.generate_content(
+                    model='gemini-1.5-flash',
+                    contents=prompt,
+                )
             return f'\n🤖 [Assistente UFRPE]:\n{resposta.text}'
         except Exception as e:
-            return f'\n👋 Olá, {dono_id}! Bem-vindo de volta ao Portal de Achados e Perdidos da UFRPE. Confira suas notificações no menu correspondente.'
+            return f'\n👋{e} Olá, {dono_id}! Bem-vindo de volta ao Portal de Achados e Perdidos da UFRPE. Confira suas notificações no menu correspondente.'

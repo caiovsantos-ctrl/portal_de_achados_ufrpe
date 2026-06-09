@@ -263,6 +263,14 @@
             "mensagem": "Você visualizou e abriu com sucesso o recibo em PDF do Match da categoria 'Materiais acadêmicos'.",
             "lida": false,
             "data_criacao": "04/06/2026"
+        },
+        {
+            "id_notificacao": 34,
+            "dono_id": "Edseu",
+            "tipo": "SISTEMA",
+            "mensagem": "Olá, Edseu! Seja muito bem-vindo(a) ao Portal de Achados e Perdidos da UFRPE. Explore o sistema para cadastrar itens ou verificar correspondências!",
+            "lida": false,
+            "data_criacao": "09/06/2026"
         }
     ]
 }
