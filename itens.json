@@ -317,5 +317,27 @@
         "resolvido": true,
         "contato": "(81) 97271-4040",
         "autor": "Maria"
+    },
+    {
+        "id": 33,
+        "data_cadastro": "04/06/2026",
+        "tipo_registro": "Achado",
+        "categoria": "Materiais acadêmicos",
+        "local": "Biblioteca Central",
+        "descricao": "Estojo listrado vermelho e preto com varias canetas dentro",
+        "resolvido": true,
+        "contato": "(81) 96453-0862",
+        "autor": "Vinícius"
+    },
+    {
+        "id": 34,
+        "data_cadastro": "04/06/2026",
+        "tipo_registro": "Perdido",
+        "categoria": "Materiais acadêmicos",
+        "local": "Biblioteca Central",
+        "descricao": "Estogo bistrado chei de caneta",
+        "resolvido": true,
+        "contato": "(81) 90853-2685",
+        "autor": "Valéria"
     }
 ]

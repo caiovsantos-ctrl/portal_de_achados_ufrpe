@@ -131,7 +131,7 @@ class QuadroDeAvisos:
                     return
             else:
                 for i, notif in enumerate(notificacoes, 1):
-                    icone = '📁' if notif['lida'] else '📂' 
+                    icone = '📖' if notif['lida'] else '📘' 
                     data_notif = notif.get('data_criacao', '##/##/####')
                     resumo = textwrap.shorten(
                         notif['mensagem'],

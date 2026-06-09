@@ -108,5 +108,11 @@
         "email": "córoa123@ufrpe.br",
         "senha": "102938",
         "Whatsapp": "(81) 90253-8571"
+    },
+    {
+        "nome": "Vinícius",
+        "email": "vinicius@ufrpe.br",
+        "senha": "445566",
+        "Whatsapp": "(81) 96453-0862"
     }
 ]

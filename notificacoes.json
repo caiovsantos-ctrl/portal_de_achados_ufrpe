@@ -199,6 +199,70 @@
             "mensagem": "Olá, Côroa! Seja muito bem-vindo(a) ao Portal de Achados e Perdidos da UFRPE. Explore o sistema para cadastrar itens ou verificar correspondências!",
             "lida": false,
             "data_criacao": "31/05/2026"
+        },
+        {
+            "id_notificacao": 26,
+            "dono_id": "Vinícius",
+            "tipo": "SISTEMA",
+            "mensagem": "Olá, Vinícius! Seja muito bem-vindo(a) ao Portal de Achados e Perdidos da UFRPE. Explore o sistema para cadastrar itens ou verificar correspondências!",
+            "lida": false,
+            "data_criacao": "04/06/2026"
+        },
+        {
+            "id_notificacao": 27,
+            "dono_id": "Vinícius",
+            "tipo": "CONFIRMAÇÃO",
+            "mensagem": "Você cadastrou um item (Materiais acadêmicos) no(a) Biblioteca Central",
+            "lida": false,
+            "data_criacao": "04/06/2026"
+        },
+        {
+            "id_notificacao": 28,
+            "dono_id": "Valéria",
+            "tipo": "CONFIRMAÇÃO",
+            "mensagem": "Você cadastrou um item (Materiais acadêmicos) no(a) Biblioteca Central",
+            "lida": false,
+            "data_criacao": "04/06/2026"
+        },
+        {
+            "id_notificacao": 29,
+            "dono_id": "Vinícius",
+            "tipo": "MATCH",
+            "mensagem": "O usuário Valéria cadastrou um item (Materiais acadêmicos) no(a) Biblioteca Central que coincide com o seu!",
+            "lida": false,
+            "data_criacao": "04/06/2026"
+        },
+        {
+            "id_notificacao": 30,
+            "dono_id": "Valéria",
+            "tipo": "MATCH",
+            "mensagem": "O sistema encontrou um match para o seu item (Materiais acadêmicos) com o usuário Vinícius!",
+            "lida": false,
+            "data_criacao": "04/06/2026"
+        },
+        {
+            "id_notificacao": 31,
+            "dono_id": "Vinícius",
+            "tipo": "SUCESSO",
+            "mensagem": "Seu item (Materiais acadêmicos) foi marcado como devolvido/resolvido com sucesso em conjunto com Valéria!",
+            "lida": false,
+            "data_criacao": "04/06/2026"
+        },
+        {
+            "id_notificacao": 32,
+            "dono_id": "Valéria",
+            "tipo": "SUCESSO",
+            "mensagem": "Você marcou o item (Materiais acadêmicos) como resolvido em conjunto com Vinícius!",
+            "lida": false,
+            "data_criacao": "04/06/2026"
+        },
+        {
+            "id_notificacao": 33,
+            "dono_id": "Valéria",
+            "tipo": "HISTORICO",
+            "mensagem": "Você visualizou e abriu com sucesso o recibo em PDF do Match da categoria 'Materiais acadêmicos'.",
+            "lida": false,
+            "data_criacao": "04/06/2026"
         }
     ]
 }
