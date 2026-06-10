@@ -126,6 +126,4 @@ Link do Vídeo de Caio Vinícius:
 https://youtu.be/_B8-QdGjztg
 
 Link do Vídeo de Carlos Henrique:
-https://youtu.be/GcJab5rmTjw
-Link do Vídeo de Carlos Henrique:
-https://youtu.be/V0VnSVOsZy0
+https://youtu.be/GcJab5rmTjw 
