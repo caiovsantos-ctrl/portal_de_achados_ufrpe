@@ -45,34 +45,34 @@ Após o login irá aparecer uma mensagem personalizada com uso da API do Gemini 
 ## Bibliotecas:
 •	Os, Subprocess
 
-•	Json
+•	Json:
 Persistência dos dados
 
-•	Textwrap
+•	Textwrap:
 Organizar os menus, evitando que o conteúdo não quebre a formatação.
 
-•	Time, Datetime
+•	Time, Datetime:
 Responsável pelas pausas e identificar a data atual
 
-•  Platform
+•  Platform:
 Compatibilidade no momento de abrir o recibo
 
-• Sys
+• Sys:
 Exibição temporalizada da mensagem de boas-vindas 
 
-•  Unicodedata, Difllib, Phonenumbers
+•  Unicodedata, Difllib, Phonenumbers:
 Normalização dos dados
 
-•  Google-genai
+•  Google-genai:
 Implementar a API do Gemini
 
-• Collections
+• Collections:
 Permite a API analisar o local crítico no arquivo json  
 
-•  Dotenv
+•  Dotenv:
 Proteção da chave da API
 
-•  Fpdf2
+•  Fpdf2:
 Fazer o recibo no formato pdf
 
 
@@ -97,7 +97,9 @@ Fazer o recibo no formato pdf
 ## Importações necessárias
 
 pip install fpdf2
+
 pip install google-genai
+
 pip install python-dotenv
 
 ## Links
@@ -106,10 +108,12 @@ Link da Planilha:
 https://docs.google.com/spreadsheets/d/1myEqbO7eCX_OGsQmDMzTTACJum08KHDDSSPvzOUeiec/edit?usp=drivesdk
 
 Link do Artigo:
-file:///C:/Users/joseh/Downloads/Portal_de_Achados_UFRPE.pdf
+https://drive.google.com/file/d/12p0SUaHRK-updm0wrc3O9CvurfkHVH7H/view?usp=drivesdk
 
 Link do Vídeo de Caio Vinícius:
-https://youtu.be/4-7x5nZafME
+https://youtu.be/_B8-QdGjztg
 
+Link do Vídeo de Carlos Henrique:
+https://youtu.be/GcJab5rmTjw
 Link do Vídeo de Carlos Henrique:
 https://youtu.be/V0VnSVOsZy0
