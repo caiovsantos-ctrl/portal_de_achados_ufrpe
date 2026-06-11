@@ -237,7 +237,7 @@
         "categoria": "Vestuários",
         "local": "Depto. Ed. Física",
         "descricao": "Camisa de time do sport vermelho e preta",
-        "resolvido": false,
+        "resolvido": true,
         "contato": "(81) 96543-9807",
         "autor": "Testador"
     },
@@ -339,5 +339,16 @@
         "resolvido": true,
         "contato": "(81) 90853-2685",
         "autor": "Valéria"
+    },
+    {
+        "id": 35,
+        "data_cadastro": "10/06/2026",
+        "tipo_registro": "Perdido",
+        "categoria": "Vestuários",
+        "local": "Depto. Ed. Física",
+        "descricao": "Camiza preto vermelha do sport",
+        "resolvido": true,
+        "contato": "(81) 99145-9543",
+        "autor": "Henrique"
     }
 ]

@@ -2,6 +2,13 @@ from validacoes import Validador
 from data_base import DataBase
 from interface import Acessorio
 from .motores import DoacaoReciclagem
+from rich.console import Console
+from rich.table import Table
+from rich.panel import Panel
+from rich.align import Align
+from rich import box
+
+console = Console()
 
 class Historico:
     """ Gerencia a exibição do histórico do usuário e as ações de atualizar ou deletar um item """
@@ -32,32 +39,62 @@ class Historico:
         -> Mostra o histórico do usuário
         :param user_logado: (obj) Objeto que representa os dados do usuário 
         """ 
-        print('Seu Histórico:\n\n'.center(95))
+        Acessorio.limpar_tela()
         contato_user = user_logado.Whatsapp
         meus_itens = DataBase.buscar_itens_por_usuario(contato_user)
         if not meus_itens:
-            print('-' * 95)
-            print('\nVocê não possui nenhum item cadastrado')
-            print('Cadastre um item e volte aqui novamente!\n')
-            print('-' * 95)
+            conteudo_vazio = (
+                "[bold]Você não possui nenhum item cadastrado.[/bold]\n\n"
+                "Cadastre um item e volte aqui novamente!"
+            )
+            painel_vazio = Panel(
+                conteudo_vazio,
+                title="[bold]SEU HISTÓRICO[/bold]",
+                border_style="dim",
+                width=70,
+                justify="center"
+            )
+            console.print(Align.center(painel_vazio))
+            print()
             sair = Validador.aguardar_retorno()
             if sair:
                 return
-        print(f"{'ID':<4} | {'DATA':<10} | {'TIPO':<7} | {'STATUS':<10} | {'CATEGORIA':<25} | {'LOCAL'}")
-        print('-' * 95)
+            return           
+        tabela = Table(
+            title="[bold]SEU HISTÓRICO DE CADASTROS[/bold]",
+            box=box.ROUNDED,
+            width=85,
+            show_header=True,
+            header_style="bold",
+            show_lines=True  
+        )
+        tabela.add_column("ID", justify="center", width=6)
+        tabela.add_column("Data", justify="center", width=12)
+        tabela.add_column("Tipo", justify="center", width=10)
+        tabela.add_column("Status", justify="center", width=14)
+        tabela.add_column("Categoria", justify="left")
+        tabela.add_column("Local", justify="left")
         for item in meus_itens:
             data = item.get("data_cadastro", "00/00/00")
-            tipo = "Achei" if item["tipo_registro"] == "Achado" else "Perdi"
+            tipo = "Achei" if item["tipo_registro"] == "Achado" else "Perdi"          
             if item["resolvido"]:
                 status_texto = 'RESOLVIDO'
-            elif  item.get("liberado"):
+            elif item.get("liberado"):
                 status_texto = 'P/ DOAÇÃO'  
             else:
-                status_texto = 'ATIVO'
-            print(f'{item["id"]:<4} | {data:<10} | {tipo:<7} | {status_texto:<10} | {item["categoria"]:<25} | {item["local"]}')
-            print('-' * 95)
-        return meus_itens   
-    
+                status_texto = 'ATIVO'              
+            id_formatado = f"{item['id']:02d}"           
+            tabela.add_row(
+                id_formatado, 
+                data, 
+                tipo, 
+                status_texto, 
+                item["categoria"], 
+                item["local"]
+            )
+        console.print(Align.center(tabela))
+        print("\n") 
+        return meus_itens 
     
     @staticmethod
     def exibir_menu_acoes_historico(meus_itens): 

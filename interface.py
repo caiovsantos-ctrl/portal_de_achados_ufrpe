@@ -1,5 +1,10 @@
 import subprocess, os
 from time import sleep
+from rich.console import Console
+from rich import box
+from rich.table import Table
+
+console = Console()
 
 
 class Acessorio:
@@ -12,21 +17,31 @@ class Acessorio:
         :param lista_opcoes: (str) Opções do menu 
         :param largura: (str) Espaço horizontal que o menu ocupa 
         """
-        print("=" * largura)
-        print("=====" + titulo.center(largura - 10) + "=====")
-        print("=" * largura)
-        print("")
+        tabela = Table(
+            title=f"[bold]{titulo}[/bold]",
+            width=largura,
+            box=box.ROUNDED,
+            show_header=True,
+            header_style="bold"
+        )
+        tabela.add_column("Atalho", justify="center", no_wrap=True, width=14)
+        tabela.add_column("Ação", justify="left", no_wrap=True)
         for opcao in lista_opcoes:
-            print(f"  {opcao}")
-        print("") 
-        print("=" * largura)
+            if "]" in opcao:
+                partes = opcao.split("]", 1)
+                tecla = partes[0].strip() + "] ->"
+                acao = partes[1].replace("->", "").replace("→", "").strip()               
+                tabela.add_row(tecla, acao)
+            else:
+                tabela.add_row("-", opcao.strip())     
+        console.print(tabela)
+        print()
 
     @staticmethod
     def limpar_tela():
         sleep(1.5)
         comando  = 'cls' if os.name == 'nt' else 'clear'
         subprocess.run(comando, shell=True)
-
 
     @staticmethod
     def verificar_escape(modelo):

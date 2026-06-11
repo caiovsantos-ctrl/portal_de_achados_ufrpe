@@ -2,6 +2,13 @@ import json, os, textwrap
 from datetime import datetime
 from interface import Acessorio
 from validacoes import Validador
+from rich.console import Console
+from rich.table import Table
+from rich.panel import Panel
+from rich.align import Align
+from rich import box
+
+console = Console()
 
 
 class Notificacoes:
@@ -91,19 +98,20 @@ class Notificacoes:
         :param notificacao: (dict) O dicionário da notificação selecionada pelo usuário
         """
         Acessorio.limpar_tela()
-        texto_formatado = textwrap.fill(
-            notificacao['mensagem'],
-            width = 54,
-            initial_indent='   ',
-            subsequent_indent='   '
+        print("\n")
+        tipo_msg = notificacao["tipo"].upper()
+        data_msg = notificacao.get("data_criacao", "##/##/####")
+        corpo_mensagem = f"\n{notificacao['mensagem']}\n"
+        painel_leitura = Panel(
+            corpo_mensagem,
+            title=f"[bold]MENSAGEM: {tipo_msg}[/bold]",
+            subtitle=f"[dim]Data: {data_msg}[/dim]",
+            box=box.ROUNDED,
+            width=65,
+            padding=(0, 3) 
         )
-        print('\n')
-        print('═'*60)
-        print(f'MENSAGEM: {notificacao["tipo"]} | DATA: {notificacao["data_criacao"]}'.center(60))
-        print('═'*60)
-        print('\n')
-        print(f'{texto_formatado}\n')
-        print('═'*60)
+        console.print(Align.center(painel_leitura))
+        print("\n")
         if not notificacao["lida"]:
             Notificacoes.marcar_lida(notificacao['id_notificacao'])
 
@@ -119,32 +127,68 @@ class QuadroDeAvisos:
         while True:
             notificacoes = Notificacoes.buscar_notificacoes(dono_id)
             Acessorio.limpar_tela()
-            print('\n')
-            print('=' * 60)
-            print(f'QUADRO DE AVISOS - {dono_id}'.center(60))
-            print('=' * 60)
             if not notificacoes:
-                print('\n\n     Seu Quadro está vazio\n')
-                print('-' * 60)
+                conteudo_vazio = (
+                    "[bold]Seu Quadro de Avisos está vazio.[/bold]\n\n"
+                    "Nenhuma notificação encontrada no momento."
+                )
+                painel_vazio = Panel(
+                    conteudo_vazio,
+                    title=f"[bold]QUADRO DE AVISOS - {dono_id}[/bold]",
+                    border_style="dim",
+                    width=75,
+                    justify="center"
+                )
+                console.print(Align.center(painel_vazio))
+                print()
                 sair = Validador.aguardar_retorno()
                 if sair:
                     return
             else:
-                for i, notif in enumerate(notificacoes, 1):
-                    icone = '📖' if notif['lida'] else '📘' 
+                tabela = Table(
+                    title=f"[bold]QUADRO DE AVISOS - {dono_id}[/bold]",
+                    box=box.ROUNDED,
+                    width=75,
+                    show_header=True,
+                    header_style="bold",
+                    show_lines=True
+                )
+                tabela.add_column("ID", justify="center", width=6)
+                tabela.add_column("Data", justify="center", width=12)
+                tabela.add_column("Status", justify="center", width=10)
+                tabela.add_column("Tipo", justify="left", width=15)
+                tabela.add_column("Mensagem (Resumo)", justify="left")
+                
+                for notif in notificacoes:
+                    icone = '📖 Lida' if notif['lida'] else '📘 Nova'
                     data_notif = notif.get('data_criacao', '##/##/####')
                     resumo = textwrap.shorten(
                         notif['mensagem'],
-                        width = 24,
-                        placeholder = '...'
+                        width=30,
+                        placeholder='...'
                     )
-                    print(f' [{notif["id_notificacao"]}] [{data_notif}] {icone} - {notif["tipo"]}: {resumo}')
-                print('\n')
-                print('─'*60)
-                print("\nO que deseja fazer?")
-                print("1. Ler notificação")
-                print("2. Deletar notificação")
-                print("0. Voltar")
+                    tabela.add_row(
+                        str(notif["id_notificacao"]),
+                        data_notif,
+                        icone,
+                        notif["tipo"],
+                        resumo
+                    )
+                console.print(Align.center(tabela))
+                print()
+                menu_grid = Table.grid(expand=False)
+                menu_grid.add_column("Opção", justify="left")
+                menu_grid.add_row(" [bold][1][/bold] → Ler notificação")
+                menu_grid.add_row(" [bold][2][/bold] → Deletar notificação")
+                menu_grid.add_row(" [bold][0][/bold] → Voltar")             
+                painel_menu = Panel(
+                    Align.center(menu_grid),
+                    title="[bold dim]O que deseja fazer?[/bold dim]",
+                    box=box.ROUNDED,
+                    width=45
+                )
+                console.print(Align.center(painel_menu))
+                print()
                 resposta = Validador.verificar_resposta_menu(0,2)
                 if resposta == '0':
                     Acessorio.verificar_escape(resposta)

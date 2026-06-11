@@ -1,10 +1,16 @@
-import json, os, textwrap
+import json, os
 from interface import Acessorio
 from validacoes import Validador
 from data_base import DataBase
 from servicos import MotorDeBusca, Recibo
 from .coleta import ColetarDadosItens
 from .modelo import Item
+from rich.console import Console
+from rich.panel import Panel
+from rich.align import Align
+from rich import box
+
+console = Console()
 
 
 class CadastrarItem:
@@ -130,22 +136,23 @@ class CadastrarItem:
             contato_formatado = m.get("contato") or "Não informado"
             autor_formatado = m.get("autor") or "Anônimo"
             desc_formatada = m.get("descricao") or "Sem descrição adicional."
-            texto_desc = desc_formatada
-            desc_formatar = textwrap.fill(
-                        texto_desc,
-                        width=46,
-                        subsequent_indent='                '
-                    )
-            print('=' * 60)
-            print(f'\033[1mMATCH ENCONTRADO - ID: {m["id"]:02d}\033[m'.center(60))
-            print('─' * 60)
-            print(f'    \033[1mItem:\033[m      {m["categoria"]} no(a) {m["local"]}')
-            print(f'    \033[1mDescrição:\033[m {desc_formatar}')
-            print(f'    \033[1mAutor:\033[m     {autor_formatado}')
-            print(f'    \033[1mContato:\033[m   {contato_formatado}')
-            print('─' * 60)
-            print('    \033[3mChame no Whatsapp agora para combinar a retirada!\033[m')
-            print('=' * 60)
+            corpo_card = (
+                f"[bold]Item:[/bold]      {m['categoria']} no(a) {m['local']}\n"
+                f"[bold]Descrição:[/bold] {desc_formatada}\n"
+                f"[bold]Autor:[/bold]     {autor_formatado}\n"
+                f"[bold]Contato:[/bold]   {contato_formatado}\n\n"
+                f"--- \n" 
+                f"💬 [italic]Chame no Whatsapp agora para combinar a retirada![/italic]"
+            )
+            card_match = Panel(
+                corpo_card,
+                title=f"[bold]MATCH ENCONTRADO - ID: {m['id']:02d}[/bold]",
+                box=box.ROUNDED,
+                width=65,
+                padding=(1, 3)
+            )
+            console.print(Align.center(card_match))
+            print('\n')
             confirmar = Acessorio.tentar_novamente(mensagem='\nEste item resolveu seu problema? [S/N] ')
             if confirmar == 'S':
                 id_match = int(m["id"])

@@ -271,6 +271,54 @@
             "mensagem": "Olá, Edseu! Seja muito bem-vindo(a) ao Portal de Achados e Perdidos da UFRPE. Explore o sistema para cadastrar itens ou verificar correspondências!",
             "lida": false,
             "data_criacao": "09/06/2026"
+        },
+        {
+            "id_notificacao": 35,
+            "dono_id": "Henrique",
+            "tipo": "CONFIRMAÇÃO",
+            "mensagem": "Você cadastrou um item (Vestuários) no(a) Depto. Ed. Física",
+            "lida": false,
+            "data_criacao": "10/06/2026"
+        },
+        {
+            "id_notificacao": 36,
+            "dono_id": "Testador",
+            "tipo": "MATCH",
+            "mensagem": "O usuário Henrique cadastrou um item (Vestuários) no(a) Depto. Ed. Física que coincide com o seu!",
+            "lida": false,
+            "data_criacao": "10/06/2026"
+        },
+        {
+            "id_notificacao": 37,
+            "dono_id": "Henrique",
+            "tipo": "MATCH",
+            "mensagem": "O sistema encontrou um match para o seu item (Vestuários) com o usuário Testador!",
+            "lida": false,
+            "data_criacao": "10/06/2026"
+        },
+        {
+            "id_notificacao": 38,
+            "dono_id": "Testador",
+            "tipo": "SUCESSO",
+            "mensagem": "Seu item (Vestuários) foi marcado como devolvido/resolvido com sucesso em conjunto com Henrique!",
+            "lida": false,
+            "data_criacao": "10/06/2026"
+        },
+        {
+            "id_notificacao": 39,
+            "dono_id": "Henrique",
+            "tipo": "SUCESSO",
+            "mensagem": "Você marcou o item (Vestuários) como resolvido em conjunto com Testador!",
+            "lida": false,
+            "data_criacao": "10/06/2026"
+        },
+        {
+            "id_notificacao": 40,
+            "dono_id": "Henrique",
+            "tipo": "HISTORICO",
+            "mensagem": "Você visualizou e abriu com sucesso o recibo em PDF do Match da categoria 'Vestuários'.",
+            "lida": false,
+            "data_criacao": "10/06/2026"
         }
     ]
 }

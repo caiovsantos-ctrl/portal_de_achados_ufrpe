@@ -1,5 +1,9 @@
 from interface import Acessorio
 from validacoes import Validador
+from rich.console import Console
+from rich.rule import Rule
+
+console = Console()
 
 
 class ColetarDadosItens:
@@ -57,14 +61,14 @@ class ColetarDadosItens:
         """
         while True:
             Acessorio.limpar_tela()
-            print('═' * 80)
-            print('DETALHES DO ITEM'.center(80))
-            print('═' * 80)
             print('\n')
-            print('  Digite uma descrição detalhada e clara do item:')
-            print('  OBS.: Foque em características visuais (cores, marcas, adesivos ou avarias)')
-            print('  Ex.: iPhone 12 com tela trincada, capinha branca e adesivo do Batman\n')
-            print('─' * 80)
+            console.print(Rule("[bold]DETALHES DO ITEM[/bold]", characters="═", style="bold"))
+            print('\n')
+            console.print("  [bold]Digite uma descrição detalhada e clara do item:[/bold]")
+            console.print("  OBS.: Foque em características visuais (cores, marcas, adesivos ou avarias)")
+            console.print("  [dim]Ex.: iPhone 12 com tela trincada, capinha branca e adesivo do Batman[/dim]\n")
+            console.print(Rule(style="dim"))
+            print('\n')
             descricao = input('=> ')
             descricao = descricao.strip().capitalize()
             if descricao == '0':

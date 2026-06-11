@@ -1,10 +1,17 @@
-import textwrap, time, sys
+import time
 from time import sleep
 from interface import Acessorio
 from validacoes import Validador
 from data_base import DataBase
 from central_notificacoes import AssistenteIA
 from .modelo import Usuario
+from rich.console import Console
+from rich.panel import Panel
+from rich.align import Align
+from rich.live import Live
+from rich import box
+
+console = Console()
 
 
 class CadastroUsuario:
@@ -14,12 +21,20 @@ class CadastroUsuario:
         """Coleta os dados e salva o novo usuário no arquivo json"""
         print('\033[0;32mCadastro selecionado\033[m\n')
         Acessorio.limpar_tela()
-        print('=' * 50)
-        print('=====' + ' NOVO CADASTRO - UFRPE '.center(40) + '=====')
-        print('=' * 50)
-        print('\n     Crie sua conta para acessar o portal')
-        print('  (Digite 0 a qualquer momento para cancelar)\n')
-        print('=' * 50)
+        print('\n')
+        texto_instrucao = (
+            "[bold]Crie sua conta para acessar o portal[/bold]\n"
+            "[dim](Digite 0 a qualquer momento para cancelar)[/dim]"
+        )
+        painel_cadastro = Panel(
+            Align.center(texto_instrucao),
+            title="[bold]NOVO CADASTRO - UFRPE[/bold]",
+            box=box.ROUNDED,
+            width=60,
+            padding=(1, 2)
+        )
+        console.print(Align.center(painel_cadastro))
+        print('\n')
         sleep(2)
         nome_cadastro = Validador.validar_nome()
         if nome_cadastro is None:
@@ -76,12 +91,20 @@ class LoginUsuario:
         print('\033[0;32mLogin selecionado\033[m')
         while True:
             Acessorio.limpar_tela()
-            print('-' * 50)
-            print('=====' + ' ACESSO AO PORTAL UFRPE '.center(40) + '=====')
-            print('=' * 50)
-            print('\n     Por favor, preencha suas credenciais:')
-            print('  (Digite 0 a qualquer momento para cancelar)\n')
-            print('-' * 50)
+            print('\n') 
+            texto_instrucao = (
+                "[bold]Por favor, preencha suas credenciais:[/bold]\n"
+                "[dim](Digite 0 a qualquer momento para cancelar)[/dim]"
+            )
+            painel_login = Panel(
+                Align.center(texto_instrucao),
+                title="[bold]ACESSO AO PORTAL UFRPE[/bold]",
+                box=box.ROUNDED,
+                width=60,
+                padding=(1, 2)
+            )
+            console.print(Align.center(painel_login))
+            print('\n')
             sleep(2)
             email_login = Validador.validar_email()
             if email_login is None:
@@ -95,23 +118,21 @@ class LoginUsuario:
                     print(f'\n\033[0;32mLogin bem-sucedido!\033[m \nÉ um prazer te ver novamente, {user["nome"]}!')
                     Acessorio.limpar_tela()
                     aviso = AssistenteIA.boas_vindas(user['nome'])
-                    print('=' * 95)
-                    print('Notificações:'.center(95))
-                    print('=' * 95)
-                    texto_formatado = textwrap.fill(
-                        aviso,
-                        width=85,
-                        initial_indent='     ',
-                        subsequent_indent='     '
-                    )
                     print('\n')
-                    for letra in texto_formatado:
-                        sys.stdout.write(letra)
-                        sys.stdout.flush()
-                        time.sleep(0.01)
+                    texto_atual = ""
+                    with Live(console=console, refresh_per_second=60) as tela_animada:                       
+                        for letra in aviso:
+                            texto_atual += letra
+                            painel = Panel(
+                                texto_atual,
+                                title="[bold]NOTIFICAÇÕES[/bold]",
+                                box=box.ROUNDED,
+                                width=85,
+                                padding=(1, 3)
+                            )                           
+                            tela_animada.update(Align.center(painel))
+                            time.sleep(0.01)                          
                     print('\n\n')
-                    print('═' * 95)
-                    print('\n')
                     continuar = Validador.aguardar_retorno('Digite 0 para continuar: ')
                     if continuar:
                         pass

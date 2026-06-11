@@ -1,10 +1,18 @@
-import textwrap, os, json
+import os, json
 from validacoes import Validador
 from data_base import DataBase
 from interface import Acessorio
 from .motores import DoacaoReciclagem
 from .historico import Historico
 from datetime import datetime, timedelta
+from rich.console import Console, Group
+from rich.panel import Panel
+from rich.table import Table
+from rich import box
+from rich.align import Align
+from rich.rule import Rule
+
+console = Console()
 
 
 class MenuServicos:
@@ -77,14 +85,13 @@ class MuralDeItens:
         """ Mostra o mural de itens """
         DoacaoReciclagem.processar_temporalidade()
         Acessorio.limpar_tela()
-        #print('Mural de Itens:\n\n'.center(70))
-        titulo = 'Mural de Itens'
+        titulo = 'MURAL DE ITENS'
         if filtro_cat:
             titulo += f' - Categoria: {filtro_cat}'
         if filtro_loc:
-            titulo += f' - Categoria: {filtro_loc}'
-        print(f'{titulo}:\n\n'.center(70))
-        print('-' * 70)
+            titulo += f' - Local: {filtro_loc}'
+        console.rule(f"[bold]{titulo}[/bold]", characters="=")
+        print()
         todos_itens = DataBase.buscar_todos_itens()
         itens_ativos = [i for i in todos_itens if not i.get("resolvido", False)]
         if filtro_cat:
@@ -92,16 +99,14 @@ class MuralDeItens:
         if filtro_loc:
             itens_ativos = [i for i in itens_ativos if i.get("local") == filtro_loc]
         if not itens_ativos:
-            print('\nO Mural está vazio no momento')
+            painel_vazio = Panel("O Mural está vazio no momento.", border_style="dim", width=70)
+            console.print(painel_vazio)
         else:
             for item in itens_ativos:
                 tipo_bruto = item["tipo_registro"]
                 liberado = item.get("liberado", False)
-                tipo = 'Achei' if item["tipo_registro"] == 'Achado' else 'Perdi'
+                tipo = 'Achei' if tipo_bruto == 'Achado' else 'Perdi'
                 data = item.get("data_cadastro", '00/00/0000')
-                print(f'ID: {item["id"]:02d} | {tipo} | {data} | {item["local"]}')
-                print(f'Postado por: {item.get("autor", "Usuário")}')
-                print(f'Categoria: {item["categoria"]}')
                 if tipo_bruto == 'Achado':
                     if liberado:
                         texto_desc = f'Item liberado para doação/reciclagem: {item["descricao"]}'
@@ -109,18 +114,26 @@ class MuralDeItens:
                         texto_desc = 'Para manter a transparência, a descrição está oculta'
                 else:
                     texto_desc = item["descricao"]
-                descricao_formatada = textwrap.fill(
-                    texto_desc,
-                    width=65,
-                    initial_indent= 'Descrição: ',
-                    subsequent_indent='           '
+                tabela_info = Table.grid(padding=(0, 1))
+                tabela_info.add_column("Chave", style="bold", justify="right")
+                tabela_info.add_column("Valor", justify="left", overflow="fold")               
+                tabela_info.add_row("Postado por:", item.get("autor", "Usuário"))
+                tabela_info.add_row("Categoria:", item["categoria"])
+                tabela_info.add_row("Descrição:", texto_desc)
+                tabela_info.add_row("Contato:", item["contato"])
+                cabecalho = f"ID: {item['id']:02d} | {tipo} | {data} | {item['local']}"
+                cartao = Panel(
+                    tabela_info,
+                    title=f"[bold]{cabecalho}[/bold]",
+                    title_align="left",
+                    box=box.ROUNDED,
+                    width=70
                 )
-                print(descricao_formatada)
-                print(f'Contato: {item["contato"]}\n')
-                print('-' * 70)
-            sair = Validador.aguardar_retorno()
-            if sair:
-                return
+                console.print(cartao)
+                print()         
+        sair = Validador.aguardar_retorno()
+        if sair:
+            return
 
 
 class MapaDeCalor:
@@ -129,22 +142,36 @@ class MapaDeCalor:
     def exibir_mapa_de_calor():
         """ Mostra o mapa de calor dos itens """
         Acessorio.limpar_tela()
-        print('Mapa de Calor: \n\n'.center(60))
         todos_itens = DataBase.buscar_todos_itens()
+        
         if not todos_itens:
-            print('Não há dados suficientes para gerar o Mapa de Calor')
+            painel_vazio = Panel(
+                "Não há dados suficientes para gerar o Mapa de Calor.", 
+                border_style="dim", 
+                width=70
+            )
+            console.print(Align.center(painel_vazio))
         else:
+            tabela = Table(
+                title="[bold]MAPA DE CALOR - INCIDÊNCIA POR LOCAL[/bold]",
+                box=box.ROUNDED,
+                width=70,
+                show_header=True,
+                header_style="bold"
+            )
+            tabela.add_column("Local", justify="left", style="bold")
+            tabela.add_column("Intensidade (Frequência)", justify="left")
+            tabela.add_column("Total", justify="right")
             contagem = {}
             for item in todos_itens:
                 local = item.get("local", "Desconhecido")
-                contagem[local] = contagem.get(local, 0) + 1
+                contagem[local] = contagem.get(local, 0) + 1                
             locais_ordenados = sorted(contagem.items(), key=lambda x: x[1], reverse=True)
-            print(f"\n{'LOCAL':<25} | {'INTENSIDADE':<20} | {'TOTAL'}")
-            print("-" * 60)
             for local, total in locais_ordenados:
                 barra = '■' * total
-                print(f"{local:<25} | {barra:<20} | {total} itens")
-            print("\n" + "="*60)
+                tabela.add_row(local, barra, f"{total} itens")
+            console.print(Align.center(tabela))           
+        print()
         sair = Validador.aguardar_retorno()
         if sair:
             return
@@ -211,31 +238,48 @@ class PainelImpacto:
         """ Exibe o Painel de Impacto"""
         Acessorio.limpar_tela()
         estatisticas = PainelImpacto.obter_estatisticas()
-        print('=' * 60)
-        print('=====' + 'PAINEL DE IMPACTO SOCIOAMBIENTAL'.center(50) + '=====')
-        print('=' * 60)
-        print('\n  CASOS SOLUCIONADOS POR PERÍODO:')
-        print(f'   ↳ Esta Semana:     {estatisticas["resolvidos_semana"]} itens ')
-        print(f'   ↳ Este Mês:        {estatisticas["resolvidos_mes"]} itens ')
-        print(f'   ↳ Este Ano:        {estatisticas["resolvidos_ano"]} itens')
-        print('─' * 60)
-        print('  IMPACTO ACUMULADO DO PORTAL:')
-        print(f'   ↳ Total de Itens Cadastrados: {estatisticas["total_cadastrados"]}')
-        print(f'   ↳ Total de Itens Resolvidos: {estatisticas["geral_total"]}\n')
-        print(f'  TAXA DE SUCESSO (Devoluções diretas ao dono):')
-        print(f'    Total: {estatisticas["geral_devolvidos"]} | Índice: {estatisticas["geral_taxa_sucesso"]:.1f}%')
+        def criar_sub_grid():
+            grid = Table.grid(expand=True)
+            grid.add_column("Rótulo", width=32, justify="left")
+            grid.add_column("Dados", width=40, justify="right")
+            return grid
+        g1 = criar_sub_grid()
+        g1.add_row("[bold dim]CASOS SOLUCIONADOS POR PERÍODO:[/bold dim]", "")
+        g1.add_row("  ↳ Esta Semana", f"{estatisticas['resolvidos_semana']} itens")
+        g1.add_row("  ↳ Este Mês", f"{estatisticas['resolvidos_mes']} itens")
+        g1.add_row("  ↳ Este Ano", f"{estatisticas['resolvidos_ano']} itens")
+        g2 = criar_sub_grid()
+        g2.add_row("[bold dim]IMPACTO ACUMULADO DO PORTAL:[/bold dim]", "")
+        g2.add_row("  ↳ Total de Itens Cadastrados", str(estatisticas['total_cadastrados']))
+        g2.add_row("  ↳ Total de Itens Resolvidos", str(estatisticas['geral_total']))
+        g3 = criar_sub_grid()
+        g3.add_row("[bold dim]TAXAS DE SUCESSO E ECOLOGIA:[/bold dim]", "")        
         b_sucesso = '█' * int(estatisticas["geral_taxa_sucesso"] / 5)
-        print(f'      [{b_sucesso:<20}]')
-        print('─' * 60)
-        print(f'  IMPACTO ECOLÓGICO (Doações ou Reciclagens):')
-        print(f'    Total: {estatisticas["geral_sustentaveis"]} | Índice: {estatisticas["geral_taxa_ecologica"]:.1f}%')
+        str_sucesso = f"Total: {estatisticas['geral_devolvidos']} | [{b_sucesso:<20}] {estatisticas['geral_taxa_sucesso']:.1f}%"
+        g3.add_row("  ↳ Devoluções (Sucesso)", str_sucesso)        
         b_eco = '░' * int(estatisticas["geral_taxa_ecologica"] / 5)
-        print(f'      [{b_eco:<20}]')
-        print('=' * 60)
-        print('Pequenas ações, grandes impactos no nosso campus!'.center(60))
-        print('=' * 60)
-        print('\n\n')
-        Validador.aguardar_retorno()
+        str_eco = f"Total: {estatisticas['geral_sustentaveis']} | [{b_eco:<20}] {estatisticas['geral_taxa_ecologica']:.1f}%"
+        g3.add_row("  ↳ Doações/Reciclagem", str_eco)
+        conteudo_painel = Group(
+            g1,
+            Rule(style="dim"),
+            g2,
+            Rule(style="dim"),
+            g3
+        )
+        dashboard = Panel(
+            conteudo_painel,
+            title="[bold]PAINEL DE IMPACTO SOCIOAMBIENTAL[/bold]",
+            box=box.ROUNDED,
+            width=76
+        )
+        console.print(Align.center(dashboard))
+        print()
+        console.print(Align.center("[dim]Pequenas ações, grandes impactos no nosso campus![/dim]"))
+        print("\n\n")       
+        sair = Validador.aguardar_retorno()
+        if sair:
+            return
 
 
 
