@@ -122,10 +122,10 @@ Link da Planilha:
 https://docs.google.com/spreadsheets/d/1myEqbO7eCX_OGsQmDMzTTACJum08KHDDSSPvzOUeiec/edit?usp=drivesdk
 
 Link do Artigo:
-https://drive.google.com/file/d/12p0SUaHRK-updm0wrc3O9CvurfkHVH7H/view?usp=drivesdk
+https://drive.google.com/file/d/1zCBalCSq7HN1u99m0XS2kkZ8lJDYovUD/view?usp=drivesdk
 
-Link do Vídeo de Caio Vinícius:
-https://youtu.be/_B8-QdGjztg
+Link do Overleaf:
+https://www.overleaf.com/4614442133yffwqdfzfbfj#40ef04
 
-Link do Vídeo de Carlos Henrique:
-https://youtu.be/GcJab5rmTjw 
+Link dos Vídeos:
+www.youtube.com/@CAIOVINICIUSDESOUZASANTOS
