@@ -61,16 +61,13 @@ Após o login irá aparecer uma mensagem personalizada com uso da API do Gemini 
 Persistência dos dados
 
 •	Textwrap:
-Organizar os menus, evitando que o conteúdo não quebre a formatação.
+Organizar as notificações, evitando que o conteúdo não quebre a formatação.
 
 •	Time, Datetime:
 Responsável pelas pausas e identificar a data atual
 
 •  Platform:
 Compatibilidade no momento de abrir o recibo
-
-• Sys:
-Exibição temporalizada da mensagem de boas-vindas 
 
 •  Unicodedata, Difllib, Phonenumbers:
 Normalização dos dados
@@ -86,6 +83,9 @@ Proteção da chave da API
 
 •  Fpdf2:
 Fazer o recibo no formato pdf
+
+• Rich
+Melhorar a exibição do projeto
 
 
 ## Principais dificuldades:
@@ -113,6 +113,8 @@ pip install fpdf2
 pip install google-genai
 
 pip install python-dotenv
+
+pip install rich
 
 ## Links
 
