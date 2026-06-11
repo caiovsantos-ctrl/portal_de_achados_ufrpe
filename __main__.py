@@ -3,6 +3,9 @@ from interface import Acessorio
 from validacoes import Validador
 from servicos import MenuServicos
 from central_notificacoes import QuadroDeAvisos
+from rich.console import Console
+
+console = Console()
 
 
 class SistemaPortal:
@@ -10,7 +13,11 @@ class SistemaPortal:
         pass
     def executar(self):
         print('\n')
-        print('PORTAL DE ACHADOS UFRPPE'.center(50))
+        texto_titulo = (
+            "[bold][green]PORTAL DE ACHADOS E PERDIDOS[/green][/bold]\n"
+            "                  [dim]U F R P E[/dim]                    "
+        )
+        console.print((texto_titulo).center(console.width))
         print('\n')
         while True:
             Acessorio.exibir_menu_padrao('MENU INICIAL', [
